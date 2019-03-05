@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item
+        android:id="@+id/settings"
+        android:title="設定"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/rhyme_return"
+        android:icon="@drawable/mike"
+        android:title="ライム返しゲーム"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/rhyme_dict"
+        android:icon="@drawable/dictionary"
+        android:title="韻辞書"
+        app:showAsAction="ifRoom" />
+</menu>

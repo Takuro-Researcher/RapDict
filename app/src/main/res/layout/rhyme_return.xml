@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:padding="20dp"
+            android:id="@+id/question_text"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="残り問題数"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/question_text2"
+            android:layout_width="4dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:text=""
+            android:textSize="30dp"/>
+
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:padding="20dp"
+            android:id="@+id/time_text"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="制限時間"
+            android:textSize="30dp" />
+
+        <Spinner
+            android:id="@+id/time_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:dropDownWidth="match_parent" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:padding="20dp"
+            android:id="@+id/min_text"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:text="最小文字"
+            android:textSize="30dp" />
+
+        <Spinner
+            android:id="@+id/min_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:dropDownWidth="match_parent" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:padding="20dp"
+            android:id="@+id/max_text"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="最大文字"
+            android:textSize="30dp" />
+
+        <Spinner
+            android:id="@+id/max_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:dropDownWidth="match_parent" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:padding="20dp"
+            android:id="@+id/return_text"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="踏み返しの数"
+            android:textSize="30dp" />
+
+        <Spinner
+            android:id="@+id/return_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:dropDownWidth="match_parent"
+            android:textAlignment="center" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="30dp"
+            android:layout_span="3"
+            android:layout_weight="1"
+            android:elevation="4dp"
+            android:text="この設定で開始する" />
+    </TableRow>
+
+
+</TableLayout>
