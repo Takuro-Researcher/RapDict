@@ -199,9 +199,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         record_button.setGravity(CENTER);
         record_button.setWidth(0);
 
-
-
-
         final EditText insert_text1=new EditText(this);
         insert_text1.setWidth(0);
         insert_text1.setHint("ライムを入力");
@@ -430,18 +427,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         public void setWord(String word) {
             this.word = word;
         }
-
-        public int getWord_len() {
-            return word_len;
-        }
-
-        public void setWord_len(int word_len) {
-            this.word_len = word_len;
-        }
     }
-
-
-
-
 }
 
