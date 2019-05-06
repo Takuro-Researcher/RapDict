@@ -61,10 +61,8 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         for(Word s : question_list){
             System.out.println(s.getFurigana());
             System.out.println(s.getWord());
+            System.out.println(s.getWord_id());
         }
-
-
-
 
         /*デザインに関する記述*/
         final TableLayout varLayout= new TableLayout(this);
@@ -386,7 +384,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
             //long ms = millisUntilFinished - ss * 1000 - mm * 1000 * 60;
             //timerText.setText(String.format("%1$02d:%2$02d.%3$03d", mm, ss, ms));
             timerText.setText(dataFormat.format(millisUntilFinished));
-
         }
 
     }
@@ -394,11 +391,10 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
     //SQLを通す＆Wordのクラス配列に変換する
     public class WordAccess{
         public ArrayList<Word>  getWords(SQLiteDatabase database, int min_word, int max_word, int question){
-            int nums[]={min_word,max_word};
 
             Cursor cursor = database.query(
                     "wordtable", // DB名
-                    new String[] { "furigana", "word" }, // 取得するカラム名
+                    new String[] {"_id", "furigana", "word" }, // 取得するカラム名
                     "word_len>=? AND word_len<=?", // WHERE句の列名
                     new String[]{Integer.toString(min_word),Integer.toString(max_word)}, // WHERE句の値
                     null, // GROUP BY句の値
@@ -407,7 +403,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                     Integer.toString(question)
             );
             ArrayList<Word> result = new ArrayList<Word>();
-            String answer;
 
             while (cursor.moveToNext()){
                 Word word1=new Word();
@@ -448,9 +443,14 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
 
     //問題1単位のクラス
     static class Word{
+        int word_id;
         String furigana;
         String word;
         int word_len;
+
+        public  int getWord_id(){
+            return word_id;
+        }
 
         public String getFurigana() {
             return furigana;
@@ -466,14 +466,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
 
         public void setWord(String word) {
             this.word = word;
-        }
-
-        public int getWord_len() {
-            return word_len;
-        }
-
-        public void setWord_len(int word_len) {
-            this.word_len = word_len;
         }
     }
 
