@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,8 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
     private static TextView question_text;
     private static TextView word_text;
     private static TextView furigana_text;
-    private static ArrayList<Word> result;
+    private static ArrayList<Word> question_list;
+    private static ArrayList<Answer> result;
     private Intent intent;
 
 
@@ -55,10 +54,11 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         helper=new DictOpenHelper(getApplicationContext());
         SQLiteDatabase db=helper.getReadableDatabase();
         WordAccess wordAccess=new WordAccess();
-        result=new ArrayList<Word>();
+        question_list =new ArrayList<Word>();
+        result=new ArrayList<Answer>();
 
-        result=wordAccess.getWords(db,intent.getIntExtra(MIN,0),intent.getIntExtra(MAX,0),intent.getIntExtra(QUESTION,0));
-        for(Word s : result){
+        question_list =wordAccess.getWords(db,intent.getIntExtra(MIN,0),intent.getIntExtra(MAX,0),intent.getIntExtra(QUESTION,0));
+        for(Word s : question_list){
             System.out.println(s.getFurigana());
             System.out.println(s.getWord());
         }
@@ -85,9 +85,9 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         question_text=new TextView(this);
         Button back_button=new Button(this);
         back_button.setText("設定へ戻る");
+
+
         final int question_number=intent.getIntExtra(QUESTION,0);
-
-
         //第2引数にレイアウト情報を書く
         tableRow1.addView(settings(question_text,20,20,20,20 ,15,"問題数:  "+Integer.toString(question_number)),layoutParams);
         tableRow1.addView(back_button);
@@ -115,7 +115,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                 ViewGroup.LayoutParams.WRAP_CONTENT)
         );
         word_text=new TextView(this);
-        word_text=settings(word_text,20,20,20,15,17,giveword(question_number,result));
+        word_text=settings(word_text,20,20,20,15,17,giveword(question_number, question_list));
         word_text.setGravity(CENTER);
         word_text.setWidth(0);
         tableRow3.addView(word_text,layoutParams);
@@ -128,13 +128,11 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                 ViewGroup.LayoutParams.WRAP_CONTENT)
         );
         furigana_text=new TextView(this);
-        furigana_text=settings(furigana_text,20,20,20,0,8,givefurigana(question_number,result));
+        furigana_text=settings(furigana_text,20,20,20,0,8,givefurigana(question_number, question_list));
         furigana_text.setGravity(CENTER);
         furigana_text.setWidth(0);
         tableRow4.addView(furigana_text,layoutParams);
         varLayout.addView(tableRow4);
-
-
 
         //5列目 入力
         final TableRow tableRow5=new TableRow(this);
@@ -199,6 +197,9 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         record_button.setGravity(CENTER);
         record_button.setWidth(0);
 
+
+
+
         final EditText insert_text1=new EditText(this);
         insert_text1.setWidth(0);
         insert_text1.setHint("ライムを入力");
@@ -251,21 +252,39 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
             }
         });
 
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         record_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (intent.getIntExtra(RET,0)){
                     case 1:
+                        System.out.println(insert_text1.getText());
+                        insert_text1.setText("");
                         tableRow5.removeAllViews();
                         break;
                     case 2:
+                        insert_text1.setText("");
+                        insert_text2.setText("");
                         tableRow5.removeAllViews();
                         break;
                     case 3:
+                        insert_text1.setText("");
+                        insert_text2.setText("");
+                        insert_text3.setText("");
                         tableRow5.removeAllViews();
                         tableRow6.removeAllViews();
                         break;
                     case 4:
+                        insert_text1.setText("");
+                        insert_text2.setText("");
+                        insert_text3.setText("");
+                        insert_text4.setText("");
                         tableRow5.removeAllViews();
                         tableRow6.removeAllViews();
                         break;
@@ -278,29 +297,27 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                 cdt.start();
             }
         });
+
+
         //レイアウトをビューに適用
         setContentView(varLayout);
     }
 
-    /*画面を写った瞬間、カウントダウンタイマーを停止させれば、後ろ側で問題が進むことはなく、
+    /*画面を写った瞬間に起動される。カウントダウンタイマーを停止させれば、後ろ側で問題が進むことはなく、
     　次に訪れた時はonCreateによる問題設定やレイアウトは再定義される*/
     @Override
     public void onStop(){
         super.onStop();
         cdt.cancel();
-
     }
 
+    //残り問題数を更新し、問題文字とフリガナを更新する
     public static void next_question_change(int finish_q,int question){
-
         int i=question-finish_q;
         question_text.setText("問題数:  "+Integer.toString(i));
-        furigana_text.setText(givefurigana(i,result));
-        word_text.setText(giveword(i,result));
-
+        furigana_text.setText(givefurigana(i, question_list));
+        word_text.setText(giveword(i, question_list));
     }
-
-
     //Dpをピクセルに変換する関数
     public static float Dp2Px(float dp, Context context){
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -390,7 +407,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                     Integer.toString(question)
             );
             ArrayList<Word> result = new ArrayList<Word>();
-            int i=0;
+            String answer;
 
             while (cursor.moveToNext()){
                 Word word1=new Word();
@@ -404,6 +421,29 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
             }
             return result;
         }
+    }
+    //問題に対する答え。複数回数踏み返しを行う場合は、一問に対し複数個生成されることになる。
+    public static class Answer{
+
+
+        int wordid;//辞書の方にある文字のID
+        String answer;//文字に対する答え
+
+        public String getAnswer() {
+            return answer;
+        }
+
+        public void setAnswer(String answer) {
+            this.answer = answer;
+        }
+        public int getWordid() {
+            return wordid;
+        }
+
+        public void setWordid(int wordid) {
+            this.wordid = wordid;
+        }
+
     }
 
     //問題1単位のクラス
@@ -427,6 +467,15 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         public void setWord(String word) {
             this.word = word;
         }
+
+        public int getWord_len() {
+            return word_len;
+        }
+
+        public void setWord_len(int word_len) {
+            this.word_len = word_len;
+        }
     }
+
 }
 
