@@ -408,10 +408,13 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                 Word word1=new Word();
                 int furigana_id=cursor.getColumnIndex("furigana");
                 int word_id=cursor.getColumnIndex("word");
+                int _id_id=cursor.getColumnIndex("_id");
                 String furigana=cursor.getString(furigana_id);
                 String word=cursor.getString(word_id);
+                int id =cursor.getInt(_id_id);
                 word1.setWord(word);
                 word1.setFurigana(furigana);
+                word1.setWord_id(id);
                 result.add(word1);
             }
             return result;
@@ -451,6 +454,8 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         public  int getWord_id(){
             return word_id;
         }
+
+        public  void setWord_id(int word_id){this.word_id = word_id;}
 
         public String getFurigana() {
             return furigana;
