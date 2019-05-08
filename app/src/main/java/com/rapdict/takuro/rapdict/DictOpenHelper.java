@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class DictOpenHelper extends SQLiteOpenHelper {
     // データーベースのバージョン
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 7;
 
     // データーベース情報を変数に格納
     private static final String DATABASE_NAME = "WordDb.db";
@@ -25,10 +25,10 @@ public class DictOpenHelper extends SQLiteOpenHelper {
     private static final String COLUMN_NAME_WORD = "word";
     private static final String COLUMN_NAME_WORD_LEN="word_len";
     private final Context mContext;
-    //Create Table table name
+    //スキーマ定義
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
-                    _ID + " INTEGER PRIMARY KEY," +
+                    _ID + " INTEGER PRIMARY KEY autoincrement," +
                     COLUMN_NAME_FURIGANA + " TEXT," +
                     COLUMN_NAME_WORD +" TEXT,"+
                     COLUMN_NAME_WORD_LEN + " INTEGER)";
@@ -60,7 +60,6 @@ public class DictOpenHelper extends SQLiteOpenHelper {
             InputStream inputStream=assetManager.open("wordlist.csv");
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             br = new BufferedReader(inputStreamReader);
-
 
 
             String[] arr ={"furigana","word","word_len"};
@@ -129,32 +128,3 @@ public class DictOpenHelper extends SQLiteOpenHelper {
     }
 }
 
-class Word{
-    String furigana;
-    String word;
-    int word_len;
-
-    public String getFurigana() {
-        return furigana;
-    }
-
-    public void setFurigana(String furigana) {
-        this.furigana = furigana;
-    }
-
-    public String getWord() {
-        return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    public int getWord_len() {
-        return word_len;
-    }
-
-    public void setWord_len(int word_len) {
-        this.word_len = word_len;
-    }
-}

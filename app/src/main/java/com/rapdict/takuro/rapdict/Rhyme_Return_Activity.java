@@ -430,49 +430,18 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         public String getAnswer() {
             return answer;
         }
-
         public void setAnswer(String answer) {
             this.answer = answer;
         }
         public int getWordid() {
             return wordid;
         }
-
         public void setWordid(int wordid) {
             this.wordid = wordid;
         }
-
     }
 
-    //問題1単位のクラス
-    static class Word{
-        int word_id;
-        String furigana;
-        String word;
-        int word_len;
 
-        public  int getWord_id(){
-            return word_id;
-        }
-
-        public  void setWord_id(int word_id){this.word_id = word_id;}
-
-        public String getFurigana() {
-            return furigana;
-        }
-
-        public void setFurigana(String furigana) {
-            this.furigana = furigana;
-        }
-
-        public String getWord() {
-            return word;
-        }
-
-        public void setWord(String word) {
-            this.word = word;
-        }
-    }
 
 }
 
