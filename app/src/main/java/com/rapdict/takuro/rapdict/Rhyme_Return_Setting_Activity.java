@@ -51,7 +51,6 @@ public class Rhyme_Return_Setting_Activity extends MainActivity {
         }
         //
         for(int i=1;i<5;i++){
-
             ret.add(i);
         }
 
@@ -100,7 +99,6 @@ public class Rhyme_Return_Setting_Activity extends MainActivity {
                 intent.putExtra(MAX,(int) ((Spinner)findViewById(R.id.max_spinner)) .getSelectedItem());
                 intent.putExtra(TIME,(int) ((Spinner)findViewById(R.id.time_spinner)) .getSelectedItem());
                 intent.putExtra(RET,(int) ((Spinner)findViewById(R.id.return_spinner)) .getSelectedItem());
-
                 startActivity(intent);
             }
         });
