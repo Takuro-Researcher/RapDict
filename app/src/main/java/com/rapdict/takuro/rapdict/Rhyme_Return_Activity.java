@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static android.text.TextUtils.isEmpty;
 import static android.view.Gravity.CENTER;
 
 public class Rhyme_Return_Activity extends AppCompatActivity{
@@ -30,7 +31,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
     private static TextView word_text;
     private static TextView furigana_text;
     private static ArrayList<Word> question_list;
-    private static ArrayList<Answer> result;
+    private static ArrayList<Answer> answer_list;
     private Intent intent;
 
 
@@ -43,8 +44,8 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
     private static final String MIN="min";
     private static final String MAX="max";
     private static final String RET="ret";
+    private static final String ANSWER_LIST="answer_list";
     int finish_q=0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +56,10 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         SQLiteDatabase db=helper.getReadableDatabase();
         WordAccess wordAccess=new WordAccess();
         question_list =new ArrayList<Word>();
-        result=new ArrayList<Answer>();
+        answer_list=new ArrayList<Answer>();
+
 
         question_list =wordAccess.getWords(db,intent.getIntExtra(MIN,0),intent.getIntExtra(MAX,0),intent.getIntExtra(QUESTION,0));
-        for(Word s : question_list){
-            System.out.println(s.getFurigana());
-            System.out.println(s.getWord());
-            System.out.println(s.getWord_id());
-        }
-
         /*デザインに関する記述*/
         final TableLayout varLayout= new TableLayout(this);
         varLayout.setLayoutParams(new ViewGroup.LayoutParams(
@@ -211,6 +207,8 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         insert_text4.setWidth(0);
         insert_text4.setHint("ライムを入力");
 
+
+
         add_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -224,6 +222,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                     case 2:
                         tableRow5.addView(insert_text1,layoutParams3);
                         tableRow5.addView(insert_text2,layoutParams3);
+
                         break;
                     case 3:
                         tableRow5.addView(insert_text1,layoutParams3);
@@ -245,8 +244,14 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 finish_q++;
-                next_question_change(finish_q,intent.getIntExtra(QUESTION,0));
-                cdt.start();
+                if(finish_q< intent.getIntExtra(QUESTION,0)) {
+                    next_question_change(finish_q, intent.getIntExtra(QUESTION, 0));
+                    cdt.start();
+                }else{
+                    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                }
+                System.out.println(finish_q);
             }
         });
 
@@ -260,18 +265,45 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         record_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (intent.getIntExtra(RET,0)){
+                Answer answer1=new Answer();
+                Answer answer2=new Answer();
+                Answer answer3=new Answer();
+                Answer answer4=new Answer();
+                switch (intent.getIntExtra(RET,0)) {
                     case 1:
-                        System.out.println(insert_text1.getText());
+                        if (!isEmpty(insert_text1.getText())) {
+                            answer1.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text1.getText()), giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer1);
+                        }
                         insert_text1.setText("");
                         tableRow5.removeAllViews();
                         break;
                     case 2:
+                        if (!isEmpty(insert_text1.getText())) {
+                            answer1.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text1.getText()), giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer1);
+                        }
+                        if (!isEmpty(insert_text2.getText())) {
+                            answer2.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text2.getText()), giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer2);
+                        }
                         insert_text1.setText("");
                         insert_text2.setText("");
                         tableRow5.removeAllViews();
                         break;
                     case 3:
+                        if (!isEmpty(insert_text1.getText())) {
+                            answer1.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text1.getText()), giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer1);
+                        }
+                        if (!isEmpty(insert_text2.getText())) {
+                            answer2.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text2.getText()), giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer2);
+                        }
+                        if (!isEmpty(insert_text3.getText())) {
+                            answer3.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text3.getText()),giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer3);
+                        }
                         insert_text1.setText("");
                         insert_text2.setText("");
                         insert_text3.setText("");
@@ -279,6 +311,22 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                         tableRow6.removeAllViews();
                         break;
                     case 4:
+                        if (!isEmpty(insert_text1.getText())) {
+                            answer1.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text1.getText()), giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer1);
+                        }
+                        if (!isEmpty(insert_text2.getText())) {
+                            answer2.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text2.getText()), giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer2);
+                        }
+                        if (!isEmpty(insert_text3.getText())) {
+                            answer3.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text3.getText()),giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer3);
+                        }
+                        if (!isEmpty(insert_text4.getText())) {
+                            answer4.answerSet(giveword_id(question_number-finish_q, question_list), String.valueOf(insert_text4.getText()), giveword(question_number-finish_q, question_list));
+                            answer_list.add(answer4);
+                        }
                         insert_text1.setText("");
                         insert_text2.setText("");
                         insert_text3.setText("");
@@ -287,12 +335,25 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                         tableRow6.removeAllViews();
                         break;
                 }
+                
+                for(Answer s : answer_list){
+                    System.out.println(s.getAnswer());
+                    System.out.println(s.getQuestion());
+                    System.out.println(s.getQuestion_id());
+                }
+
                 tableRow7.removeAllViews();
                 tableRow5.addView(add_button);
                 tableRow5.addView(next_button);
                 finish_q++;
-                next_question_change(finish_q,intent.getIntExtra(QUESTION,0));
-                cdt.start();
+                System.out.println(finish_q);
+                if(finish_q<10) {
+                    next_question_change(finish_q, intent.getIntExtra(QUESTION, 0));
+                    cdt.start();
+                }else{
+                    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -316,6 +377,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         furigana_text.setText(givefurigana(i, question_list));
         word_text.setText(giveword(i, question_list));
     }
+
     //Dpをピクセルに変換する関数
     public static float Dp2Px(float dp, Context context){
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -345,17 +407,22 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         return editText;
     }
 
-    //問題数に対する、文字列を与える
+    //問題番号に対する、文字列を与える
     public static String giveword(int question_num, List<Word> result){
-        Word word1=new Word();
+        Word word1;
         word1=result.get(question_num-1);
         return word1.getWord();
     }
-    //問題崇に対する、フリガナを与える。
+    //問題番号に対する、フリガナを与える。
     public static String givefurigana(int question_num, List<Word> result){
-        Word word1=new Word();
+        Word word1;
         word1=result.get(question_num-1);
         return word1.getFurigana();
+    }
+    public static int giveword_id(int question_num, List<Word> result){
+        Word word1;
+        word1=result.get(question_num-1);
+        return word1.getWord_id();
     }
 
 
@@ -420,28 +487,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
             return result;
         }
     }
-    //問題に対する答え。複数回数踏み返しを行う場合は、一問に対し複数個生成されることになる。
-    public static class Answer{
-
-
-        int wordid;//辞書の方にある文字のID
-        String answer;//文字に対する答え
-
-        public String getAnswer() {
-            return answer;
-        }
-        public void setAnswer(String answer) {
-            this.answer = answer;
-        }
-        public int getWordid() {
-            return wordid;
-        }
-        public void setWordid(int wordid) {
-            this.wordid = wordid;
-        }
-    }
-
-
 
 }
 
