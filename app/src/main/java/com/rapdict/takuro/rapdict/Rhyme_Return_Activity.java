@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import sample.intent.AnswerData;
+
 import static android.text.TextUtils.isEmpty;
 import static android.view.Gravity.CENTER;
 
@@ -31,7 +33,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
     private static TextView word_text;
     private static TextView furigana_text;
     private static ArrayList<Word> question_list;
-    private static ArrayList<Answer> answer_list;
+    private static ArrayList<AnswerData> answer_list;
     private Intent intent;
 
 
@@ -56,7 +58,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         SQLiteDatabase db=helper.getReadableDatabase();
         WordAccess wordAccess=new WordAccess();
         question_list =new ArrayList<Word>();
-        answer_list=new ArrayList<Answer>();
+        answer_list=new ArrayList<AnswerData>();
 
 
         question_list =wordAccess.getWords(db,intent.getIntExtra(MIN,0),intent.getIntExtra(MAX,0),intent.getIntExtra(QUESTION,0));
@@ -191,9 +193,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         record_button.setGravity(CENTER);
         record_button.setWidth(0);
 
-
-
-
         final EditText insert_text1=new EditText(this);
         insert_text1.setWidth(0);
         insert_text1.setHint("ライムを入力");
@@ -248,8 +247,9 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                     next_question_change(finish_q, intent.getIntExtra(QUESTION, 0));
                     cdt.start();
                 }else{
-                    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-                    startActivity(intent);
+                    Intent intent2 = new Intent(getApplicationContext(),Rhyme_Return_Setting_Activity.class);
+                    intent2.putExtra(ANSWER_LIST,answer_list);
+                    startActivity(intent2);
                 }
                 System.out.println(finish_q);
             }
@@ -265,10 +265,11 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         record_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Answer answer1=new Answer();
-                Answer answer2=new Answer();
-                Answer answer3=new Answer();
-                Answer answer4=new Answer();
+                AnswerData answer1=new AnswerData();
+                AnswerData answer2=new AnswerData();
+                AnswerData answer3=new AnswerData();
+                AnswerData answer4=new AnswerData();
+
                 switch (intent.getIntExtra(RET,0)) {
                     case 1:
                         if (!isEmpty(insert_text1.getText())) {
@@ -336,7 +337,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                         break;
                 }
                 
-                for(Answer s : answer_list){
+                for(AnswerData s : answer_list){
                     System.out.println(s.getAnswer());
                     System.out.println(s.getQuestion());
                     System.out.println(s.getQuestion_id());
@@ -351,7 +352,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
                     next_question_change(finish_q, intent.getIntExtra(QUESTION, 0));
                     cdt.start();
                 }else{
-                    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                    Intent intent=new Intent(getApplicationContext(),Rhyme_Return_Setting_Activity.class);
                     startActivity(intent);
                 }
             }
@@ -424,7 +425,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity{
         word1=result.get(question_num-1);
         return word1.getWord_id();
     }
-
 
     //これより下はクラス
 

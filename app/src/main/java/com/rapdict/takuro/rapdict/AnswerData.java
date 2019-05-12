@@ -1,13 +1,11 @@
-package com.rapdict.takuro.rapdict;
+package sample.intent;
 
-import android.text.Editable;
+import java.io.Serializable;
 
-public class Answer {
-
+public class AnswerData implements Serializable{
     int question_id;
     String answer;
     String question;
-
     public int getQuestion_id() {
         return question_id;
     }
@@ -16,7 +14,6 @@ public class Answer {
         setQuestion(question);
         setQuestion_id(question_id);
     }
-
     public void setQuestion_id(int question_id) {
         this.question_id = question_id;
     }
@@ -36,4 +33,5 @@ public class Answer {
     public void setQuestion(String question) {
         this.question = question;
     }
+
 }
