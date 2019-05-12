@@ -12,12 +12,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Rhyme_Return_Setting_Activity extends MainActivity {
     private static final String QUESTION="question";
     private static final String TIME="time";
     private static final String MIN="min";
     private static final String MAX="max";
     private static final String RET="ret";
+    private static final String ANSWER_LIST="answer_list";
+    private Intent intent;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +58,18 @@ public class Rhyme_Return_Setting_Activity extends MainActivity {
         //
         for(int i=1;i<5;i++){
             ret.add(i);
+        }
+        intent=getIntent();
+
+        ArrayList<sample.intent.AnswerData> answer_list = (ArrayList<sample.intent.AnswerData>)getIntent().getSerializableExtra(ANSWER_LIST);
+
+        if(answer_list==null) {
+
+        }else{
+            for (sample.intent.AnswerData answer : answer_list) {
+                System.out.println(answer.getAnswer());
+                System.out.println(answer.getQuestion());
+            }
         }
 
         Spinner s1=(Spinner)findViewById(R.id.question_spinner);
