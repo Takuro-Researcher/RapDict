@@ -63,15 +63,6 @@ public class Rhyme_Return_Setting_Activity extends MainActivity {
 
         ArrayList<sample.intent.AnswerData> answer_list = (ArrayList<sample.intent.AnswerData>)getIntent().getSerializableExtra(ANSWER_LIST);
 
-        if(answer_list==null) {
-
-        }else{
-            for (sample.intent.AnswerData answer : answer_list) {
-                System.out.println(answer.getAnswer());
-                System.out.println(answer.getQuestion());
-            }
-        }
-
         Spinner s1=(Spinner)findViewById(R.id.question_spinner);
         s1.setAdapter(question);
 
