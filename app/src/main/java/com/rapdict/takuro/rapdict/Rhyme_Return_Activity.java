@@ -17,9 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import sample.intent.AnswerData;
-
 import static android.text.TextUtils.isEmpty;
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.TOP;
@@ -107,14 +105,10 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
         Button next_button = new Button(this);
         next_button  =  widgetController.settings(next_button,10,10,10,10,8,"次の問題へ",CENTER,0);
 
-        //2列利用
+        //カラムの表記を設定
         final TableRow.LayoutParams layoutParams2 = new TableRow.LayoutParams();
         layoutParams2.weight = 1;
         layoutParams2.setMargins(int_Dp2Px(30,getApplicationContext()),int_Dp2Px(50,getApplicationContext()),int_Dp2Px(30,getApplicationContext()),int_Dp2Px(30,getApplicationContext()));
-        tableRow[4].addView(add_button,layoutParams2);
-        tableRow[4].addView(next_button,layoutParams2);
-
-        //カラムの表記を定義
         final TableRow.LayoutParams layoutParams3 = new TableRow.LayoutParams();
         layoutParams3.weight = 1;
         layoutParams3.setMargins(int_Dp2Px(15,getApplicationContext()),int_Dp2Px(25,getApplicationContext()),int_Dp2Px(15,getApplicationContext()),int_Dp2Px(15,getApplicationContext()));
@@ -122,6 +116,10 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
         layoutParams4.weight = 1;
         layoutParams4.span = 2;
         layoutParams4.setMargins(int_Dp2Px(30,getApplicationContext()),int_Dp2Px(40,getApplicationContext()),int_Dp2Px(30,getApplicationContext()),int_Dp2Px(15,getApplicationContext()));
+
+        tableRow[4].addView(add_button,layoutParams2);
+        tableRow[4].addView(next_button,layoutParams2);
+
 
         final Button record_button = new Button(this);
         widgetController.settings(record_button,10,10,10,10,8,"次の問題へ!",CENTER,0);
@@ -151,7 +149,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
                 tableRow[6].addView(record_button,layoutParams4);
             }
         });
-
         next_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,14 +157,13 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
                     next_question_change(finish_q, intent.getIntExtra(QUESTION, 0));
                     cdt.start();
                 }else{
-                    Intent intent2  =  new Intent(getApplicationContext(),Rhyme_Return_Setting_Activity.class);
-                    intent2.putExtra(ANSWER_LIST,answer_list);
-                    startActivity(intent2);
+                    Intent intent  =  new Intent(getApplicationContext(),Result_Activity.class);
+                    intent.putExtra(ANSWER_LIST,answer_list);
+                    startActivity(intent);
                 }
                 System.out.println(finish_q);
             }
         });
-
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,7 +172,6 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
 
         final Button finalAdd_button1 = add_button;
         final Button finalNext_button1 = next_button;
-
         record_button.setOnClickListener(new View.OnClickListener() {
             AnswerData answer[] = new AnswerData[4];
             @Override
@@ -201,7 +196,8 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
                     next_question_change(finish_q, intent.getIntExtra(QUESTION, 0));
                     cdt.start();
                 }else{
-                    Intent intent = new Intent(getApplicationContext(),Rhyme_Return_Setting_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(),Result_Activity.class);
+                    intent.putExtra(ANSWER_LIST,answer_list);
                     startActivity(intent);
                 }
             }
@@ -248,15 +244,13 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
         return word1.getWord_id();
     }
 
-
-    //カウントダウンタイマー,
+    //カウントダウンタイマークラス
     public class MyCountDownTimer extends CountDownTimer{
         MyCountDownTimer(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
         @Override
         public void onFinish() {
-            // 完了
             finish_q++;
             next_question_change(finish_q,intent.getIntExtra(QUESTION,0));
             start();
