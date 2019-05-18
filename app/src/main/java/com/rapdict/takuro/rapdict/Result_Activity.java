@@ -1,8 +1,10 @@
 package com.rapdict.takuro.rapdict;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,6 +13,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.List;
+
+import sample.intent.AnswerData;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.TOP;
@@ -19,20 +24,27 @@ import static com.rapdict.takuro.rapdict.WidgetController.int_Dp2Px;
 public class Result_Activity extends AppCompatActivity {
     private Intent intent;
     private static final String ANSWER_LIST = "answer_list";
+    private SQLiteOpenHelper helper;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        helper = new SQLiteOpenHelper(getApplicationContext());
+        db = helper.getWritableDatabase();
+        final ArrayList<sample.intent.AnswerData> answer_list = (ArrayList<sample.intent.AnswerData>) getIntent().getSerializableExtra(ANSWER_LIST);
         intent = getIntent();
-        ArrayList<sample.intent.AnswerData> answer_list = (ArrayList<sample.intent.AnswerData>) getIntent().getSerializableExtra(ANSWER_LIST);
         WidgetController widgetController = new WidgetController(this);
 
-        final TableRow tableRow[] = new TableRow[120];
+        TableRow tableRow[] = new TableRow[120];
         final CheckBox checkBox[] = new CheckBox[120];
-        final TextView question_view[] = new TextView[120];
-        final TextView answer_view[] = new TextView[120];
-        TableRow buttonRow = new TableRow(this);
+        TextView question_view[] = new TextView[120];
+        TextView answer_view[] = new TextView[120];
+        final List<sample.intent.AnswerData> record_list = new ArrayList<AnswerData>();
 
+
+        TableRow buttonRow = new TableRow(this);
         TableLayout varLayout  =  new TableLayout(this);
         varLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         final TableRow.LayoutParams layoutParams = new TableRow.LayoutParams();
@@ -68,7 +80,6 @@ public class Result_Activity extends AppCompatActivity {
                 i++;
             }
         }
-
         for (int i=0;i < answer_list.size(); i++) {
             tableRow[i].addView(question_view[i], layoutParams);
             tableRow[i].addView(answer_view[i], layoutParams);
@@ -78,6 +89,22 @@ public class Result_Activity extends AppCompatActivity {
         varLayout.addView(buttonRow);
         scrollView.addView(varLayout);
         setContentView(scrollView);
+        final AnswerData[] answer = {new AnswerData()};
+
+        record_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                for(int i=0; i<answer_list.size() ;i++){
+                     if(checkBox[i].isChecked() == true){
+                         answer[0] = answer_list.get(i);
+                         record_list.add(answer[0]);
+                         helper.answer_saveData(db,answer[0].getAnswer(),answer[0].getQuestion_id());
+                     }
+                 }
+
+            }
+        });
 
     }
 }

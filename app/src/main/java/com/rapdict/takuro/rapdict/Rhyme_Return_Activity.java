@@ -33,7 +33,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
     private static ArrayList<AnswerData> answer_list;
     private Intent intent;
     private SimpleDateFormat dataFormat  =  new SimpleDateFormat("ss.SS", Locale.US);
-    private DictOpenHelper helper;
+    private SQLiteOpenHelper helper;
     private static final String QUESTION = "question";
     private static final String TIME = "time";
     private static final String MIN = "min";
@@ -47,7 +47,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         intent = getIntent();
         /* データベースに関する記述　*/
-        helper  =  new DictOpenHelper(getApplicationContext());
+        helper  =  new SQLiteOpenHelper(getApplicationContext());
         SQLiteDatabase db  =  helper.getReadableDatabase();
         WordAccess wordAccess  =  new WordAccess();
         /* 出題されるワード */
