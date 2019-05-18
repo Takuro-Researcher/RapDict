@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.support.v7.app.ActionBar;
@@ -23,6 +24,8 @@ public class Rhyme_Return_Setting_Activity extends MainActivity {
     private static final String RET="ret";
     private static final String ANSWER_LIST="answer_list";
     private Intent intent;
+    private SQLiteOpenHelper helper;
+    private SQLiteDatabase db;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,18 @@ public class Rhyme_Return_Setting_Activity extends MainActivity {
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        //Answer見る用
+        ArrayList<Answer> result = new ArrayList<Answer>();
+        helper = new SQLiteOpenHelper(getApplicationContext());
+        db = helper.getWritableDatabase();
+        WordAccess wordAccess = new WordAccess();
+        result = wordAccess.getAnswers(db);
+
+        for(Answer s: result){
+            System.out.println(s.getAnswer());
+            System.out.println(s.getWord_id());
+        }
 
         ArrayAdapter question=new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item);
         ArrayAdapter time=new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item);
