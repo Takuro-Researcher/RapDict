@@ -215,6 +215,7 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
     public void onStop(){
         super.onStop();
         cdt.cancel();
+        finish();
     }
 
     //残り問題数を更新し、問題文字とフリガナを更新する
