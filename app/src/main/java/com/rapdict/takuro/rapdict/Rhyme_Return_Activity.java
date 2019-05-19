@@ -253,8 +253,15 @@ public class Rhyme_Return_Activity extends AppCompatActivity {
         @Override
         public void onFinish() {
             finish_q++;
-            next_question_change(finish_q,intent.getIntExtra(QUESTION,0));
-            start();
+            if(finish_q == intent.getIntExtra(QUESTION,0)){
+                cancel();
+                Intent intent = new Intent(getApplicationContext(),Result_Activity.class);
+                intent.putExtra(ANSWER_LIST,answer_list);
+                startActivity(intent);
+            }else{
+                next_question_change(finish_q,intent.getIntExtra(QUESTION,0));
+                start();
+            }
         }
         // インターバルで呼ばれる
         @Override
