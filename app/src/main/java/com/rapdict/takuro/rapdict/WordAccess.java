@@ -48,7 +48,8 @@ public class WordAccess {
 
 
         String sql = "SELECT * FROM "+ ANSWER_TABLE_NAME +" INNER JOIN "+WORD_TABLE_NAME+" ON "+
-                ANSWER_TABLE_NAME+"."+COLUMN_NAME_QUESTION_ID+" = "+WORD_TABLE_NAME+"."+COLUMN_NAME_WORD_ID;
+                ANSWER_TABLE_NAME+"."+COLUMN_NAME_QUESTION_ID+" = "+WORD_TABLE_NAME+"."+COLUMN_NAME_WORD_ID
+                + " WHERE " +WORD_TABLE_NAME+ ".word_len < " +max_word + " AND " +WORD_TABLE_NAME +".word_len > " +min_word;
         System.out.println(sql);
 
         Cursor cursor = database.rawQuery(sql,null);
