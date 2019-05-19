@@ -102,9 +102,19 @@ public class Result_Activity extends AppCompatActivity {
                          helper.answer_saveData(db,answer[0].getAnswer(),answer[0].getQuestion_id());
                      }
                  }
+                Intent intent=new Intent(getApplicationContext(), Rhyme_Return_Setting_Activity.class);
+                startActivity(intent);
 
             }
         });
 
     }
+    //もうこの画面へ戻れないように。
+    @Override
+    public void onStop(){
+        super.onStop();
+        finish();
+    }
+
+
 }

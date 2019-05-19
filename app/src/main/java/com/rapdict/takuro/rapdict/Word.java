@@ -4,7 +4,6 @@ public class Word {
     int word_id;
     String furigana;
     String word;
-
     int word_len;
 
     public  int getWord_id(){

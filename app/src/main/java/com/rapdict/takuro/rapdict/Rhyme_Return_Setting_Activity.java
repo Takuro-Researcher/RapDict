@@ -31,21 +31,20 @@ public class Rhyme_Return_Setting_Activity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rhyme_return_setting);
+        helper = new SQLiteOpenHelper(getApplicationContext());
+        db = helper.getWritableDatabase();
 
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        //Answer見る用
-        ArrayList<Answer> result = new ArrayList<Answer>();
-        helper = new SQLiteOpenHelper(getApplicationContext());
-        db = helper.getWritableDatabase();
+        ArrayList<AnswerView> result = new ArrayList<AnswerView>();
         WordAccess wordAccess = new WordAccess();
-        result = wordAccess.getAnswers(db);
+        result = wordAccess.getAnswers(db,0,0,0);
 
-        for(Answer s: result){
+        for(AnswerView s:result){
             System.out.println(s.getAnswer());
-            System.out.println(s.getWord_id());
+            System.out.println(s.getAnswerview_id());
         }
 
         ArrayAdapter question=new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item);
