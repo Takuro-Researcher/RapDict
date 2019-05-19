@@ -12,31 +12,32 @@ import java.util.ArrayList;
 
 public class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
     // データーベースのバージョン
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     // データーベース情報を変数に格納
     private static final String DATABASE_NAME = "WordDb.db";
     private static final String QUESTION_TABLE_NAME = "wordtable";
     private static final String ANSWER_TABLE_NAME = "answertable";
-    private static final String _ID = "_id";
     private static final String COLUMN_NAME_FURIGANA = "furigana";
     private static final String COLUMN_NAME_WORD = "word";
     private static final String COLUMN_NAME_WORD_LEN="word_len";
     private static final String COLUMN_NAME_WORD_ID="word_id";
+    private static final String COLUMN_NAME_QUESTION_ID="question_id";
     private static final String COLUMN_NAME_ANSWER="answer";
+    private static final String COLUMN_NAME_ANSWER_ID="answer_id";
 
     private final Context mContext;
     //スキーマ定義
     private static final String SQL_CREATE_QUESTION_TABLE =
             "CREATE TABLE " + QUESTION_TABLE_NAME + " (" +
-                    _ID + " INTEGER PRIMARY KEY autoincrement," +
+                    COLUMN_NAME_WORD_ID + " INTEGER PRIMARY KEY autoincrement," +
                     COLUMN_NAME_FURIGANA + " TEXT," +
                     COLUMN_NAME_WORD +" TEXT,"+
                     COLUMN_NAME_WORD_LEN + " INTEGER)";
     private static final String SQL_CREATE_ANSWER_TABLE = "CREATE TABLE " + ANSWER_TABLE_NAME + " (" +
-                    _ID + " INTEGER PRIMARY KEY autoincrement," +
+                    COLUMN_NAME_ANSWER_ID + " INTEGER PRIMARY KEY autoincrement," +
                     COLUMN_NAME_ANSWER +" TEXT,"+
-                    COLUMN_NAME_WORD_ID + " INTEGER)";
+                    COLUMN_NAME_QUESTION_ID + " INTEGER)";
 
     private static final String SQL_QUESTION_DELETE = "DROP TABLE IF EXISTS " + QUESTION_TABLE_NAME;
     private static final String SQL_ANSWER_DELETE = "DROP TABLE IF EXISTS " + ANSWER_TABLE_NAME;
@@ -101,6 +102,7 @@ public class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_QUESTION_DELETE);
+        db.execSQL(SQL_ANSWER_DELETE);
         onCreate(db);
     }
 
@@ -118,7 +120,7 @@ public class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
 
     public void answer_saveData(SQLiteDatabase db, String answer, int word_id){
         ContentValues values = new ContentValues();
-        values.put("word_id",word_id);
+        values.put("question_id",word_id);
         values.put("answer",answer);
         db.insert("answertable", null, values);
     }

@@ -7,11 +7,17 @@ import java.util.ArrayList;
 
 //SQLクエリを使用し、表から検索条件をリストにして返すクラス
 public class WordAccess {
+
+    private static final String WORD_TABLE_NAME = "wordtable";
+    private static final String ANSWER_TABLE_NAME = "answertable";
+    private static final String COLUMN_NAME_QUESTION_ID="question_id";
+    private static final String COLUMN_NAME_WORD_ID="word_id";
+
     public ArrayList<Word> getWords(SQLiteDatabase database, int min_word, int max_word, int question){
 
         Cursor cursor = database.query(
                 "wordtable", // DB名
-                new String[] {"_id", "furigana", "word" }, // 取得するカラム名
+                new String[] {"word_id", "furigana", "word" }, // 取得するカラム名
                 "word_len>=? AND word_len<=?", // WHERE句の列名
                 new String[]{Integer.toString(min_word),Integer.toString(max_word)}, // WHERE句の値
                 null, // GROUP BY句の値
@@ -25,10 +31,10 @@ public class WordAccess {
             Word word1=new Word();
             int furigana_id=cursor.getColumnIndex("furigana");
             int word_id=cursor.getColumnIndex("word");
-            int _id_id=cursor.getColumnIndex("_id");
+            int word_id_id=cursor.getColumnIndex("word_id");
             String furigana=cursor.getString(furigana_id);
             String word=cursor.getString(word_id);
-            int id =cursor.getInt(_id_id);
+            int id =cursor.getInt(word_id_id);
             word1.setWord(word);
             word1.setFurigana(furigana);
             word1.setWord_id(id);
@@ -37,63 +43,32 @@ public class WordAccess {
         return result;
     }
 
-    public ArrayList<Answer> getAnswers(SQLiteDatabase database){
-        Cursor cursor = database.query(
-                "answertable", // DB名
-                new String[] {"_id", "answer", "word_id" }, // 取得するカラム名
-                null, // WHERE句の列名
-                null, // WHERE句の値
-                null, // GROUP BY句の値
-                null, // HAVING句の値
-                "RANDOM()"// ORDER BY句の値
-                
-        );
-        ArrayList<Answer> result = new ArrayList<Answer>();
+
+    public ArrayList<AnswerView> getAnswers(SQLiteDatabase database, int min_word, int max_word, int question){
+
+
+        String sql = "SELECT * FROM "+ ANSWER_TABLE_NAME +" INNER JOIN "+WORD_TABLE_NAME+" ON "+
+                ANSWER_TABLE_NAME+"."+COLUMN_NAME_QUESTION_ID+" = "+WORD_TABLE_NAME+"."+COLUMN_NAME_WORD_ID;
+        System.out.println(sql);
+
+        Cursor cursor = database.rawQuery(sql,null);
+        ArrayList<AnswerView> result = new ArrayList<AnswerView>();
 
         while (cursor.moveToNext()){
-            Answer answer=new Answer();
-            int answer_id=cursor.getColumnIndex("answer");
-            int word_id_id=cursor.getColumnIndex("word_id");
-            int _id_id=cursor.getColumnIndex("_id");
-            String answer1=cursor.getString(answer_id);
-            int word_id=cursor.getInt(word_id_id);
-            answer.setAnswer(answer1);
-            answer.setWord_id(word_id);
-            result.add(answer);
+            AnswerView answerView = new AnswerView();
+            int answer1_id = cursor.getColumnIndex("answer");
+            int word_id = cursor.getColumnIndex("word");
+            int question_id_id=cursor.getColumnIndex("question_id");
+            int answer_id_id=cursor.getColumnIndex("answer_id");
+            int word_len_id = cursor.getColumnIndex("word_len");
+            String word=cursor.getString(word_id);
+            int question_id = cursor.getInt(question_id_id);
+            int answer_id = cursor.getInt(answer_id_id);
+            int word_len =cursor.getInt(word_len_id);
+            String answer = cursor.getString(answer1_id);
+            answerView.setColumn(answer_id, question_id, answer, word, word_len);
+            result.add(answerView);
         }
-
         return result;
     }
-
-//    public ArrayList<AnswerView> getAnswers(SQLiteDatabase database, int min_word, int max_word, int question){
-//
-//        String sql = "SELECT * FROM ";
-//
-//        Cursor cursor = database.query(
-//                "answertable", // DB名
-//                new String[] {"_id", "furigana", "word" }, // 取得するカラム名
-//                "word_len>=? AND word_len<=?", // WHERE句の列名
-//                new String[]{Integer.toString(min_word),Integer.toString(max_word)}, // WHERE句の値
-//                null, // GROUP BY句の値
-//                null, // HAVING句の値
-//                "RANDOM()", // ORDER BY句の値
-//                Integer.toString(question)
-//        );
-//        ArrayList<Word> result = new ArrayList<Word>();
-//
-//        while (cursor.moveToNext()){
-//            Word word1=new Word();
-//            int furigana_id=cursor.getColumnIndex("furigana");
-//            int word_id=cursor.getColumnIndex("word");
-//            int _id_id=cursor.getColumnIndex("_id");
-//            String furigana=cursor.getString(furigana_id);
-//            String word=cursor.getString(word_id);
-//            int id =cursor.getInt(_id_id);
-//            word1.setWord(word);
-//            word1.setFurigana(furigana);
-//            word1.setWord_id(id);
-//            result.add(word1);
-//        }
-//
-//    }
 }
