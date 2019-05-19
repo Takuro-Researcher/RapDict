@@ -12,26 +12,26 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!--親がMainActivityであるライム返しアクティビティ-->
+        <!-- 親がMainActivityであるライム返しアクティビティ -->
         <activity
-            android:name="com.rapdict.takuro.rapdict.Rhyme_Return_Setting_Activity"
+            android:name=".Rhyme_Return_Setting_Activity"
             android:label="@string/app_name"
-            android:parentActivityName="com.rapdict.takuro.rapdict.MainActivity" >
+            android:parentActivityName=".MainActivity">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rapdict.takuro.rapdict.MainActivity" />
         </activity>
         <activity
-            android:name="com.rapdict.takuro.rapdict.Rhyme_Return_Activity"
-            android:label="@string/app_name">
-        </activity>
-
-
+            android:name=".Rhyme_Return_Activity"
+            android:label="@string/app_name" />
+        <activity android:name=".Result_Activity"></activity>
     </application>
 
 </manifest>
