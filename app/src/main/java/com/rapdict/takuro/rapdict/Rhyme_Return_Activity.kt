@@ -150,7 +150,7 @@ class Rhyme_Return_Activity : AppCompatActivity() {
         add_button.setOnClickListener {
             tableRow[4]?.removeView(finalAdd_button)
             tableRow[4]?.removeView(finalNext_button)
-//            cdt!!.cancel()
+            timer.cancel()
             for (i in 0 until intent!!.getIntExtra(RET, 0)) {
                 if (i == 0 || i == 1) {
                     tableRow[4]?.addView(editText[i], layoutParams3)

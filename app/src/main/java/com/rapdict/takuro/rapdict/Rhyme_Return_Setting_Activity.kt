@@ -15,22 +15,24 @@ import android.widget.Spinner
 
 import java.util.ArrayList
 import java.util.Collections
+import android.R.array
+import java.nio.file.Files.size
+
+
 
 class Rhyme_Return_Setting_Activity : MainActivity() {
     private var helper: SQLiteOpenHelper? = null
-    private var db: SQLiteDatabase? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.rhyme_return_setting)
         helper = SQLiteOpenHelper(applicationContext)
-        db = helper!!.writableDatabase
+        val db = helper!!.writableDatabase
 
         //Toolbar
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
-
-
         var question = arrayListOf<Int>()
         val time = arrayListOf<Int>()
         val min = arrayListOf<Int>()
