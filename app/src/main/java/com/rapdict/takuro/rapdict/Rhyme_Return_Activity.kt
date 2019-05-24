@@ -195,10 +195,11 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                 if (intent!!.getIntExtra(RET, 0) > 2) {
                     tableRow[5]?.removeAllViews()
                 }
+
                 tableRow[6]?.removeAllViews()
                 tableRow[4]?.addView(finalAdd_button1)
                 tableRow[4]?.addView(finalNext_button1)
-                if (finish_q <intent!!.getIntExtra(RET,  0)) {
+                if (finish_q <intent!!.getIntExtra(QUESTION,  0)) {
                     var remain_q:Int =intent!!.getIntExtra(QUESTION,0)-finish_q
                     question_text.text ="問題数: "+ remain_q.toString()
                     furigana_text.text = (question_list!!.get(remain_q-1).furigana)

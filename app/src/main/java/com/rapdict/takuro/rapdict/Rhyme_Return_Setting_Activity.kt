@@ -68,6 +68,17 @@ class Rhyme_Return_Setting_Activity : MainActivity() {
             ret.add(i)
         }
 
+//        val wordaccess = WordAccess()
+//        var answers =wordaccess.getAnswers(db,0,10,0)
+//
+//        for(answer in answers){
+//            System.out.println(answer.answer)
+//            System.out.println(answer.answerview_id)
+//            System.out.println(answer.question)
+//        }
+
+
+
         var q_adapter =ArrayAdapter(this,android.R.layout.simple_spinner_item,question);
         var time_adapter =ArrayAdapter(this,android.R.layout.simple_spinner_item,time);
         var min_adapter =ArrayAdapter(this,android.R.layout.simple_spinner_item,min);
@@ -77,10 +88,8 @@ class Rhyme_Return_Setting_Activity : MainActivity() {
 
         val s1 = findViewById<View>(R.id.question_spinner) as Spinner
         s1.adapter = q_adapter
-
         val s2 = findViewById<View>(R.id.time_spinner) as Spinner
         s2.adapter = time_adapter
-
         val s3 = findViewById<View>(R.id.min_spinner) as Spinner
         s3.adapter = min_adapter
 
