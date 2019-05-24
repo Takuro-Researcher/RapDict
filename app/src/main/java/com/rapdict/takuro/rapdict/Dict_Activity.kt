@@ -28,19 +28,16 @@ class Dict__Activity : AppCompatActivity() {
 
         val parent_layout = LinearLayout(this)
         parent_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        parent_layout.weightSum = 1.0f
         parent_layout.orientation =LinearLayout.VERTICAL
 
 
         val over_layout = LinearLayout(this)
         over_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.2F)
-        over_layout.weightSum =1.0f
         over_layout.orientation =LinearLayout.HORIZONTAL
 
 
         val under_layout = LinearLayout(this)
         under_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.1F)
-        under_layout.weightSum = 1.0f
         under_layout.orientation =LinearLayout.HORIZONTAL
 
 
@@ -120,10 +117,6 @@ class Dict__Activity : AppCompatActivity() {
         parent_layout.addView(under_layout)
         frame_linear_layout.addView(parent_layout)
         setContentView(frame_linear_layout)
-
-
-
-
 
     }
 }
