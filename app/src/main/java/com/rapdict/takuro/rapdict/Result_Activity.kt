@@ -25,7 +25,6 @@ class Result_Activity : AppCompatActivity() {
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
         val answer_list = getIntent().getSerializableExtra(ANSWER_LIST) as ArrayList<sample.intent.AnswerData>
-        val intent = getIntent()
         val widgetController = WidgetController(this)
 
         val tableRow = arrayOfNulls<TableRow>(120)

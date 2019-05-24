@@ -26,7 +26,6 @@ import kotlin.concurrent.timer
 
 
 class Rhyme_Return_Activity : AppCompatActivity() {
-    protected lateinit var timer: CountDownTimer
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     private var helper: SQLiteOpenHelper? = null
     internal var finish_q = 0
@@ -145,11 +144,9 @@ class Rhyme_Return_Activity : AppCompatActivity() {
             editText[i]?.setHint("ライムを入力")
         }
 
-        val finalAdd_button = add_button
-        val finalNext_button = next_button
         add_button.setOnClickListener {
-            tableRow[4]?.removeView(finalAdd_button)
-            tableRow[4]?.removeView(finalNext_button)
+            tableRow[4]?.removeView(add_button)
+            tableRow[4]?.removeView(next_button)
             timer.cancel()
             for (i in 0 until intent!!.getIntExtra(RET, 0)) {
                 if (i == 0 || i == 1) {
@@ -235,6 +232,5 @@ class Rhyme_Return_Activity : AppCompatActivity() {
         private val MAX = "max"
         private val RET = "ret"
         private val ANSWER_LIST = "answer_list"
-
     }
 }
