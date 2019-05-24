@@ -33,12 +33,11 @@ class Dict__Activity : AppCompatActivity() {
 
         val over_layout = LinearLayout(this)
         over_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.2F)
-        over_layout.orientation =LinearLayout.HORIZONTAL
+       
 
 
         val under_layout = LinearLayout(this)
         under_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.1F)
-        under_layout.orientation =LinearLayout.HORIZONTAL
 
 
         val widgetController = WidgetController(this)

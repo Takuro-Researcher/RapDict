@@ -91,12 +91,14 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                     intent.putExtra(ANSWER_LIST, answer_list)
                     startActivity(intent)
                     cancel()
-                } else {
+                } else if(finish_q < intent.getIntExtra(QUESTION, 0)){
                     var remain_q:Int =intent!!.getIntExtra(QUESTION,0)-finish_q
                     question_text.text ="問題数: "+ remain_q.toString()
                     furigana_text.text = (question_list!!.get(remain_q-1).furigana)
                     word_text.text =(question_list!!.get(remain_q-1).word)
                     start()
+                }else{
+                    cancel()
                 }
             }
         }
@@ -166,7 +168,7 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                 furigana_text.text = (question_list!!.get(remain_q-1).furigana)
                 word_text.text =(question_list!!.get(remain_q-1).word)
                 timer.start()
-            } else {
+            } else  {
                 val intent = Intent(applicationContext, Result_Activity::class.java)
                 intent.putExtra(ANSWER_LIST, answer_list)
                 startActivity(intent)
@@ -196,7 +198,7 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                 tableRow[6]?.removeAllViews()
                 tableRow[4]?.addView(finalAdd_button1)
                 tableRow[4]?.addView(finalNext_button1)
-                if (finish_q < 10) {
+                if (finish_q <intent!!.getIntExtra(RET,  0)) {
                     var remain_q:Int =intent!!.getIntExtra(QUESTION,0)-finish_q
                     question_text.text ="問題数: "+ remain_q.toString()
                     furigana_text.text = (question_list!!.get(remain_q-1).furigana)
@@ -221,7 +223,9 @@ class Rhyme_Return_Activity : AppCompatActivity() {
     　次に訪れた時はonCreateによる問題設定やレイアウトは再定義される*/
     public override fun onStop() {
         super.onStop()
-        finish()
+        //裏側でストップウォッチをちゃんと止めるために使用
+        finish_q = intent!!.getIntExtra(QUESTION, 0)+1
+
     }
     companion object {
         private var question_list: ArrayList<Word>? = null
