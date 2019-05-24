@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
     // メニューが選択されたときの処理
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -30,12 +29,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.rhyme_return:
                 Intent intent=new Intent(this, Rhyme_Return_Setting_Activity.class);
                 startActivity(intent);
-            case R.id.rhyme_dict:
                 return true;
-
+            case R.id.rhyme_dict:
+                Intent intent2=new Intent(this, Dict__Activity.class);
+                startActivity(intent2);
+                return true;
             case R.id.settings:
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }

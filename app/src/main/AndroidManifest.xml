@@ -32,6 +32,8 @@
             android:name=".Rhyme_Return_Activity"
             android:label="@string/app_name" />
         <activity android:name=".Result_Activity"></activity>
+        <activity android:name=".Dict__Activity"></activity>
+
     </application>
 
 </manifest>

@@ -88,7 +88,7 @@ class Rhyme_Return_Setting_Activity : MainActivity() {
 
         //最小文字>最大文字とならないように、スピナーの値を順次変更する
         s3.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            internal var min_value: Int = 0
+            var min_value: Int = 0
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 val spinner = adapterView as Spinner
                 min_value = spinner.selectedItem as Int
