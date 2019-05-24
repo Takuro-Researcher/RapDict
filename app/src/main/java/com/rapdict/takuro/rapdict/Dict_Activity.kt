@@ -1,13 +1,17 @@
 package com.rapdict.takuro.rapdict
 
+import android.annotation.SuppressLint
 import android.app.ActionBar
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.Gravity.CENTER
 import android.view.Gravity.isVertical
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.view.ViewGroup.LayoutParams.FILL_PARENT
@@ -17,6 +21,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 class Dict__Activity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         helper = SQLiteOpenHelper(applicationContext)
@@ -28,15 +33,12 @@ class Dict__Activity : AppCompatActivity() {
 
         val parent_layout = LinearLayout(this)
         parent_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        parent_layout.orientation =LinearLayout.VERTICAL
+        parent_layout.orientation = LinearLayout.VERTICAL
 
+        val over_layout = TableLayout(this)
+        over_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.1F)
 
-        val over_layout = LinearLayout(this)
-        over_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.2F)
-       
-
-
-        val under_layout = LinearLayout(this)
+        val under_layout = TableLayout(this)
         under_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.1F)
 
 
@@ -46,38 +48,48 @@ class Dict__Activity : AppCompatActivity() {
         val question_view = arrayOfNulls<TextView>(100)
         val answer_view = arrayOfNulls<TextView>(100)
         val furigana_view = arrayOfNulls<TextView>(100)
-        
-        val len_Min_EditText = EditText(this)
-        val len_Max_EditText = EditText(this)
+
+        val layoutParams3 = TableRow.LayoutParams()
+        layoutParams3.weight = 1f
+        layoutParams3.setMargins(WidgetController.int_Dp2Px(10f, applicationContext), WidgetController.int_Dp2Px(10f, applicationContext), WidgetController.int_Dp2Px(10f, applicationContext), WidgetController.int_Dp2Px(10f, applicationContext))
+
+
+        val search_row = TableRow(this)
+        val min_spinner = Spinner(this)
+        val min = arrayListOf<Int>()
+        val max_spinner = Spinner(this)
+        val max = arrayListOf<Int>()
+        for(i in 3..7){
+            min.add(i)
+        }
+        for(i  in 4..10){
+            max.add(i)
+        }
+        var min_adapter = ArrayAdapter<Int>(this,android.R.layout.simple_spinner_item,min)
+        var max_adapter = ArrayAdapter<Int>(this,android.R.layout.simple_spinner_item,max)
+        min_spinner.adapter = min_adapter
+
+        min_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            var min_value: Int = 0
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
+                val spinner = adapterView as Spinner
+                min_value = spinner.selectedItem as Int
+                max_adapter.clear();
+                for (f in min_value + 1..10) {
+                    max_adapter.add(f)
+                }
+            }
+            override fun onNothingSelected(adapterView: AdapterView<*>) {}
+        }
+        max_spinner.adapter = max_adapter
+
         val search_Button = Button(this)
-        search_Button != widgetController.settings(search_Button,10f,10f,10f,10f,8f,"検索開始", CENTER,0)
-
-        len_Max_EditText.setWidth(0)
-        len_Max_EditText.setHint("数値を入力")
-        len_Min_EditText.setWidth(0)
-        len_Min_EditText.setHint("数値を入力")
-        val len_Min_EditText2 = EditText(this)
-        val len_Max_EditText2 = EditText(this)
-        val search_Button2 = Button(this)
-        search_Button2 != widgetController.settings(search_Button,10f,10f,10f,10f,8f,"検索開始", CENTER,0)
-
-        len_Max_EditText2.setWidth(0)
-        len_Max_EditText2.setHint("オーバー")
-        len_Min_EditText2.setWidth(0)
-        len_Min_EditText2.setHint("オーバー")
-
-
-
-
-        over_layout.addView(len_Max_EditText)
-        over_layout.addView(len_Min_EditText)
-        over_layout.addView(search_Button)
-
-        under_layout.addView(len_Max_EditText2)
-        under_layout.addView(len_Min_EditText2)
-        under_layout.addView(search_Button2)
-
-
+        search_Button != widgetController.settings(search_Button,5f,5f,5f,5f,8f,"検索開始", CENTER,0)
+        search_row.addView(min_spinner,layoutParams3)
+        search_row.addView(max_spinner,layoutParams3)
+        search_row.addView(search_Button,layoutParams3)
+        search_row.setBackgroundColor(Color.rgb(255,255,200))
+        over_layout.addView(search_row)
 
         val varLayout = TableLayout(this)
         varLayout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -90,7 +102,7 @@ class Dict__Activity : AppCompatActivity() {
 
 
         val scrollView = ScrollView(this)
-        scrollView.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.7F)
+        scrollView.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.8F)
 
         
 
@@ -111,6 +123,20 @@ class Dict__Activity : AppCompatActivity() {
         }
         scrollView.addView(varLayout)
 
+        val underRow = TableRow(this)
+        val back_Button = Button(this)
+        val next_Button = Button(this)
+        val delete_Button = Button(this)
+        back_Button != widgetController.settings(back_Button,5f,5f,5f,5f,9f,"←　",Gravity.CENTER,0)
+        next_Button != widgetController.settings(next_Button,5f,5f,5f,5f,9f,"　→",Gravity.CENTER,0)
+        delete_Button != widgetController.settings(delete_Button,5f,5f,5f,5f,9f,"削除",Gravity.CENTER,0)
+        underRow.addView(back_Button,layoutParams3)
+        underRow.addView(next_Button,layoutParams3)
+        underRow.addView(delete_Button,layoutParams3)
+        underRow.setBackgroundColor(Color.rgb(147,112,219))
+        under_layout.addView(underRow)
+
+
         parent_layout.addView(over_layout)
         parent_layout.addView(scrollView)
         parent_layout.addView(under_layout)
@@ -119,4 +145,6 @@ class Dict__Activity : AppCompatActivity() {
 
     }
 }
+
+
 
