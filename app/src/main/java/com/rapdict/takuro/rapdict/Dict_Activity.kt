@@ -27,6 +27,9 @@ class Dict__Activity : AppCompatActivity() {
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
 
+        var wordAccess = WordAccess()
+
+
         val frame_linear_layout = LinearLayout(this)
         frame_linear_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         frame_linear_layout.orientation= LinearLayout.VERTICAL
@@ -91,6 +94,19 @@ class Dict__Activity : AppCompatActivity() {
         search_row.setBackgroundColor(Color.rgb(255,255,200))
         over_layout.addView(search_row)
 
+        var answers:ArrayList<AnswerView> = wordAccess.getAnswers(db!!,0,10,0)
+
+        search_Button.setOnClickListener{
+            var max =max_spinner.selectedItem as Int
+            var min =min_spinner.selectedItem as Int
+            System.out.println("max"+max)
+            System.out.println("min"+min)
+            answers = wordAccess.getAnswers(db!!,min,max,0)
+        }
+
+
+
+
         val varLayout = TableLayout(this)
         varLayout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
@@ -104,21 +120,24 @@ class Dict__Activity : AppCompatActivity() {
         val scrollView = ScrollView(this)
         scrollView.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.8F)
 
-        
+        val size = answers!!.count()
+        System.out.println("size"+size)
 
-
-        for (i in 1..15){
+        for (i in 0..size-1){
+            System.out.println(i)
             tableRow[i]= TableRow(this)
             tableRow[i]?.setLayoutParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
             answer_view[i] = TextView(this)
             question_view[i] = TextView(this)
+            checkBox[i] = CheckBox(this)
 
-            question_view[i] = widgetController.settings(question_view[i]!!, 10f, 10f, 10f, 10f, 8f, "キリストは仮免で落ちた", Gravity.TOP, 1)
-            answer_view[i] = widgetController.settings(answer_view[i]!!, 10f, 10f, 10f, 10f, 8f, "キリストは仮免で落ちた", Gravity.TOP, 1)
+            question_view[i] = widgetController.settings(question_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i).question!!, Gravity.TOP, 1)
+            answer_view[i] = widgetController.settings(answer_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i).answer!!, Gravity.TOP, 1)
 
             tableRow[i]?.addView(question_view[i],layoutParams)
             tableRow[i]?.addView(answer_view[i],layoutParams)
+            tableRow[i]?.addView(checkBox[i],layoutParams)
             varLayout.addView(tableRow[i])
         }
         scrollView.addView(varLayout)
