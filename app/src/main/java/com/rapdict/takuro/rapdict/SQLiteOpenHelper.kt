@@ -93,7 +93,6 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         for(answer in dele_answers ) {
             query = COLUMN_NAME_ANSWER_ID+ "="+ answer.toString()
             db.delete("answertable",query,null)
-            
         }
     }
 

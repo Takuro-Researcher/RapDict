@@ -41,7 +41,7 @@ class WordAccess {
     fun getAnswers(database: SQLiteDatabase, min_word: Int, max_word: Int, question: Int): ArrayList<AnswerView> {
         val sql = ("SELECT * FROM " + ANSWER_TABLE_NAME + " INNER JOIN " + WORD_TABLE_NAME + " ON " +
                 ANSWER_TABLE_NAME + "." + COLUMN_NAME_QUESTION_ID + " = " + WORD_TABLE_NAME + "." + COLUMN_NAME_WORD_ID
-                + " WHERE " + WORD_TABLE_NAME + ".word_len < " + max_word + " AND " + WORD_TABLE_NAME + ".word_len > " + min_word)
+                + " WHERE " + WORD_TABLE_NAME + ".word_len<= " + max_word + " AND " + WORD_TABLE_NAME + ".word_len >=" + min_word)
 
         val cursor = database.rawQuery(sql, null)
         val result = ArrayList<AnswerView>()
