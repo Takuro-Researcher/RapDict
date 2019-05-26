@@ -15,22 +15,24 @@ import android.widget.Spinner
 
 import java.util.ArrayList
 import java.util.Collections
+import android.R.array
+import java.nio.file.Files.size
+
+
 
 class Rhyme_Return_Setting_Activity : MainActivity() {
     private var helper: SQLiteOpenHelper? = null
-    private var db: SQLiteDatabase? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.rhyme_return_setting)
         helper = SQLiteOpenHelper(applicationContext)
-        db = helper!!.writableDatabase
+        val db = helper!!.writableDatabase
 
         //Toolbar
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
-
-
         var question = arrayListOf<Int>()
         val time = arrayListOf<Int>()
         val min = arrayListOf<Int>()
@@ -66,6 +68,13 @@ class Rhyme_Return_Setting_Activity : MainActivity() {
             ret.add(i)
         }
 
+//        val wordaccess = WordAccess()
+//        var answers =wordaccess.getAnswers(db,2,5,0)
+//        for(answer in answers){
+//            System.out.println(answer.answer)
+//            System.out.println(answer.answerview_id)
+//            System.out.println(answer.question)
+//        }
         var q_adapter =ArrayAdapter(this,android.R.layout.simple_spinner_item,question);
         var time_adapter =ArrayAdapter(this,android.R.layout.simple_spinner_item,time);
         var min_adapter =ArrayAdapter(this,android.R.layout.simple_spinner_item,min);
@@ -75,10 +84,8 @@ class Rhyme_Return_Setting_Activity : MainActivity() {
 
         val s1 = findViewById<View>(R.id.question_spinner) as Spinner
         s1.adapter = q_adapter
-
         val s2 = findViewById<View>(R.id.time_spinner) as Spinner
         s2.adapter = time_adapter
-
         val s3 = findViewById<View>(R.id.min_spinner) as Spinner
         s3.adapter = min_adapter
 
@@ -86,7 +93,7 @@ class Rhyme_Return_Setting_Activity : MainActivity() {
 
         //最小文字>最大文字とならないように、スピナーの値を順次変更する
         s3.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            internal var min_value: Int = 0
+            var min_value: Int = 0
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 val spinner = adapterView as Spinner
                 min_value = spinner.selectedItem as Int

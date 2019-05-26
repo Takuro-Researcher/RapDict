@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.res.AssetManager
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 
 import java.io.BufferedReader
 import java.io.InputStream
@@ -86,6 +87,16 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         values.put("answer", answer)
         db.insert("answertable", null, values)
     }
+
+    fun answer_delete(db: SQLiteDatabase, dele_answers:List<Int>){
+        var query =""
+        for(answer in dele_answers ) {
+            query = COLUMN_NAME_ANSWER_ID+ "="+ answer.toString()
+            db.delete("answertable",query,null)
+        }
+    }
+
+
 
     companion object {
         // データーベースのバージョン

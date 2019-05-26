@@ -26,7 +26,6 @@ import kotlin.concurrent.timer
 
 
 class Rhyme_Return_Activity : AppCompatActivity() {
-    protected lateinit var timer: CountDownTimer
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     private var helper: SQLiteOpenHelper? = null
     internal var finish_q = 0
@@ -92,12 +91,14 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                     intent.putExtra(ANSWER_LIST, answer_list)
                     startActivity(intent)
                     cancel()
-                } else {
+                } else if(finish_q < intent.getIntExtra(QUESTION, 0)){
                     var remain_q:Int =intent!!.getIntExtra(QUESTION,0)-finish_q
                     question_text.text ="問題数: "+ remain_q.toString()
                     furigana_text.text = (question_list!!.get(remain_q-1).furigana)
                     word_text.text =(question_list!!.get(remain_q-1).word)
                     start()
+                }else{
+                    cancel()
                 }
             }
         }
@@ -145,12 +146,10 @@ class Rhyme_Return_Activity : AppCompatActivity() {
             editText[i]?.setHint("ライムを入力")
         }
 
-        val finalAdd_button = add_button
-        val finalNext_button = next_button
         add_button.setOnClickListener {
-            tableRow[4]?.removeView(finalAdd_button)
-            tableRow[4]?.removeView(finalNext_button)
-//            cdt!!.cancel()
+            tableRow[4]?.removeView(add_button)
+            tableRow[4]?.removeView(next_button)
+            timer.cancel()
             for (i in 0 until intent!!.getIntExtra(RET, 0)) {
                 if (i == 0 || i == 1) {
                     tableRow[4]?.addView(editText[i], layoutParams3)
@@ -169,7 +168,7 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                 furigana_text.text = (question_list!!.get(remain_q-1).furigana)
                 word_text.text =(question_list!!.get(remain_q-1).word)
                 timer.start()
-            } else {
+            } else  {
                 val intent = Intent(applicationContext, Result_Activity::class.java)
                 intent.putExtra(ANSWER_LIST, answer_list)
                 startActivity(intent)
@@ -196,10 +195,11 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                 if (intent!!.getIntExtra(RET, 0) > 2) {
                     tableRow[5]?.removeAllViews()
                 }
+
                 tableRow[6]?.removeAllViews()
                 tableRow[4]?.addView(finalAdd_button1)
                 tableRow[4]?.addView(finalNext_button1)
-                if (finish_q < 10) {
+                if (finish_q <intent!!.getIntExtra(QUESTION,  0)) {
                     var remain_q:Int =intent!!.getIntExtra(QUESTION,0)-finish_q
                     question_text.text ="問題数: "+ remain_q.toString()
                     furigana_text.text = (question_list!!.get(remain_q-1).furigana)
@@ -224,7 +224,9 @@ class Rhyme_Return_Activity : AppCompatActivity() {
     　次に訪れた時はonCreateによる問題設定やレイアウトは再定義される*/
     public override fun onStop() {
         super.onStop()
-        finish()
+        //裏側でストップウォッチをちゃんと止めるために使用
+        finish_q = intent!!.getIntExtra(QUESTION, 0)+1
+
     }
     companion object {
         private var question_list: ArrayList<Word>? = null
@@ -235,6 +237,5 @@ class Rhyme_Return_Activity : AppCompatActivity() {
         private val MAX = "max"
         private val RET = "ret"
         private val ANSWER_LIST = "answer_list"
-
     }
 }
