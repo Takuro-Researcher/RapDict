@@ -25,7 +25,7 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         try {
             val inputStream = assetManager.open("wordlist.csv")
             val inputStreamReader = InputStreamReader(inputStream)
-            br = BufferedReader(inputStreamReader!!)
+            br = BufferedReader(inputStreamReader)
             val arr = arrayOf("furigana", "word", "word_len")
             var line: String?
 

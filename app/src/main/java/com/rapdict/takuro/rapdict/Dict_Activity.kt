@@ -1,26 +1,24 @@
 package com.rapdict.takuro.rapdict
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.Gravity.CENTER
-import android.view.Gravity.isVertical
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.view.ViewGroup.LayoutParams.FILL_PARENT
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import kotlin.math.ceil
 
 
 class Dict__Activity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
+    private var current_disp = 0
+
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,11 +95,12 @@ class Dict__Activity : AppCompatActivity() {
         val checkBox = arrayOfNulls<CheckBox>(100)
         val question_view = arrayOfNulls<TextView>(100)
         val answer_view = arrayOfNulls<TextView>(100)
+        var answers =ArrayList<AnswerView>()
 
         search_Button.setOnClickListener{
             var max =max_spinner.selectedItem as Int
             var min =min_spinner.selectedItem as Int
-            val answers = wordAccess.getAnswers(db!!,min,max,0)
+            answers = wordAccess.getAnswers(db!!,min,max,0)
             System.out.println(answers.count())
             for(i in 0..99){
                 tableRow[i]?.removeAllViews()
@@ -112,12 +111,15 @@ class Dict__Activity : AppCompatActivity() {
                 answer_view[i] = TextView(this)
                 question_view[i] = TextView(this)
                 checkBox[i] = CheckBox(this)
-                question_view[i] = widgetController.settings(question_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i).question!!, Gravity.TOP, 1)
-                answer_view[i] = widgetController.settings(answer_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i).answer!!, Gravity.TOP, 1)
+                question_view[i] = widgetController.settings(question_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i + (current_disp*100) ).question!!, Gravity.TOP, 1)
+                answer_view[i] = widgetController.settings(answer_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i+ (current_disp*100) ).answer!!, Gravity.TOP, 1)
                 tableRow[i]?.addView(question_view[i],layoutParams)
                 tableRow[i]?.addView(answer_view[i],layoutParams)
                 tableRow[i]?.addView(checkBox[i],layoutParams)
                 varLayout.addView(tableRow[i])
+                if(answers.count()> 100 && i===99){
+                    break;
+                }
             }
         }
 
@@ -132,6 +134,59 @@ class Dict__Activity : AppCompatActivity() {
         val next_Button = Button(this)
         val delete_Button = Button(this)
         back_Button != widgetController.settings(back_Button,5f,5f,5f,5f,9f,"←　",Gravity.CENTER,0)
+        //100件以上取得した時に、値を表示する処理。前の100件に戻る。
+        back_Button.setOnClickListener{
+            if(current_disp!=0){
+                current_disp+=-1
+                for(i in 0..99){
+                    tableRow[i]?.removeAllViews()
+                }
+                for(i in 0..99){
+                    tableRow[i]= TableRow(this)
+                    tableRow[i]?.setLayoutParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+                    answer_view[i] = TextView(this)
+                    question_view[i] = TextView(this)
+                    checkBox[i] = CheckBox(this)
+                    question_view[i] = widgetController.settings(question_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i + (current_disp*100) ).question!!, Gravity.TOP, 1)
+                    answer_view[i] = widgetController.settings(answer_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i+ (current_disp*100) ).answer!!, Gravity.TOP, 1)
+                    tableRow[i]?.addView(question_view[i],layoutParams)
+                    tableRow[i]?.addView(answer_view[i],layoutParams)
+                    tableRow[i]?.addView(checkBox[i],layoutParams)
+                    varLayout.addView(tableRow[i])
+                    if(answers.count()> 100 && i===99 || answers.count()==current_disp*100+i+1){
+                        break;
+                    }
+                }
+            }
+        }
+        //100件以上取得した時に値を表示する処理。次の100件に戻る
+        next_Button.setOnClickListener(){
+            if(!answers.isEmpty() && current_disp!= ceil(answers.count()/100.toDouble()).toInt()-1){
+                    current_disp+=1
+                    for(i in 0..99){
+                        tableRow[i]?.removeAllViews()
+                    }
+                    for(i in 0..answers.count()-1){
+                        tableRow[i]= TableRow(this)
+                        tableRow[i]?.setLayoutParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+                        answer_view[i] = TextView(this)
+                        question_view[i] = TextView(this)
+                        checkBox[i] = CheckBox(this)
+                        question_view[i] = widgetController.settings(question_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i + (current_disp*100) ).question!!, Gravity.TOP, 1)
+                        answer_view[i] = widgetController.settings(answer_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i+ (current_disp*100) ).answer!!, Gravity.TOP, 1)
+                        tableRow[i]?.addView(question_view[i],layoutParams)
+                        tableRow[i]?.addView(answer_view[i],layoutParams)
+                        tableRow[i]?.addView(checkBox[i],layoutParams)
+                        varLayout.addView(tableRow[i])
+                        if(answers.count()> 100 && i===99 || answers.count()==current_disp*100+i+1){
+                            break;
+                        }
+                    }
+                }
+        }
+
+
+
         next_Button != widgetController.settings(next_Button,5f,5f,5f,5f,9f,"　→",Gravity.CENTER,0)
         delete_Button != widgetController.settings(delete_Button,5f,5f,5f,5f,9f,"削除",Gravity.CENTER,0)
         underRow.addView(back_Button,layoutParams3)
