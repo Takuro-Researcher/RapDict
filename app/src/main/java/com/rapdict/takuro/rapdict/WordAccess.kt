@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 
 import java.util.ArrayList
 
+
 //SQLクエリを使用し、表から検索条件をリストにして返すクラス
 class WordAccess {
 
@@ -63,7 +64,6 @@ class WordAccess {
         }
         return result
     }
-
     companion object {
 
         private val WORD_TABLE_NAME = "wordtable"
