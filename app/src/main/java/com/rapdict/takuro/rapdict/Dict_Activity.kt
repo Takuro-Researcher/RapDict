@@ -11,13 +11,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.ceil
 
 
 class Dict__Activity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
+    //現在表示しているページを表示
     private var current_disp = 0
+    //現在表示しているAnswerの数を表示
+    private var current_answer_num =0
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +30,7 @@ class Dict__Activity : AppCompatActivity() {
         //DbAccess関連のインスタンス生成
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
-        var wordAccess = WordAccess()
+        val wordAccess = WordAccess()
 
         //Activityを制御するLayoutインスタンス生成
         val frame_linear_layout = LinearLayout(this)
@@ -62,8 +67,8 @@ class Dict__Activity : AppCompatActivity() {
         for(i  in 4..10){
             max.add(i)
         }
-        var min_adapter = ArrayAdapter<Int>(this,android.R.layout.simple_spinner_item,min)
-        var max_adapter = ArrayAdapter<Int>(this,android.R.layout.simple_spinner_item,max)
+        val min_adapter = ArrayAdapter<Int>(this,android.R.layout.simple_spinner_item,min)
+        val max_adapter = ArrayAdapter<Int>(this,android.R.layout.simple_spinner_item,max)
         min_spinner.adapter = min_adapter
         min_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             var min_value: Int = 0
@@ -95,15 +100,18 @@ class Dict__Activity : AppCompatActivity() {
         val checkBox = arrayOfNulls<CheckBox>(100)
         val question_view = arrayOfNulls<TextView>(100)
         val answer_view = arrayOfNulls<TextView>(100)
+        val answer_ids =ArrayList<Int>()
         var answers =ArrayList<AnswerView>()
 
         search_Button.setOnClickListener{
-            var max =max_spinner.selectedItem as Int
-            var min =min_spinner.selectedItem as Int
+            val max =max_spinner.selectedItem as Int
+            val min =min_spinner.selectedItem as Int
             answers = wordAccess.getAnswers(db!!,min,max,0)
-            System.out.println(answers.count())
+            current_disp=0
+
             for(i in 0..99){
                 tableRow[i]?.removeAllViews()
+                answer_ids?.clear()
             }
             for(i in 0..answers.count()-1){
                 tableRow[i]= TableRow(this)
@@ -117,7 +125,11 @@ class Dict__Activity : AppCompatActivity() {
                 tableRow[i]?.addView(answer_view[i],layoutParams)
                 tableRow[i]?.addView(checkBox[i],layoutParams)
                 varLayout.addView(tableRow[i])
-                if(answers.count()> 100 && i===99){
+
+                answer_ids.add(answers.get(i + (current_disp*100) ).answerview_id)
+                current_answer_num=i
+
+                if(answers.count()> 100 && i==99){
                     break;
                 }
             }
@@ -134,10 +146,14 @@ class Dict__Activity : AppCompatActivity() {
         val next_Button = Button(this)
         val delete_Button = Button(this)
         back_Button != widgetController.settings(back_Button,5f,5f,5f,5f,9f,"←　",Gravity.CENTER,0)
+        next_Button != widgetController.settings(next_Button,5f,5f,5f,5f,9f,"　→",Gravity.CENTER,0)
+        delete_Button != widgetController.settings(delete_Button,5f,5f,5f,5f,9f,"削除",Gravity.CENTER,0)
+
         //100件以上取得した時に、値を表示する処理。前の100件に戻る。
         back_Button.setOnClickListener{
             if(current_disp!=0){
                 current_disp+=-1
+                answer_ids.clear()
                 for(i in 0..99){
                     tableRow[i]?.removeAllViews()
                 }
@@ -153,7 +169,11 @@ class Dict__Activity : AppCompatActivity() {
                     tableRow[i]?.addView(answer_view[i],layoutParams)
                     tableRow[i]?.addView(checkBox[i],layoutParams)
                     varLayout.addView(tableRow[i])
-                    if(answers.count()> 100 && i===99 || answers.count()==current_disp*100+i+1){
+
+                    answer_ids.add(answers.get(i + (current_disp*100) ).answerview_id)
+
+                    if(answers.count()> 100 && i==99 || answers.count()==current_disp*100+i+1){
+                        current_answer_num = i
                         break;
                     }
                 }
@@ -163,6 +183,7 @@ class Dict__Activity : AppCompatActivity() {
         next_Button.setOnClickListener(){
             if(!answers.isEmpty() && current_disp!= ceil(answers.count()/100.toDouble()).toInt()-1){
                     current_disp+=1
+                    answer_ids.clear()
                     for(i in 0..99){
                         tableRow[i]?.removeAllViews()
                     }
@@ -178,17 +199,32 @@ class Dict__Activity : AppCompatActivity() {
                         tableRow[i]?.addView(answer_view[i],layoutParams)
                         tableRow[i]?.addView(checkBox[i],layoutParams)
                         varLayout.addView(tableRow[i])
-                        if(answers.count()> 100 && i===99 || answers.count()==current_disp*100+i+1){
+
+                        answer_ids.add(answers.get(i + (current_disp*100) ).answerview_id)
+
+                        if(answers.count()> 100 && i==99 || answers.count()==current_disp*100+i+1){
+                            current_answer_num = i
                             break;
                         }
                     }
                 }
         }
+        delete_Button.setOnClickListener(){
+            var dele_answers = ArrayList<Int>()
+            System.out.println(current_answer_num)
+            for (i in 0..current_answer_num) {
+                if (checkBox[i]?.isChecked() == true) {
+                    dele_answers.add(answer_ids[i])
+                }
+            }
+            helper!!.answer_delete(db!!,dele_answers)
+            for(i in 0..99){
+                tableRow[i]?.removeAllViews()
+            }
+        }
 
 
 
-        next_Button != widgetController.settings(next_Button,5f,5f,5f,5f,9f,"　→",Gravity.CENTER,0)
-        delete_Button != widgetController.settings(delete_Button,5f,5f,5f,5f,9f,"削除",Gravity.CENTER,0)
         underRow.addView(back_Button,layoutParams3)
         underRow.addView(next_Button,layoutParams3)
         underRow.addView(delete_Button,layoutParams3)
