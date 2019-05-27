@@ -1,5 +1,7 @@
 package com.rapdict.takuro.rapdict
 
+import android.app.FragmentManager
+import android.content.DialogInterface
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -82,15 +84,24 @@ class Result_Activity : AppCompatActivity() {
         val answer = arrayOf<AnswerData>(AnswerData())
 
         record_button.setOnClickListener {
+            var flagmentManager = getSupportFragmentManager();
+            var dialog =Db_DialogFragment()
+            dialog.title="データの保存確認"
             for (i in answer_list.indices) {
                 if (checkBox[i]?.isChecked() == true) {
                     answer[0] = answer_list[i]
                     record_list.add(answer[0])
-                    helper!!.answer_saveData(db!!, answer[0].answer!!, answer[0].question_id!!)
                 }
             }
-            val intent = Intent(applicationContext, Rhyme_Return_Setting_Activity::class.java)
-            startActivity(intent)
+            dialog.message = record_list.count().toString()+"個の韻を保存します"
+            dialog.onOkClickListener = DialogInterface.OnClickListener { dialog, id ->
+               for(answer in record_list){
+                    helper!!.answer_saveData(db!!,answer.answer!!, answer.question_id!!)
+               }
+                val intent = Intent(applicationContext, Rhyme_Return_Setting_Activity::class.java)
+                startActivity(intent)
+            }
+            dialog.show(fragmentManager,"sample")
         }
 
     }
