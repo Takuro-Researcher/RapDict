@@ -84,7 +84,6 @@ class Result_Activity : AppCompatActivity() {
         val answer = arrayOf<AnswerData>(AnswerData())
 
         record_button.setOnClickListener {
-            var flagmentManager = getSupportFragmentManager();
             var dialog =Db_DialogFragment()
             dialog.title="データの保存確認"
             for (i in answer_list.indices) {

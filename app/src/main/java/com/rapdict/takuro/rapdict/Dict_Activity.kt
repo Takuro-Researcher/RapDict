@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
@@ -211,16 +212,22 @@ class Dict__Activity : AppCompatActivity() {
         }
         delete_Button.setOnClickListener(){
             var dele_answers = ArrayList<Int>()
-            System.out.println(current_answer_num)
+            var dialog =Db_DialogFragment()
+            dialog.title="データの削除"
             for (i in 0..current_answer_num) {
                 if (checkBox[i]?.isChecked() == true) {
                     dele_answers.add(answer_ids[i])
                 }
             }
-            helper!!.answer_delete(db!!,dele_answers)
-            for(i in 0..99){
-                tableRow[i]?.removeAllViews()
+            dialog.message = dele_answers.count().toString()+"個の韻を削除します"
+            dialog.onOkClickListener = DialogInterface.OnClickListener { dialog, id ->
+                helper!!.answer_delete(db!!,dele_answers)
+                for(i in 0..99){
+                    tableRow[i]?.removeAllViews()
+                }
             }
+            dialog.show(fragmentManager,"sample")
+
         }
 
 
