@@ -81,10 +81,11 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         db.insert("wordtable", null, values)
     }
 
-    fun answer_saveData(db: SQLiteDatabase, answer: String, word_id: Int) {
+    fun answer_saveData(db: SQLiteDatabase, answer: String, word_id: Int, favorite:Int) {
         val values = ContentValues()
         values.put("question_id", word_id)
         values.put("answer", answer)
+        values.put("favorite",favorite)
         db.insert("answertable", null, values)
     }
 
@@ -100,7 +101,7 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
 
     companion object {
         // データーベースのバージョン
-        private val DATABASE_VERSION = 9
+        private val DATABASE_VERSION = 10
 
         // データーベース情報を変数に格納
         private val DATABASE_NAME = "WordDb.db"
@@ -111,8 +112,9 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         private val COLUMN_NAME_WORD_LEN = "word_len"
         private val COLUMN_NAME_WORD_ID = "word_id"
         private val COLUMN_NAME_QUESTION_ID = "question_id"
-        private val COLUMN_NAME_ANSWER = "answer"
         private val COLUMN_NAME_ANSWER_ID = "answer_id"
+        private val COLUMN_NAME_ANSWER = "answer"
+        private val COLUMN_NAME_FAVORITE = "favorite"
         //スキーマ定義
         private val SQL_CREATE_QUESTION_TABLE = "CREATE TABLE " + QUESTION_TABLE_NAME + " (" +
                 COLUMN_NAME_WORD_ID + " INTEGER PRIMARY KEY autoincrement," +
@@ -122,6 +124,7 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         private val SQL_CREATE_ANSWER_TABLE = "CREATE TABLE " + ANSWER_TABLE_NAME + " (" +
                 COLUMN_NAME_ANSWER_ID + " INTEGER PRIMARY KEY autoincrement," +
                 COLUMN_NAME_ANSWER + " TEXT," +
+                COLUMN_NAME_FAVORITE+" INTEGER "+"check(" + COLUMN_NAME_FAVORITE + " IN (0, 1)) ,"+
                 COLUMN_NAME_QUESTION_ID + " INTEGER)"
 
         private val SQL_QUESTION_DELETE = "DROP TABLE IF EXISTS $QUESTION_TABLE_NAME"

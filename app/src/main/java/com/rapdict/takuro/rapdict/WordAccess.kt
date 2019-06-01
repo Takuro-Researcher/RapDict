@@ -54,12 +54,14 @@ class WordAccess {
             val question_id_id = cursor.getColumnIndex("question_id")
             val answer_id_id = cursor.getColumnIndex("answer_id")
             val word_len_id = cursor.getColumnIndex("word_len")
+            val favorite_id = cursor.getColumnIndex("favorite")
             val word = cursor.getString(word_id)
             val question_id = cursor.getInt(question_id_id)
             val answer_id = cursor.getInt(answer_id_id)
             val word_len = cursor.getInt(word_len_id)
             val answer = cursor.getString(answer1_id)
-            answerView.setColumn(answer_id, question_id, answer, word, word_len)
+            val favorite= cursor.getInt(favorite_id) > 0
+            answerView.setColumn(answer_id, question_id, answer, word, word_len,favorite)
             result.add(answerView)
         }
         return result

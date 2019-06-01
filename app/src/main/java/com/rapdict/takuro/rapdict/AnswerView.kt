@@ -6,13 +6,15 @@ class AnswerView {
     var answer: String? = null
     var question: String? = null
     var question_len: Int = 0
+    var favorite:Boolean ?=false
 
-    fun setColumn(rec_answerview_id:Int,rec_question_id:Int,rec_answer:String,rec_question:String,rec_question_len:Int){
+    fun setColumn(rec_answerview_id:Int,rec_question_id:Int,rec_answer:String,rec_question:String,rec_question_len:Int,rec_favorite:Boolean){
         answerview_id = rec_answerview_id
         question_id = rec_question_id
         answer = rec_answer
         question = rec_question
         question_len = rec_question_len
+        favorite = rec_favorite
     }
 
 
