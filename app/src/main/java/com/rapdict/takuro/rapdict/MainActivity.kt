@@ -1,6 +1,8 @@
 package com.rapdict.takuro.rapdict
 
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
@@ -15,6 +17,13 @@ open class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
+
+        val constraintLayout=findViewById<View>(R.id.layout)
+        val animationDrawable: AnimationDrawable? = constraintLayout.background as AnimationDrawable
+        animationDrawable?.setEnterFadeDuration(2000)
+        animationDrawable?.setExitFadeDuration(4000)
+        animationDrawable?.start();
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
