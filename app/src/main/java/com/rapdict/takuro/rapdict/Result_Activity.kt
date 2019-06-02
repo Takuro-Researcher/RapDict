@@ -15,6 +15,7 @@ import sample.intent.AnswerData
 import android.view.Gravity.CENTER
 import android.view.Gravity.TOP
 import android.widget.*
+import com.airbnb.lottie.LottieAnimationView
 import com.rapdict.takuro.rapdict.WidgetController.Companion.int_Dp2Px
 
 class Result_Activity : AppCompatActivity() {
@@ -23,6 +24,16 @@ class Result_Activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val layout = FrameLayout(this)
+        layout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        val background_animation =LottieAnimationView(this)
+        background_animation.setAnimation("gradient-background.json")
+        background_animation.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val layout2 = LinearLayout(this)
+        layout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        layout2.addView(background_animation)
 
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
@@ -80,7 +91,8 @@ class Result_Activity : AppCompatActivity() {
         }
         varLayout.addView(buttonRow)
         scrollView.addView(varLayout)
-        setContentView(scrollView)
+        layout.addView(scrollView)
+        setContentView(layout)
         val answer = arrayOf<AnswerData>(AnswerData())
 
         record_button.setOnClickListener {
