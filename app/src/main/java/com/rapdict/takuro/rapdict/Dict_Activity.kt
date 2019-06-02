@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import com.airbnb.lottie.LottieAnimationView
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.ceil
@@ -25,7 +26,7 @@ class Dict__Activity : AppCompatActivity() {
     //現在表示しているAnswerの数を表示
     private var current_answer_num =0
 
-    @SuppressLint("NewApi")
+    @SuppressLint("NewApi", "Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //DbAccess関連のインスタンス生成
@@ -101,6 +102,7 @@ class Dict__Activity : AppCompatActivity() {
         val checkBox = arrayOfNulls<CheckBox>(100)
         val question_view = arrayOfNulls<TextView>(100)
         val answer_view = arrayOfNulls<TextView>(100)
+        val favorite: Array<LottieAnimationView?> = arrayOfNulls<LottieAnimationView>(100)
         val answer_ids =ArrayList<Int>()
         var answers =ArrayList<AnswerView>()
 
@@ -108,6 +110,7 @@ class Dict__Activity : AppCompatActivity() {
             val max =max_spinner.selectedItem as Int
             val min =min_spinner.selectedItem as Int
             answers = wordAccess.getAnswers(db!!,min,max,0)
+            //初期検索は確実に0件
             current_disp=0
 
             for(i in 0..99){
@@ -118,6 +121,22 @@ class Dict__Activity : AppCompatActivity() {
                 tableRow[i]= TableRow(this)
                 tableRow[i]?.setLayoutParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
                 answer_view[i] = TextView(this)
+                favorite[i] = LottieAnimationView(this)
+                favorite[i]?.setAnimation("favorite-app-icon.json")
+                if(answers.get(i + (current_disp*100) ).favorite!!) {
+                    favorite[i]?.progress =80F
+                }
+                favorite[i]?.setOnClickListener(){
+                    if(answers.get(i + (current_disp*100) ).favorite!!) {
+                        favorite[i]?.progress =0F
+                        answers.get(i + (current_disp*100) ).favorite = false
+                        helper!!.answer_update_fav(db!!,answers.get(i + (current_disp*100) ).answerview_id,false)
+                    }else{
+                        favorite[i]?.playAnimation()
+                        answers.get(i + (current_disp*100) ).favorite = true
+                        helper!!.answer_update_fav(db!!,answers.get(i + (current_disp*100) ).answerview_id,true)
+                    }
+                }
                 question_view[i] = TextView(this)
                 checkBox[i] = CheckBox(this)
                 question_view[i] = widgetController.settings(question_view[i]!!, 10f, 10f, 10f, 10f, 6f, answers.get(i + (current_disp*100) ).question!!, Gravity.TOP, 1)
@@ -125,6 +144,8 @@ class Dict__Activity : AppCompatActivity() {
                 tableRow[i]?.addView(question_view[i],layoutParams)
                 tableRow[i]?.addView(answer_view[i],layoutParams)
                 tableRow[i]?.addView(checkBox[i],layoutParams)
+                tableRow[i]?.addView(favorite[i],layoutParams)
+
                 varLayout.addView(tableRow[i])
 
                 answer_ids.add(answers.get(i + (current_disp*100) ).answerview_id)
@@ -180,7 +201,7 @@ class Dict__Activity : AppCompatActivity() {
                 }
             }
         }
-        //100件以上取得した時に値を表示する処理。次の100件に戻る
+        //100件以上取得した時に値を表示する処理。次の100件に進む。
         next_Button.setOnClickListener(){
             if(!answers.isEmpty() && current_disp!= ceil(answers.count()/100.toDouble()).toInt()-1){
                     current_disp+=1

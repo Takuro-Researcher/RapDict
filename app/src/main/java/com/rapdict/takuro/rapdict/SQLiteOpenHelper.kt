@@ -89,12 +89,24 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         db.insert("answertable", null, values)
     }
 
+    fun answer_update_fav(db: SQLiteDatabase,answer_id:Int,favorite:Boolean){
+        val values = ContentValues()
+        val favorite:Int=bool2Int(favorite)
+        val sql ="answer_id = "+answer_id
+        values.put("favorite",favorite)
+        db.update("answertable", values, sql,null)
+    }
+
     fun answer_delete(db: SQLiteDatabase, dele_answers:List<Int>){
         var query =""
         for(answer in dele_answers ) {
             query = COLUMN_NAME_ANSWER_ID+ "="+ answer.toString()
             db.delete("answertable",query,null)
         }
+    }
+    fun bool2Int(flag:Boolean):Int{
+        val flagInt:Int = if(flag) 1 else 0
+        return flagInt
     }
 
 
