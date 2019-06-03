@@ -16,9 +16,11 @@ import sample.intent.AnswerData
 
 import android.view.Gravity.CENTER
 import android.view.Gravity.TOP
+import android.view.animation.Animation
 import android.widget.*
 import com.airbnb.lottie.LottieAnimationView
 import com.rapdict.takuro.rapdict.WidgetController.Companion.int_Dp2Px
+import android.view.animation.AlphaAnimation as AlphaAnimation1
 
 class Result_Activity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
@@ -29,7 +31,7 @@ class Result_Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val layout = FrameLayout(this)
-        layout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        layout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         layout.setBackgroundResource(R.drawable.clear_gradient_list)
         val animationDrawable: AnimationDrawable? = layout.background as AnimationDrawable
         animationDrawable?.setEnterFadeDuration(2000)
@@ -54,6 +56,10 @@ class Result_Activity : AppCompatActivity() {
         achieve_text = widgetController.settings(achieve_text, 20f, 20f, 20f, 15f, 15f, "おつかれさま！！！", CENTER, 0)
         var achieve_invitetext = TextView(this)
         achieve_invitetext = widgetController.settings(achieve_invitetext, 20f, 20f, 20f, 15f, 8f, answer_list.size.toString()+"個踏みました。気に入った韻を保存しましょう", CENTER, 0)
+        var feedin_animation:android.view.animation.AlphaAnimation = android.view.animation.AlphaAnimation(0F,1F)
+        feedin_animation.duration=2000
+        achieve_text.startAnimation(feedin_animation)
+        achieve_invitetext.startAnimation(feedin_animation)
 
 
 
