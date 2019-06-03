@@ -4,6 +4,8 @@ import android.app.FragmentManager
 import android.content.DialogInterface
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -14,26 +16,27 @@ import sample.intent.AnswerData
 
 import android.view.Gravity.CENTER
 import android.view.Gravity.TOP
+import android.view.animation.Animation
 import android.widget.*
 import com.airbnb.lottie.LottieAnimationView
 import com.rapdict.takuro.rapdict.WidgetController.Companion.int_Dp2Px
+import android.view.animation.AlphaAnimation as AlphaAnimation1
 
 class Result_Activity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val layout = FrameLayout(this)
-        layout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-        val background_animation =LottieAnimationView(this)
-        background_animation.setAnimation("gradient-background.json")
-        background_animation.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        val layout2 = LinearLayout(this)
-        layout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        layout2.addView(background_animation)
+        layout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        layout.setBackgroundResource(R.drawable.clear_gradient_list)
+        val animationDrawable: AnimationDrawable? = layout.background as AnimationDrawable
+        animationDrawable?.setEnterFadeDuration(2000)
+        animationDrawable?.setExitFadeDuration(4000)
+        animationDrawable?.start();
 
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
@@ -46,18 +49,38 @@ class Result_Activity : AppCompatActivity() {
         val answer_view = arrayOfNulls<TextView>(120)
         val record_list = ArrayList<AnswerData>()
 
+        //ゲームクリアを知らせる文面を記述
+        val achieveRow = TableRow(this)
+        val achieve_inviteRow =TableRow(this)
+        var achieve_text = TextView(this)
+        achieve_text = widgetController.settings(achieve_text, 20f, 20f, 20f, 15f, 15f, "おつかれさま！！！", CENTER, 0)
+        var achieve_invitetext = TextView(this)
+        achieve_invitetext = widgetController.settings(achieve_invitetext, 20f, 20f, 20f, 15f, 8f, answer_list.size.toString()+"個踏みました。気に入った韻を保存しましょう", CENTER, 0)
+        var feedin_animation:android.view.animation.AlphaAnimation = android.view.animation.AlphaAnimation(0F,1F)
+        feedin_animation.duration=2000
+        achieve_text.startAnimation(feedin_animation)
+        achieve_invitetext.startAnimation(feedin_animation)
+
+
 
         val buttonRow = TableRow(this)
         val varLayout = TableLayout(this)
         varLayout.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        //行を等分割する
         val layoutParams = TableRow.LayoutParams()
         layoutParams.weight = 1f
+        layoutParams.setMargins(int_Dp2Px(0f, applicationContext), int_Dp2Px(10f, applicationContext), int_Dp2Px(0f, applicationContext), int_Dp2Px(10f, applicationContext))
+        //3分割された行を同時に使用する
         val layoutParams4 = TableRow.LayoutParams()
         layoutParams4.weight = 1f
         layoutParams4.span = 3
-        layoutParams4.setMargins(int_Dp2Px(15f, applicationContext), int_Dp2Px(15f, applicationContext), int_Dp2Px(15f, applicationContext), int_Dp2Px(15f, applicationContext))
         //left top right bottomの順番でマージンを設定する
-        layoutParams.setMargins(int_Dp2Px(0f, applicationContext), int_Dp2Px(10f, applicationContext), int_Dp2Px(0f, applicationContext), int_Dp2Px(10f, applicationContext))
+        layoutParams4.setMargins(int_Dp2Px(15f, applicationContext), int_Dp2Px(15f, applicationContext), int_Dp2Px(15f, applicationContext), int_Dp2Px(15f, applicationContext))
+
+        achieveRow.addView(achieve_text,layoutParams4)
+        achieve_inviteRow.addView(achieve_invitetext,layoutParams4)
+        varLayout.addView(achieveRow)
+        varLayout.addView(achieve_inviteRow)
 
         val scrollView = ScrollView(this)
         scrollView.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)

@@ -226,6 +226,7 @@ class Rhyme_Return_Activity : AppCompatActivity() {
         super.onStop()
         //裏側でストップウォッチをちゃんと止めるために使用
         finish_q = intent!!.getIntExtra(QUESTION, 0)+1
+        finish()
 
     }
     companion object {
