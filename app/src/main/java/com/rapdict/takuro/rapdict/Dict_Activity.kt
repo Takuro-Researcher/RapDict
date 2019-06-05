@@ -42,7 +42,7 @@ class Dict__Activity : AppCompatActivity() {
         parent_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         parent_layout.orientation = LinearLayout.VERTICAL
         val over_layout = TableLayout(this)
-        over_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.1F)
+        over_layout.layoutParams = TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.3F)
         val under_layout = TableLayout(this)
         under_layout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.1F)
 
@@ -55,13 +55,18 @@ class Dict__Activity : AppCompatActivity() {
         val widgetController = WidgetController(this)
 
         //一列目、検索に使用するTableRow
-        val search_row = TableRow(this)
+        val word_len_row = TableRow(this)
         val search_Button = Button(this)
-        search_Button != widgetController.settings(search_Button,5f,5f,5f,5f,8f,"検索開始", CENTER,0)
+        search_Button != widgetController.settings(search_Button,5f,5f,5f,5f,8f,"検索", CENTER,0)
         val min_spinner = Spinner(this)
         val min = arrayListOf<Int>()
         val max_spinner = Spinner(this)
         val max = arrayListOf<Int>()
+
+        val searchRow =TableRow(this)
+        val favo_spinner = Spinner(this)
+        val favo=Arrays.asList("☆のみ","☆なし","指定なし")
+
 
         for(i in 3..7){
             min.add(i)
@@ -71,6 +76,7 @@ class Dict__Activity : AppCompatActivity() {
         }
         val min_adapter = ArrayAdapter<Int>(this,android.R.layout.simple_spinner_item,min)
         val max_adapter = ArrayAdapter<Int>(this,android.R.layout.simple_spinner_item,max)
+        val favo_adapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,favo)
         min_spinner.adapter = min_adapter
         min_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             var min_value: Int = 0
@@ -85,12 +91,16 @@ class Dict__Activity : AppCompatActivity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
         max_spinner.adapter = max_adapter
+        favo_spinner.adapter =favo_adapter
 
-        search_row.addView(min_spinner,layoutParams3)
-        search_row.addView(max_spinner,layoutParams3)
-        search_row.addView(search_Button,layoutParams3)
-        search_row.setBackgroundColor(Color.rgb(255,255,200))
-        over_layout.addView(search_row)
+        word_len_row.addView(min_spinner,layoutParams3)
+        word_len_row.addView(max_spinner,layoutParams3)
+        searchRow.addView(favo_spinner,layoutParams3)
+        searchRow.addView(search_Button,layoutParams3)
+        word_len_row.setBackgroundColor(Color.rgb(255,255,200))
+        searchRow.setBackgroundColor(Color.rgb(255,255,200))
+        over_layout.addView(word_len_row)
+        over_layout.addView(searchRow)
 
 
         //2列目
@@ -109,7 +119,9 @@ class Dict__Activity : AppCompatActivity() {
         search_Button.setOnClickListener{
             val max =max_spinner.selectedItem as Int
             val min =min_spinner.selectedItem as Int
-            answers = wordAccess.getAnswers(db!!,min,max,0)
+            val favo = favo_spinner.selectedItemPosition
+            System.out.println(favo)
+            answers = wordAccess.getAnswers(db!!,min,max,0,favo)
             //初期検索は確実に0件
             current_disp=0
 
@@ -158,7 +170,7 @@ class Dict__Activity : AppCompatActivity() {
         }
 
         val scrollView = ScrollView(this)
-        scrollView.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,0.8F)
+        scrollView.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MATCH_PARENT,10F)
         scrollView.addView(varLayout)
 
 
