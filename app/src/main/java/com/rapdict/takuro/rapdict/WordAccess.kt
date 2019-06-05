@@ -37,7 +37,6 @@ class WordAccess {
         }
         return result
     }
-
     fun favo_Int2query(favorite: Int):String{
         if(favorite==0){
             return " AND " + ANSWER_TABLE_NAME +".favorite="+"1"
