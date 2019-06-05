@@ -38,11 +38,23 @@ class WordAccess {
         return result
     }
 
+    fun favo_Int2query(favorite: Int):String{
+        if(favorite==0){
+            return " AND " + ANSWER_TABLE_NAME +".favorite="+"1"
+        }
+        if(favorite==1){
+            return " AND " + ANSWER_TABLE_NAME +".favorite="+"0"
+        }
+        return ""
+    }
 
-    fun getAnswers(database: SQLiteDatabase, min_word: Int, max_word: Int, question: Int): ArrayList<AnswerView> {
+
+    fun getAnswers(database: SQLiteDatabase, min_word: Int, max_word: Int, question: Int,favorite: Int): ArrayList<AnswerView> {
+        val favsql=favo_Int2query(favorite)
         val sql = ("SELECT * FROM " + ANSWER_TABLE_NAME + " INNER JOIN " + WORD_TABLE_NAME + " ON " +
                 ANSWER_TABLE_NAME + "." + COLUMN_NAME_QUESTION_ID + " = " + WORD_TABLE_NAME + "." + COLUMN_NAME_WORD_ID
-                + " WHERE " + WORD_TABLE_NAME + ".word_len<= " + max_word + " AND " + WORD_TABLE_NAME + ".word_len >=" + min_word)
+                + " WHERE " + WORD_TABLE_NAME + ".word_len<= " + max_word + " AND " + WORD_TABLE_NAME + ".word_len >=" + min_word
+                + favsql)
 
         val cursor = database.rawQuery(sql, null)
         val result = ArrayList<AnswerView>()

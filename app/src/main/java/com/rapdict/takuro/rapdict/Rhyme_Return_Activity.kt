@@ -186,7 +186,8 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                 for (i in 0 until intent!!.getIntExtra(RET, 0)) {
                     answer[i] = AnswerData()
                     if (!isEmpty(editText[i]?.getText())) {
-                        answer[i]?.answerSet(question_list!!.get(question_number-finish_q).word_id!!, editText[i]?.getText().toString(), question_list!!.get(question_number-finish_q).word!!)
+                        answer[i]?.answerSet(question_list!!.get(question_number-finish_q).word_id!!,
+                                editText[i]?.getText().toString(), question_list!!.get(question_number-finish_q).word!!)
                         editText[i]?.setText("")
                         answer_list!!.add(answer[i]!!)
                     }
