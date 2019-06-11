@@ -14,17 +14,18 @@ import android.widget.TextView
 
 open class MainActivity : AppCompatActivity() {
 
+    private var helper: SQLiteOpenHelper? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
+        helper = SQLiteOpenHelper(applicationContext)
+
 
         val user_data = getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
         val user_name = user_data.getString("user_name","ゲスト")
         val user_shougou = user_data.getString("shougou","何者でもない故、何者にでもなれる者")
-
-
 
         val user_nameView:TextView =findViewById(R.id.user_disp)
         user_nameView.setText(user_name+"さん")
