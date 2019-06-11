@@ -69,6 +69,7 @@ class Rhyme_Return_Activity : AppCompatActivity() {
         val back_button = Button(this)
         back_button.text = "設定へ戻る"
         val question_number = intent!!.getIntExtra(QUESTION, 0)
+        val return_number = intent!!.getIntExtra(RET,0)
         //第2引数にレイアウト情報を書く
         tableRow[0]?.addView(widgetController.settings(question_text, 20f, 20f, 20f, 20f, 15f, "問題数:  " + Integer.toString(question_number), TOP, 1), layoutParams)
         tableRow[0]?.addView(back_button)
@@ -89,6 +90,9 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                     cancel()
                     val intent = Intent(applicationContext, Result_Activity::class.java)
                     intent.putExtra(ANSWER_LIST, answer_list)
+                    intent.putExtra(QUESTION,question_number)
+                    intent.putExtra(RET,return_number)
+
                     startActivity(intent)
                     cancel()
                 } else if(finish_q < intent.getIntExtra(QUESTION, 0)){
@@ -161,7 +165,6 @@ class Rhyme_Return_Activity : AppCompatActivity() {
         }
         next_button.setOnClickListener {
             finish_q++
-            System.out.println("next:"+finish_q)
             if (finish_q < intent!!.getIntExtra(QUESTION, 0)) {
                 var remain_q:Int =intent!!.getIntExtra(QUESTION,0)-finish_q
                 question_text.text ="問題数: "+ remain_q.toString()
@@ -171,6 +174,9 @@ class Rhyme_Return_Activity : AppCompatActivity() {
             } else  {
                 val intent = Intent(applicationContext, Result_Activity::class.java)
                 intent.putExtra(ANSWER_LIST, answer_list)
+
+                intent.putExtra(QUESTION,question_number)
+                intent.putExtra(RET,return_number)
                 startActivity(intent)
                 timer.cancel()
             }
@@ -209,6 +215,8 @@ class Rhyme_Return_Activity : AppCompatActivity() {
                 } else {
                     val intent = Intent(applicationContext, Result_Activity::class.java)
                     intent.putExtra(ANSWER_LIST, answer_list)
+                    intent.putExtra(QUESTION,question_number)
+                    intent.putExtra(RET,return_number)
                     startActivity(intent)
                     timer.cancel()
                 }

@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict
 
 import android.app.FragmentManager
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
@@ -42,6 +43,16 @@ class Result_Activity : AppCompatActivity() {
         db = helper!!.writableDatabase
         val answer_list = getIntent().getSerializableExtra(ANSWER_LIST) as ArrayList<sample.intent.AnswerData>
         val widgetController = WidgetController(this)
+
+        //EXPの保存
+        val user_data = getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
+        val editor  = user_data.edit()
+        var exp = user_data.getInt("exp",0)
+        val question_number = intent!!.getIntExtra(QUESTION, 0)
+        val return_number = intent!!.getIntExtra(RET, 0)
+        exp += calcurate_exp(answer_list.size,return_number*question_number)
+        editor.putInt("exp",exp)
+        editor.apply()
 
         val tableRow = arrayOfNulls<TableRow>(120)
         val checkBox = arrayOfNulls<CheckBox>(120)
@@ -146,8 +157,32 @@ class Result_Activity : AppCompatActivity() {
         finish()
     }
 
+    fun calcurate_exp(answer_count:Int,question_num:Int):Int{
+        var exp:Int =0
+        exp += answer_count
+        if(answer_count == question_num){
+            exp += answer_count
+            System.out.println(exp)
+            return exp
+        }
+        if(answer_count*2/3 <=question_num){
+            exp += answer_count*2/3
+            System.out.println(exp)
+            return exp
+        }
+        if(answer_count/2 <=question_num){
+            exp += answer_count/2
+            System.out.println(exp)
+            return exp
+        }
+        System.out.println(exp)
+        return exp
+    }
+
     companion object {
         private val ANSWER_LIST = "answer_list"
+        private val QUESTION = "question"
+        private val RET = "ret"
     }
 
 
