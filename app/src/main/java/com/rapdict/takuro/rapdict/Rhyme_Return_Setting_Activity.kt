@@ -21,18 +21,17 @@ import java.nio.file.Files.size
 
 
 class Rhyme_Return_Setting_Activity : MainActivity() {
-    private var helper: SQLiteOpenHelper? = null
-
+    private var helper: KeepingMotivationOpenHelper ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.rhyme_return_setting)
-        helper = SQLiteOpenHelper(applicationContext)
+        helper = KeepingMotivationOpenHelper(applicationContext)
         val db = helper!!.writableDatabase
-
         //Toolbar
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
+
         var question = arrayListOf<Int>()
         val time = arrayListOf<Int>()
         val min = arrayListOf<Int>()
@@ -68,13 +67,6 @@ class Rhyme_Return_Setting_Activity : MainActivity() {
             ret.add(i)
         }
 
-//        val wordaccess = WordAccess()
-//        var answers =wordaccess.getAnswers(db,2,5,0)
-//        for(answer in answers){
-//            System.out.println(answer.answer)
-//            System.out.println(answer.answerview_id)
-//            System.out.println(answer.question)
-//        }
         var q_adapter =ArrayAdapter(this,android.R.layout.simple_spinner_item,question);
         var time_adapter =ArrayAdapter(this,android.R.layout.simple_spinner_item,time);
         var min_adapter =ArrayAdapter(this,android.R.layout.simple_spinner_item,min);
