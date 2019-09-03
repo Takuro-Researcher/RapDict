@@ -4,17 +4,22 @@
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
         android:id="@+id/settings"
-        android:title="設定"
+        android:title="@string/settings"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/rhyme_return"
         android:icon="@drawable/mike"
-        android:title="ライム返しゲーム"
+        android:title="@string/rhyme"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/rhyme_dict"
         android:icon="@drawable/dictionary"
-        android:title="韻辞書"
+        android:title="@string/dict"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/user_exp"
+        android:title="@string/user_achieve"
+        app:showAsAction="never" />
+
 </menu>
