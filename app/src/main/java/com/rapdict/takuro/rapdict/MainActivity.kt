@@ -14,30 +14,17 @@ import android.widget.TextView
 
 open class MainActivity : AppCompatActivity() {
 
-    private var helper: SQLiteOpenHelper? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
-        helper = SQLiteOpenHelper(applicationContext)
 
-
-        val user_data = getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
-        val user_name = user_data.getString("user_name","ゲスト")
-        val user_shougou = user_data.getString("shougou","何者でもない故、何者にでもなれる者")
-
-        val user_nameView:TextView =findViewById(R.id.user_disp)
-        user_nameView.setText(user_name+"さん")
-
-        val shougouView:TextView = findViewById(R.id.shougou)
-        shougouView.setText(user_shougou)
-
-        val constraintLayout=findViewById<View>(R.id.layout)
-        val animationDrawable: AnimationDrawable? = constraintLayout.background as AnimationDrawable
-        animationDrawable?.setEnterFadeDuration(2000)
-        animationDrawable?.setExitFadeDuration(4000)
-        animationDrawable?.start();
+        //初期表示
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentFrameLayout,UserExpFragment())
+                .commit()
 
     }
 
@@ -62,6 +49,12 @@ open class MainActivity : AppCompatActivity() {
             R.id.settings -> {
                 val intent = Intent(this, User_Setting::class.java)
                 startActivity(intent)
+                return true
+            }
+            R.id.user_exp->{
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentFrameLayout,UserExpFragment())
+                        .commit()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

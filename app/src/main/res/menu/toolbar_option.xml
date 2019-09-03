@@ -6,7 +6,6 @@
         android:id="@+id/settings"
         android:title="@string/settings"
         app:showAsAction="never"/>
-
     <item
         android:id="@+id/rhyme_return"
         android:icon="@drawable/mike"
