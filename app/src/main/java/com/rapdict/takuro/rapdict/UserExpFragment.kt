@@ -54,6 +54,7 @@ class UserExpFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+        container?.removeAllViews()
         return inflater.inflate(R.layout.fragment_user_exp, container, false)
     }
 
@@ -90,5 +91,12 @@ class UserExpFragment : Fragment() {
                 UserExpFragment().apply {
 
                 }
+        fun createInstance(): UserExpFragment {
+            val carDetailFragment = UserExpFragment()
+            val args = Bundle()
+            carDetailFragment.arguments = args
+            return carDetailFragment
+        }
+
     }
 }
