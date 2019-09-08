@@ -47,6 +47,9 @@ open class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.settings -> {
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentFrameLayout,UserSettingFragment())
+                        .commit()
                 return true
             }
             R.id.user_exp->{

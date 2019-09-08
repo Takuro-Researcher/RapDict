@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict
 
 import android.database.Cursor
+import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 
 import java.util.ArrayList
@@ -76,6 +77,11 @@ class WordAccess {
             result.add(answerView)
         }
         return result
+    }
+
+    fun getCount(database: SQLiteDatabase):Long{
+        val recodeCount =DatabaseUtils.queryNumEntries(database, ANSWER_TABLE_NAME)
+        return recodeCount
     }
     companion object {
 
