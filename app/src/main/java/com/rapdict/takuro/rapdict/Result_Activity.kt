@@ -143,7 +143,7 @@ class Result_Activity : AppCompatActivity() {
                for(answer in record_list){
                     helper!!.answer_saveData(db!!,answer.answer!!, answer.question_id!!,0)
                }
-                val intent = Intent(applicationContext, Rhyme_Return_Setting_Activity::class.java)
+                //val intent = Intent(applicationContext, Rhyme_Return_Setting_Activity::class.java)
                 startActivity(intent)
             }
             dialog.show(fragmentManager,"sample")

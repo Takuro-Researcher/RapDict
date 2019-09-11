@@ -3,27 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-       <TextView
+        <TextView
             android:padding="20dp"
             android:id="@+id/question_text"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:text="問題数"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <Spinner
             android:id="@+id/question_spinner"
@@ -37,13 +28,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-       <TextView
+        <TextView
             android:padding="20dp"
             android:id="@+id/time_text"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:text="制限時間"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <Spinner
             android:id="@+id/time_spinner"
@@ -56,13 +47,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-       <TextView
+        <TextView
             android:padding="20dp"
             android:id="@+id/min_text"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:text="最小文字"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <Spinner
             android:id="@+id/min_spinner"
@@ -75,13 +66,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-       <TextView
+        <TextView
             android:padding="20dp"
             android:id="@+id/max_text"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:text="最大文字"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <Spinner
             android:id="@+id/max_spinner"
@@ -94,13 +85,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-       <TextView
+        <TextView
             android:padding="20dp"
             android:id="@+id/return_text"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:text="踏み返しの数"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <Spinner
             android:id="@+id/return_spinner"

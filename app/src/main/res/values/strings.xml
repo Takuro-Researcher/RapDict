@@ -7,6 +7,10 @@
     <string name="user_achieve">称号</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_name_hint">ユーザー名</string>
+    <string name="question_num">問題数</string>>
+    <string name="return_num">踏み返しの数</string>
+    <string name="limit_time">制限時間</string>
+    <string name="min_length">最小文字</string>
+    <string name="max_length">最大文字</string>
 </resources>

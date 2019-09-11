@@ -53,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:text="踏んだ韻"
         app:layout_constraintTop_toBottomOf="@+id/exp_disp"
         app:layout_constraintStart_toStartOf="parent"/>
     <TextView
@@ -75,7 +76,6 @@
         app:layout_constraintTop_toBottomOf="@+id/rhyme_num"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         android:text="名前を変更する" />
 
 
