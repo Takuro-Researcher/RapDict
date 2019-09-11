@@ -41,6 +41,9 @@ open class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.rhyme_return -> {
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentFrameLayout,GameSettingFragment())
+                        .commit()
                 return true
             }
             R.id.rhyme_dict -> {
