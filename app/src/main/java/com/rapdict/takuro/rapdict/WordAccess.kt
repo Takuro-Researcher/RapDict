@@ -76,6 +76,8 @@ class WordAccess {
             answerView.setColumn(answer_id, question_id, answer, word, word_len,favorite)
             result.add(answerView)
         }
+        cursor.close()
+
         return result
     }
 
@@ -83,11 +85,26 @@ class WordAccess {
         val recodeCount =DatabaseUtils.queryNumEntries(database, ANSWER_TABLE_NAME)
         return recodeCount
     }
+
+    fun getLengthMinMax(database: SQLiteDatabase):ArrayList<Int>{
+        val sql = ("SELECT DISTINCT "+ COLUMN_NAME_WORD_LEN+ " FROM " + ANSWER_TABLE_NAME + " INNER JOIN " + WORD_TABLE_NAME + " ON " +
+                ANSWER_TABLE_NAME + "." + COLUMN_NAME_QUESTION_ID + " = " + WORD_TABLE_NAME + "." + COLUMN_NAME_WORD_ID)
+        val cursor = database.rawQuery(sql, null)
+        val result = ArrayList<Int>()
+        while(cursor.moveToNext()){
+            val word_len =cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_WORD_LEN))
+            result.add(word_len)
+        }
+        cursor.close()
+
+        return result
+    }
     companion object {
 
-        private val WORD_TABLE_NAME = "wordtable"
-        private val ANSWER_TABLE_NAME = "answertable"
-        private val COLUMN_NAME_QUESTION_ID = "question_id"
-        private val COLUMN_NAME_WORD_ID = "word_id"
+        private const val WORD_TABLE_NAME = "wordtable"
+        private const val ANSWER_TABLE_NAME = "answertable"
+        private const val COLUMN_NAME_QUESTION_ID = "question_id"
+        private const val COLUMN_NAME_WORD_ID = "word_id"
+        private const val COLUMN_NAME_WORD_LEN = "word_len"
     }
 }
