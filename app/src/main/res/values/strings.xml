@@ -13,4 +13,11 @@
     <string name="limit_time">制限時間</string>
     <string name="min_length">最小文字</string>
     <string name="max_length">最大文字</string>
+    <string name="length">文字数</string>>
+    <string name="search">この条件で検索</string>
+    <string name="only_favorite">お気に入りのみ</string>
+    <string name="without_favorite">お気に入りなし</string>
+    <string name="none_favorite">指定なし</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

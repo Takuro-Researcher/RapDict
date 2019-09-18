@@ -47,6 +47,8 @@ open class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.rhyme_dict -> {
+                val intent = Intent(this, Dict__Activity::class.java)
+                startActivity(intent)
                 return true
             }
             R.id.settings -> {
