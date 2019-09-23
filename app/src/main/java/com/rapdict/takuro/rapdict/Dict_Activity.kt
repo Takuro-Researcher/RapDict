@@ -1,36 +1,38 @@
 package com.rapdict.takuro.rapdict
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
-import android.view.Gravity
-import android.view.Gravity.CENTER
-import android.view.View
-import android.view.ViewGroup
-import android.widget.*
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import com.airbnb.lottie.LottieAnimationView
+import android.support.v7.widget.LinearLayoutManager
+import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import kotlinx.android.synthetic.main.activity_dict.*
-import java.util.*
+import kotlinx.android.synthetic.main.content_list.*
 import kotlin.collections.ArrayList
-import kotlin.math.ceil
 
 
 class Dict__Activity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
-    //現在表示しているページを表示
-    private var current_disp = 0
-    //現在表示しているAnswerの数を表示
-    private var current_answer_num =0
+    private var mDataList : ArrayList<RhymeData> = ArrayList<RhymeData>()
+
 
     @SuppressLint("NewApi", "Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dict)
+        // データ作成
+        makeTestData()
+
+        // Adapter作成
+        val adapter = ListAdapter(this,mDataList)
+
+        // RecyclerViewにAdapterとLayoutManagerの設定
+        RecyclerView.adapter =adapter
+        RecyclerView.layoutManager == LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+
+
         //DbAccess関連のインスタンス生成
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
@@ -40,29 +42,12 @@ class Dict__Activity : AppCompatActivity() {
         val max= lengthWords.max()?.toFloat()
         val min =lengthWords.min()?.toFloat()
         range_progress_seek_bar.setRange(min!!, max!!,1.0f)
-    }
 
-    fun onCheckboxClicked(view: View){
-        val cbox =CheckBox(applicationContext)
-        val checked=cbox.isChecked
-        when(view.id){
-            R.id.onlyFav ->{
-                if(checked){
-                    if (withoutFav.isChecked){
-                        withoutFav.isChecked =true
-                    }
-                }
-            }
-            R.id.withoutFav ->{
-                if(checked){
-                    if (onlyFav.isChecked){
-                        onlyFav.isChecked =true
-                    }
-                }
-            }
-        }
+        wordAccess
     }
-
+    private fun makeTestData() {
+        
+    }
 
 }
 
