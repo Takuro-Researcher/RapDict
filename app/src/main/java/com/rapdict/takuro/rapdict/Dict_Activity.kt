@@ -15,38 +15,43 @@ import kotlin.collections.ArrayList
 class Dict__Activity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
-    private var mDataList : ArrayList<RhymeData> = ArrayList<RhymeData>()
+    private var rhymeData : ArrayList<RhymeData> = ArrayList<RhymeData>()
 
 
     @SuppressLint("NewApi", "Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dict)
-        // データ作成
-        makeTestData()
-
-        // Adapter作成
-        val adapter = ListAdapter(this,mDataList)
-
-        // RecyclerViewにAdapterとLayoutManagerの設定
-        RecyclerView.adapter =adapter
-        RecyclerView.layoutManager == LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
 
 
         //DbAccess関連のインスタンス生成
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
         val wordAccess = WordAccess()
+        //検索用のレンジプログレスバーの設定
         range_progress_seek_bar.setIndicatorTextDecimalFormat("0")
         val lengthWords =wordAccess.getLengthMinMax(db!!)
         val max= lengthWords.max()?.toFloat()
         val min =lengthWords.min()?.toFloat()
         range_progress_seek_bar.setRange(min!!, max!!,1.0f)
 
-        wordAccess
+        //韻呼び出し
+        val answerList:ArrayList<AnswerView> = wordAccess.getAnswers(db!!,0,30,2)
+        bindData(answerList)
+
+        // Adapter作成
+        val adapter = ListAdapter(this,rhymeData)
+
+        // RecyclerViewにAdapterとLayoutManagerの設定
+        RecyclerView.adapter =adapter
+        RecyclerView.layoutManager == LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+
     }
-    private fun makeTestData() {
-        
+    private fun bindData(answerList:ArrayList<AnswerView>) {
+        for (answer in answerList){
+            val rhyme =RhymeData(answer.answer.toString(),answer.question.toString(),answer.favorite!!,answer.question_id)
+            rhymeData.add(rhyme)
+        }
     }
 
 }

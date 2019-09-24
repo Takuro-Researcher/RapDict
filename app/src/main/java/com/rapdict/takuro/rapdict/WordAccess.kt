@@ -49,7 +49,7 @@ class WordAccess {
     }
 
 
-    fun getAnswers(database: SQLiteDatabase, min_word: Int, max_word: Int, question: Int,favorite: Int): ArrayList<AnswerView> {
+    fun getAnswers(database: SQLiteDatabase, min_word: Int, max_word: Int,favorite: Int): ArrayList<AnswerView> {
         val favsql=favo_Int2query(favorite)
         val sql = ("SELECT * FROM " + ANSWER_TABLE_NAME + " INNER JOIN " + WORD_TABLE_NAME + " ON " +
                 ANSWER_TABLE_NAME + "." + COLUMN_NAME_QUESTION_ID + " = " + WORD_TABLE_NAME + "." + COLUMN_NAME_WORD_ID
