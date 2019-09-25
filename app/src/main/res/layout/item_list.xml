@@ -6,9 +6,11 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/tools"
     card_view:cardUseCompatPadding="true"
+    android:clickable="true"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="4dp"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"

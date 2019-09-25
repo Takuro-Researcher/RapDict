@@ -19,6 +19,11 @@ open class ListAdapter(private val mParentActivity : Dict__Activity, private val
         //Holderの生成
         val holder = ListViewHolder(view)
 
+        holder.card.setOnClickListener {
+            val position = holder.adapterPosition
+            val rhymeData= mValues.get(position)
+        }
+
         return holder
 
     }
