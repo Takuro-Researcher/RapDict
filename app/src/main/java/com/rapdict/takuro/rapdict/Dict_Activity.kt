@@ -44,12 +44,12 @@ class Dict__Activity : AppCompatActivity() {
 
         // RecyclerViewにAdapterとLayoutManagerの設定
         RecyclerView.adapter =adapter
-        RecyclerView.layoutManager == LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        RecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
 
     }
     private fun bindData(answerList:ArrayList<AnswerView>) {
         for (answer in answerList){
-            val rhyme =RhymeData(answer.answer.toString(),answer.question.toString(),answer.favorite!!,answer.question_id)
+            val rhyme =RhymeData(answer.answer.toString(),answer.question.toString(),answer.favorite!!,answer.answerview_id)
             rhymeData.add(rhyme)
         }
     }
