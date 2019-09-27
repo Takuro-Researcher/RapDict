@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
@@ -46,6 +48,17 @@ class Dict__Activity : AppCompatActivity() {
         RecyclerView.adapter =adapter
         RecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
 
+
+        //スワイプ時の削除処理
+        val swipeHandler = object : SwipeToDeleteCallback(this) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val swipePosition = viewHolder.adapterPosition
+                adapter.remove(swipePosition)
+            }
+        }
+        //RecyclerViewにスワイプ処理をアタッチ
+        val itemTouchHelper =ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(RecyclerView)
     }
     private fun bindData(answerList:ArrayList<AnswerView>) {
         for (answer in answerList){

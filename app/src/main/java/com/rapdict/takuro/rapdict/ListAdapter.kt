@@ -21,9 +21,6 @@ open class ListAdapter(private val mParentActivity : Dict__Activity, private val
         helper = SQLiteOpenHelper(view.context)
         db = helper!!.writableDatabase
 
-        holder.card.setOnClickListener {
-
-        }
         //お気に入り処理
         holder.favorite.setOnClickListener {
             val position = holder.adapterPosition
@@ -53,7 +50,10 @@ open class ListAdapter(private val mParentActivity : Dict__Activity, private val
         holder.favorite.progress = if(item.favorite) 0.8F else 0F
 
     }
-
+    fun remove(position: Int){
+        mValues.removeAt(position)
+        notifyItemRemoved(position)
+    }
     fun favo2background(favorite:Boolean):Int{
         val colorId:Int
         return if (favorite){

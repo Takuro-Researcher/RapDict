@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
     implementation 'org.florescu.android.rangeseekbar:rangeseekbar-library:0.3.0'
+    implementation 'com.github.brnunes:swipeablerecyclerview:1.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
