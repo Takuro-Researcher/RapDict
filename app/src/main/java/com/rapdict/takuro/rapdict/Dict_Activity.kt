@@ -49,6 +49,19 @@ class Dict__Activity : AppCompatActivity() {
         RecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
 
 
+        //検索
+        search_button.setOnClickListener {
+            rhymeData.clear()
+            val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
+            val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
+            val selectedId = radioGroup.checkedRadioButtonId
+            val searchWords =wordAccess.getAnswers(db!!,minVal,maxVal,getSearchFav(selectedId))
+            bindData(searchWords)
+            adapter.notifyDataSetChanged()
+        }
+
+
+
         //スワイプ時の削除処理
         val swipeHandler = object : SwipeToDeleteCallback(this) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -56,6 +69,8 @@ class Dict__Activity : AppCompatActivity() {
                 adapter.rhymeRemove(swipePosition)
             }
         }
+
+        //
         //RecyclerViewにスワイプ処理をアタッチ
         val itemTouchHelper =ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(RecyclerView)
@@ -66,6 +81,15 @@ class Dict__Activity : AppCompatActivity() {
             val rhyme =RhymeData(answer.answer.toString(),answer.question.toString(),answer.favorite!!,answer.answerview_id)
             rhymeData.add(rhyme)
         }
+    }
+
+    private fun getSearchFav(id:Int):Int{
+        if (id==R.id.withoutFav){
+            return 0
+        }else if(id == R.id.onlyFav){
+            return 1
+        }
+        return 2
     }
 
 }
