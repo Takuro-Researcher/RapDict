@@ -97,12 +97,10 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         db.update("answertable", values, sql,null)
     }
 
-    fun answer_delete(db: SQLiteDatabase, dele_answers:List<Int>){
-        var query =""
-        for(answer in dele_answers ) {
-            query = COLUMN_NAME_ANSWER_ID+ "="+ answer.toString()
-            db.delete("answertable",query,null)
-        }
+    fun answer_delete(db: SQLiteDatabase, deleAnswerId:Int){
+        val query = "$COLUMN_NAME_ANSWER_ID=$deleAnswerId"
+        db.delete("answertable",query,null)
+
     }
     fun bool2Int(flag:Boolean):Int{
         val flagInt:Int = if(flag) 1 else 0

@@ -50,9 +50,12 @@ open class ListAdapter(private val mParentActivity : Dict__Activity, private val
         holder.favorite.progress = if(item.favorite) 0.8F else 0F
 
     }
-    fun remove(position: Int){
+    fun rhymeRemove(position: Int){
+        val rhymeData:RhymeData = mValues.get(position)
         mValues.removeAt(position)
         notifyItemRemoved(position)
+        helper?.answer_delete(db!!,rhymeData.answerViewId)
+
     }
     fun favo2background(favorite:Boolean):Int{
         val colorId:Int

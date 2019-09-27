@@ -53,13 +53,14 @@ class Dict__Activity : AppCompatActivity() {
         val swipeHandler = object : SwipeToDeleteCallback(this) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val swipePosition = viewHolder.adapterPosition
-                adapter.remove(swipePosition)
+                adapter.rhymeRemove(swipePosition)
             }
         }
         //RecyclerViewにスワイプ処理をアタッチ
         val itemTouchHelper =ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(RecyclerView)
     }
+
     private fun bindData(answerList:ArrayList<AnswerView>) {
         for (answer in answerList){
             val rhyme =RhymeData(answer.answer.toString(),answer.question.toString(),answer.favorite!!,answer.answerview_id)
