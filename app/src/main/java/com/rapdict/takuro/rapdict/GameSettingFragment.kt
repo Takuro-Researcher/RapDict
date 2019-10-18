@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -38,11 +39,11 @@ class GameSettingFragment : Fragment() {
         val max =make_list_num(4,14,1)
         val ret = make_list_num(1,4,1)
 
-        var question_adapter = ArrayAdapter(context,android.R.layout.simple_spinner_item,question);
-        var time_adapter = ArrayAdapter(context,android.R.layout.simple_spinner_item,time);
-        var min_adapter = ArrayAdapter(context,android.R.layout.simple_spinner_item,min);
-        var return_adapter = ArrayAdapter(context,android.R.layout.simple_spinner_item,ret);
-        var max_adapter = ArrayAdapter(context,android.R.layout.simple_spinner_item,max);
+        val questionAdapter= ArrayAdapter(context!!,android.R.layout.simple_spinner_item,question);
+        val timeAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,time);
+        val minAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,min);
+        val returnAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,ret);
+        val maxAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,max);
 
         val question_spinner = question_spinner as Spinner
         val time_spinner = time_spinner as Spinner
@@ -50,11 +51,11 @@ class GameSettingFragment : Fragment() {
         val max_spiiner = max_spinner as Spinner
         val return_spinner = return_spinner as Spinner
 
-        question_spinner.adapter = question_adapter
-        time_spinner.adapter = time_adapter
-        min_spinner.adapter = min_adapter
-        max_spiiner.adapter =max_adapter
-        return_spinner.adapter =return_adapter
+        question_spinner.adapter = questionAdapter
+        time_spinner.adapter = timeAdapter
+        min_spinner.adapter = minAdapter
+        max_spiiner.adapter =maxAdapter
+        return_spinner.adapter =returnAdapter
 
         //最小文字>最大文字とならないように、スピナーの値を順次変更する
         min_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -62,12 +63,22 @@ class GameSettingFragment : Fragment() {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 val spinner = adapterView as Spinner
                 min_value = spinner.selectedItem as Int
-                max_adapter.clear();
+                maxAdapter.clear();
                 for (f in min_value + 1..10) {
-                    max_adapter.add(f)
+                    maxAdapter.add(f)
                 }
             }
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
+        }
+
+        start_button.setOnClickListener {
+            val intent: Intent = Intent(view.context,GameActivity::class.java)
+            intent.putExtra("QUESTION",question_spinner.selectedItem as Int)
+            intent.putExtra("TIME",time_spinner as Int)
+            intent.putExtra("MIN_WORD",min_spinner.selectedItem as Int)
+            intent.putExtra("MAX_WORD",max_spiiner.selectedItem as Int)
+            intent.putExtra("RETURN",return_spinner.selectedItem as Int)
+            startActivity(intent)
         }
 
 
