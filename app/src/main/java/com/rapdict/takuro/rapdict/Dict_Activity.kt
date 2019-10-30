@@ -1,9 +1,11 @@
 package com.rapdict.takuro.rapdict
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -33,11 +35,22 @@ class Dict__Activity : AppCompatActivity() {
         //検索用のレンジプログレスバーの設定
         range_progress_seek_bar.setIndicatorTextDecimalFormat("0")
         val lengthWords =wordAccess.getLengthMinMax(db!!)
-        val max= lengthWords.max()?.toFloat()
-        val min =lengthWords.min()?.toFloat()
-        range_progress_seek_bar.setRange(min!!, max!!,1.0f)
+        var max = lengthWords.max()?.toFloat()
+        var min =lengthWords.min()?.toFloat()
+        val dialog =AlertDialog.Builder(this)
+        var recomIntent  = Intent(this, MainActivity::class.java)
+        dialog.setMessage("お前はまだ韻を踏んでいないぞ")
+        dialog.setPositiveButton("踏みに行け"){
+            dialog, which -> startActivity(recomIntent)
+        }
 
+        if (lengthWords.size==0 || lengthWords.size ==1) {
+            max = 10.toFloat()
+            min = 1.toFloat()
+            dialog.show()
+        }
         //韻呼び出し
+        range_progress_seek_bar.setRange(min!!, max!!,1.0f)
         val answerList:ArrayList<AnswerView> = wordAccess.getAnswers(db!!,0,30,2)
         bindData(answerList)
 
