@@ -1,6 +1,5 @@
 package com.rapdict.takuro.rapdict
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -45,20 +44,20 @@ class GameSettingFragment : Fragment() {
         val returnAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,ret);
         val maxAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,max);
 
-        val question_spinner = question_spinner as Spinner
-        val time_spinner = time_spinner as Spinner
-        val min_spinner = min_spinner as Spinner
-        val max_spiiner = max_spinner as Spinner
-        val return_spinner = return_spinner as Spinner
+        val questionSpinner = question_spinner as Spinner
+        val timeSpinner = time_spinner as Spinner
+        val minSpinner = min_spinner as Spinner
+        val maxSpiner = max_spinner as Spinner
+        val returnSpinner = return_spinner as Spinner
 
-        question_spinner.adapter = questionAdapter
-        time_spinner.adapter = timeAdapter
-        min_spinner.adapter = minAdapter
-        max_spiiner.adapter =maxAdapter
-        return_spinner.adapter =returnAdapter
+        questionSpinner.adapter = questionAdapter
+        timeSpinner.adapter = timeAdapter
+        minSpinner.adapter = minAdapter
+        maxSpiner.adapter =maxAdapter
+        returnSpinner.adapter =returnAdapter
 
         //最小文字>最大文字とならないように、スピナーの値を順次変更する
-        min_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        minSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             var min_value: Int = 0
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 val spinner = adapterView as Spinner
@@ -73,11 +72,11 @@ class GameSettingFragment : Fragment() {
 
         start_button.setOnClickListener {
             val intent: Intent = Intent(view.context,GameActivity::class.java)
-            intent.putExtra("QUESTION",question_spinner.selectedItem as Int)
-            intent.putExtra("TIME",time_spinner as Int)
-            intent.putExtra("MIN_WORD",min_spinner.selectedItem as Int)
-            intent.putExtra("MAX_WORD",max_spiiner.selectedItem as Int)
-            intent.putExtra("RETURN",return_spinner.selectedItem as Int)
+            intent.putExtra("QUESTION",questionSpinner.selectedItem as Int)
+            intent.putExtra("TIME",timeSpinner.selectedItem as Int)
+            intent.putExtra("MIN_WORD",minSpinner.selectedItem as Int)
+            intent.putExtra("MAX_WORD",maxSpiner.selectedItem as Int)
+            intent.putExtra("RETURN",returnSpinner.selectedItem as Int)
             startActivity(intent)
         }
 
