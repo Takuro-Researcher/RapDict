@@ -16,18 +16,10 @@ open class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
         // コードからフラグメントを追加
         if (savedInstanceState == null) {
-            //val transaction = supportFragmentManager.beginTransaction()
-            //transaction.add(R.id.fragmentFrameLayout, UserExpFragment())
-            //transaction.commit()
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.add(R.id.fragmentGame, GameFragment())
+            transaction.commit()
         }
     }
-
-
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.toolbar_option, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
 
 }

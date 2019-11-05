@@ -37,10 +37,12 @@ class Dict__Activity : AppCompatActivity() {
         val lengthWords =wordAccess.getLengthMinMax(db!!)
         var max = lengthWords.max()?.toFloat()
         var min =lengthWords.min()?.toFloat()
+        val recomIntent  = Intent(this, MainActivity::class.java)
+
         val dialog =AlertDialog.Builder(this)
-        var recomIntent  = Intent(this, MainActivity::class.java)
-        dialog.setMessage("お前はまだ韻を踏んでいないぞ")
-        dialog.setPositiveButton("踏みに行け"){
+        dialog.setCancelable(false)
+        dialog.setMessage("韻を踏みに行きましょう")
+        dialog.setPositiveButton("戻る"){
             dialog, which -> startActivity(recomIntent)
         }
 
