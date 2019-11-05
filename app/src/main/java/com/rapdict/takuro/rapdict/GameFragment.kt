@@ -36,11 +36,16 @@ class GameFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game, container, false)
+        container?.removeAllViews()
+        // 正常にfragmentを切り替えることには成功している。よって、デザインの可能性が高い。
+        return inflater.inflate(R.layout.fragment_game, container,false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
