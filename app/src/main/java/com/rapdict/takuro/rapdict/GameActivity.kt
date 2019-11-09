@@ -12,14 +12,21 @@ open class GameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        intent = intent
+        val answerNum = intent.getIntExtra("RETURN",0)
+        val bundle =Bundle()
+        bundle.putInt("ANSWER",answerNum)
 
         setContentView(R.layout.activity_game)
         // コードからフラグメントを追加
         if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.add(R.id.fragmentGame, GameFragment())
+            val gameFragment = GameFragment()
+            gameFragment.arguments = bundle
+            transaction.add(R.id.fragmentGame, gameFragment)
             transaction.commit()
         }
+
     }
 
 }
