@@ -14,8 +14,10 @@ open class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         intent = intent
         val answerNum = intent.getIntExtra("RETURN",0)
+        val timeNum = intent.getIntExtra("TIME",0)
         val bundle =Bundle()
         bundle.putInt("ANSWER",answerNum)
+        bundle.putInt("TIME",timeNum)
 
         setContentView(R.layout.activity_game)
         // コードからフラグメントを追加
