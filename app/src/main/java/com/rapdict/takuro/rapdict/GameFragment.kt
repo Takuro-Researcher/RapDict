@@ -3,7 +3,6 @@ package com.rapdict.takuro.rapdict
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.view.LayoutInflater
@@ -48,7 +47,6 @@ class GameFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         container?.removeAllViews()
-
         // 正常にfragmentを切り替えることには成功している。よって、デザインの可能性が高い。
         return inflater.inflate(R.layout.fragment_game, container,false)
     }
@@ -63,18 +61,7 @@ class GameFragment : Fragment() {
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val answerNum = arguments!!.getInt("ANSWER")
-
-        val timerNum = arguments!!.getInt("TIME")*1000.toLong()
-        val timer = object:CountDownTimer(timerNum,1000){
-            override fun onTick(millisUntilFinished: Long) {
-                val time = millisUntilFinished.toInt()/1000
-                game_sec_display.text = time.toString()
-            }
-            override fun onFinish() {
-
-            }
-        }.start()
+        var answerNum = arguments!!.getInt("ANSWER")
         val transaction = childFragmentManager.beginTransaction()
         val tableFragment = InsertOneFragment.newInstance(answerNum)
         transaction.add(R.id.edit_table, tableFragment)
@@ -88,7 +75,6 @@ class GameFragment : Fragment() {
                 GameFragment().apply {
                     arguments = Bundle().apply {
                         putInt(ARG_PARAM1, answerNum)
-
                     }
                 }
     }

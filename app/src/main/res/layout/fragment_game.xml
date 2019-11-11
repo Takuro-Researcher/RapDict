@@ -10,25 +10,15 @@
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
-        android:padding="20sp"
+        android:padding="20dp"
         android:id="@+id/game_hello_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
-        android:text="制限時間　；"
+        android:text="制限時間"
         android:textColor="#FFFFFF"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/game_sec_display"
-        android:padding="20sp"
-        android:textSize="30sp"
-        android:text="10:00"
-        android:textColor="#FFFFFF"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/game_hello_message"/>
     <TextView
         android:id="@+id/game_question"
         android:layout_width="wrap_content"
