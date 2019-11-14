@@ -36,6 +36,7 @@ class GameFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
+    private var timer:CountDownTimer?= null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +75,8 @@ class GameFragment : Fragment() {
         val timerNum = arguments!!.getInt("TIME")*1000.toLong()
         val questionNum = arguments!!.getInt("QUESTION")
         game_question_num.text = questionNum.toString()
-        val timer = object:CountDownTimer(timerNum,1000.toLong()){
+        
+        timer = object:CountDownTimer(timerNum,100.toLong()){
             override fun onTick(millisUntilFinished: Long) {
                 game_sec_display.text = dataFormat.format(millisUntilFinished)
             }
@@ -87,15 +89,15 @@ class GameFragment : Fragment() {
                     start()
                 }
             }
-        }
-        timer.start()
+        }.start()
+
         //問題処理
         game_next_button.setOnClickListener {
             finish_q++
             game_question_num.text = (questionNum - finish_q).toString()
-            timer.start()
+            timer!!.start()
             if (finish_q >= questionNum){
-                timer.cancel()
+                timer!!.cancel()
             }
         }
         val transaction = childFragmentManager.beginTransaction()
@@ -109,7 +111,7 @@ class GameFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         finish_q = 100
-        7
+        timer!!.cancel()
     }
 
     companion object {

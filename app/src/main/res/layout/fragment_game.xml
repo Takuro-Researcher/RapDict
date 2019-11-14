@@ -73,6 +73,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/game_next_button"
         android:text="次の問題へ！！"
         app:layout_constraintTop_toBottomOf="@+id/edit_table"
         android:gravity="center"
