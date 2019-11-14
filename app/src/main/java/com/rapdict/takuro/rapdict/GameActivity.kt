@@ -15,9 +15,15 @@ open class GameActivity : AppCompatActivity() {
         intent = intent
         val answerNum = intent.getIntExtra("RETURN",0)
         val timeNum = intent.getIntExtra("TIME",0)
+        val questionNum =intent.getIntExtra("QUESTION",0)
+        val minWordNum = intent.getIntExtra("MIN_WORD",0)
+        val maxWordNum = intent.getIntExtra("MAX_WORD",0)
         val bundle =Bundle()
-        bundle.putInt("ANSWER",answerNum)
+        bundle.putInt("RETURN",answerNum)
         bundle.putInt("TIME",timeNum)
+        bundle.putInt("QUESTION",questionNum)
+        bundle.putInt("MIN_WORD",minWordNum)
+        bundle.putInt("MAX_WORD",maxWordNum)
 
         setContentView(R.layout.activity_game)
         // コードからフラグメントを追加
