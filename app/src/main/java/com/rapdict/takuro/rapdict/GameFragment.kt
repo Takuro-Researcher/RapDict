@@ -10,6 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_game.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.concurrent.thread
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -31,6 +34,10 @@ class GameFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
+    internal var finish_q =0
+    private var timer:CountDownTimer?= null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,22 +70,48 @@ class GameFragment : Fragment() {
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val answerNum = arguments!!.getInt("ANSWER")
+        val answerNum = arguments!!.getInt("RETURN")
 
         val timerNum = arguments!!.getInt("TIME")*1000.toLong()
-        val timer = object:CountDownTimer(timerNum,1000){
+        val questionNum = arguments!!.getInt("QUESTION")
+        game_question_num.text = questionNum.toString()
+        
+        timer = object:CountDownTimer(timerNum,100.toLong()){
             override fun onTick(millisUntilFinished: Long) {
-                val time = millisUntilFinished.toInt()/1000
-                game_sec_display.text = time.toString()
+                game_sec_display.text = dataFormat.format(millisUntilFinished)
             }
             override fun onFinish() {
-
+                if (finish_q >= questionNum){
+                    cancel()
+                }else{
+                    finish_q++
+                    game_question_num.text = (questionNum - finish_q).toString()
+                    start()
+                }
             }
         }.start()
+
+        //問題処理
+        game_next_button.setOnClickListener {
+            finish_q++
+            game_question_num.text = (questionNum - finish_q).toString()
+            timer!!.start()
+            if (finish_q >= questionNum){
+                timer!!.cancel()
+            }
+        }
         val transaction = childFragmentManager.beginTransaction()
         val tableFragment = InsertOneFragment.newInstance(answerNum)
         transaction.add(R.id.edit_table, tableFragment)
         transaction.commit()
+
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        finish_q = 100
+        timer!!.cancel()
     }
 
     companion object {

@@ -38,11 +38,11 @@ class GameSettingFragment : Fragment() {
         val max =make_list_num(4,14,1)
         val ret = make_list_num(1,4,1)
 
-        val questionAdapter= ArrayAdapter(context!!,android.R.layout.simple_spinner_item,question);
-        val timeAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,time);
-        val minAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,min);
-        val returnAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,ret);
-        val maxAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,max);
+        val questionAdapter= ArrayAdapter(context!!,android.R.layout.simple_spinner_item,question)
+        val timeAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,time)
+        val minAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,min)
+        val returnAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,ret)
+        val maxAdapter = ArrayAdapter(context!!,android.R.layout.simple_spinner_item,max)
 
         val questionSpinner = question_spinner as Spinner
         val timeSpinner = time_spinner as Spinner
