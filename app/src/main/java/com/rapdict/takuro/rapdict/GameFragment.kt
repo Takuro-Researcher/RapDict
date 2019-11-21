@@ -9,9 +9,15 @@ import android.support.v4.app.FragmentTransaction
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import kotlinx.android.synthetic.main.fragment_game.*
+import kotlinx.android.synthetic.main.fragment_insert_four.*
+import kotlinx.android.synthetic.main.fragment_insert_one.*
+import kotlinx.android.synthetic.main.fragment_insert_three.*
+import kotlinx.android.synthetic.main.fragment_insert_two.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
 
@@ -75,7 +81,6 @@ class GameFragment : Fragment() {
         val timerNum = arguments!!.getInt("TIME")*1000.toLong()
         val questionNum = arguments!!.getInt("QUESTION")
         game_question_num.text = questionNum.toString()
-        
         timer = object:CountDownTimer(timerNum,100.toLong()){
             override fun onTick(millisUntilFinished: Long) {
                 game_sec_display.text = dataFormat.format(millisUntilFinished)
@@ -90,7 +95,6 @@ class GameFragment : Fragment() {
                 }
             }
         }.start()
-
         //問題処理
         game_next_button.setOnClickListener {
             finish_q++
@@ -104,7 +108,38 @@ class GameFragment : Fragment() {
         val tableFragment = InsertOneFragment.newInstance(answerNum)
         transaction.add(R.id.edit_table, tableFragment)
         transaction.commit()
+    }
 
+    override fun onStart() {
+        super.onStart()
+        // 回答時、停止処理を記述
+        val answerNum = arguments!!.getInt("RETURN")
+        val editTexts = arrayOfNulls<EditText>(4)
+        when(answerNum){
+            1 -> {
+                editTexts[0] = rhyme_one_one
+            }
+            2 -> {
+                editTexts[0] = rhyme_two_one
+                editTexts[1] = rhyme_two_two
+            }
+            3 -> {
+                editTexts[0] = rhyme_three_one
+                editTexts[1] = rhyme_three_two
+                editTexts[2] = rhyme_three_three
+            }
+            4 -> {
+                editTexts[0] = rhyme_four_one
+                editTexts[1] = rhyme_four_two
+                editTexts[2] = rhyme_four_three
+                editTexts[3] = rhyme_four_four
+            }
+        }
+        for (i in 0..answerNum-1){
+            editTexts[i]!!.setOnClickListener {
+                timer!!.cancel()
+            }
+        }
 
     }
 
