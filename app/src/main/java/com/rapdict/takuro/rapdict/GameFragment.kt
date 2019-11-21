@@ -76,11 +76,18 @@ class GameFragment : Fragment() {
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val answerNum = arguments!!.getInt("RETURN")
+        val helper =SQLiteOpenHelper(activity!!.applicationContext)
+        val db = helper.readableDatabase
+        val wordAccess = WordAccess()
 
+        val answerNum = arguments!!.getInt("RETURN")
         val timerNum = arguments!!.getInt("TIME")*1000.toLong()
         val questionNum = arguments!!.getInt("QUESTION")
+        val minNum = arguments!!.getInt("MIN_WORD")
+        val maxNum = arguments!!.getInt("MAX_WORD")
+        val words = wordAccess.getWords(db, minNum, maxNum, questionNum)
         game_question_num.text = questionNum.toString()
+        game_question_text.text = words[finish_q].word
         timer = object:CountDownTimer(timerNum,100.toLong()){
             override fun onTick(millisUntilFinished: Long) {
                 game_sec_display.text = dataFormat.format(millisUntilFinished)
@@ -91,6 +98,7 @@ class GameFragment : Fragment() {
                 }else{
                     finish_q++
                     game_question_num.text = (questionNum - finish_q).toString()
+                    game_question_text.text = words[finish_q].word
                     start()
                 }
             }
@@ -99,6 +107,7 @@ class GameFragment : Fragment() {
         game_next_button.setOnClickListener {
             finish_q++
             game_question_num.text = (questionNum - finish_q).toString()
+            game_question_text.text = words[finish_q].word
             timer!!.start()
             if (finish_q >= questionNum){
                 timer!!.cancel()
@@ -115,6 +124,7 @@ class GameFragment : Fragment() {
         // 回答時、停止処理を記述
         val answerNum = arguments!!.getInt("RETURN")
         val editTexts = arrayOfNulls<EditText>(4)
+
         when(answerNum){
             1 -> {
                 editTexts[0] = rhyme_one_one
@@ -156,7 +166,6 @@ class GameFragment : Fragment() {
                 GameFragment().apply {
                     arguments = Bundle().apply {
                         putInt(ARG_PARAM1, answerNum)
-
                     }
                 }
     }
