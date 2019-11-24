@@ -60,14 +60,27 @@
         android:textSize="30sp"
         android:textColor="#FFFFFF"
         android:text="テストでいこうぜどこまで"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/game_question_num"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/game_furigana_text"
+        android:text="テスト"
+        android:layout_marginTop="10sp"
+        android:textAlignment="center"
+        android:padding="18sp"
+        android:textSize="25sp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/game_question_text"/>
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit_table"
-        app:layout_constraintTop_toBottomOf="@id/game_question_text">
+        app:layout_constraintTop_toBottomOf="@id/game_furigana_text">
         
     </TableLayout>
     <Button
