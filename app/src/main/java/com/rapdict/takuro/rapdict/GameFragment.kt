@@ -86,8 +86,12 @@ class GameFragment : Fragment() {
         val minNum = arguments!!.getInt("MIN_WORD")
         val maxNum = arguments!!.getInt("MAX_WORD")
         val words = wordAccess.getWords(db, minNum, maxNum, questionNum)
+
+        // 初期描画
         game_question_num.text = questionNum.toString()
         game_question_text.text = words[finish_q].word
+        game_furigana_text.text = words[finish_q].furigana
+
         timer = object:CountDownTimer(timerNum,100.toLong()){
             override fun onTick(millisUntilFinished: Long) {
                 game_sec_display.text = dataFormat.format(millisUntilFinished)
@@ -97,18 +101,14 @@ class GameFragment : Fragment() {
                     cancel()
                 }else{
                     finish_q++
-                    game_question_num.text = (questionNum - finish_q).toString()
-                    game_question_text.text = words[finish_q].word
-                    start()
+                    changedQuestion(finish_q, words, questionNum)
                 }
             }
         }.start()
-        //問題処理
+        //問題変更ボタン処理
         game_next_button.setOnClickListener {
             finish_q++
-            game_question_num.text = (questionNum - finish_q).toString()
-            game_question_text.text = words[finish_q].word
-            timer!!.start()
+            changedQuestion(finish_q,words,questionNum)
             if (finish_q >= questionNum){
                 timer!!.cancel()
             }
@@ -157,6 +157,13 @@ class GameFragment : Fragment() {
         super.onStop()
         finish_q = 100
         timer!!.cancel()
+    }
+
+    fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
+        game_question_num.text = (questionNum - finish_q).toString()
+        game_furigana_text.text = words[finish_q].furigana
+        game_question_text.text = words[finish_q].word
+        timer!!.start()
     }
 
     companion object {
