@@ -87,6 +87,10 @@ class GameFragment : Fragment() {
         val maxNum = arguments!!.getInt("MAX_WORD")
         val words = wordAccess.getWords(db, minNum, maxNum, questionNum)
 
+        val transaction2 = fragmentManager?.beginTransaction()
+        val resultFragment =ResultFragment()
+
+
         // 初期描画
         game_question_num.text = questionNum.toString()
         game_question_text.text = words[finish_q].word
@@ -99,6 +103,8 @@ class GameFragment : Fragment() {
             override fun onFinish() {
                 if (finish_q >= questionNum){
                     cancel()
+                    transaction2?.replace(R.id.fragmentGame, resultFragment)
+                    transaction2?.commit()
                 }else{
                     finish_q++
                     changedQuestion(finish_q, words, questionNum)
@@ -108,15 +114,20 @@ class GameFragment : Fragment() {
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
             finish_q++
-            changedQuestion(finish_q,words,questionNum)
             if (finish_q >= questionNum){
                 timer!!.cancel()
+                transaction2?.replace(R.id.fragmentGame, resultFragment)
+                transaction2?.commit()
+            }else{
+                changedQuestion(finish_q,words,questionNum)
             }
+
         }
         val transaction = childFragmentManager.beginTransaction()
         val tableFragment = InsertOneFragment.newInstance(answerNum)
         transaction.add(R.id.edit_table, tableFragment)
         transaction.commit()
+
     }
 
     override fun onStart() {
