@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
+import android.text.TextUtils.isEmpty
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_insert_four.*
 import kotlinx.android.synthetic.main.fragment_insert_one.*
 import kotlinx.android.synthetic.main.fragment_insert_three.*
 import kotlinx.android.synthetic.main.fragment_insert_two.*
+import sample.intent.AnswerData
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -42,12 +44,12 @@ class GameFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
+    internal var editTexts =arrayOfNulls<EditText>(4)
     private var timer:CountDownTimer?= null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -87,6 +89,11 @@ class GameFragment : Fragment() {
         val maxNum = arguments!!.getInt("MAX_WORD")
         val words = wordAccess.getWords(db, minNum, maxNum, questionNum)
 
+        val transaction2 = fragmentManager?.beginTransaction()
+        val resultFragment =ResultFragment()
+        val bundle:Bundle = Bundle()
+        val answer_list = ArrayList<AnswerData>()
+
         // 初期描画
         game_question_num.text = questionNum.toString()
         game_question_text.text = words[finish_q].word
@@ -97,8 +104,13 @@ class GameFragment : Fragment() {
                 game_sec_display.text = dataFormat.format(millisUntilFinished)
             }
             override fun onFinish() {
-                if (finish_q >= questionNum){
+
+                if (finish_q >= questionNum-1){
                     cancel()
+                    bundle.putSerializable("ANSWER_LIST", answer_list)
+                    resultFragment.arguments = bundle
+                    transaction2?.replace(R.id.fragmentGame, resultFragment)
+                    transaction2?.commit()
                 }else{
                     finish_q++
                     changedQuestion(finish_q, words, questionNum)
@@ -107,23 +119,30 @@ class GameFragment : Fragment() {
         }.start()
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
+            answer_list.addAll(saveAnswer(words[finish_q].word_id!!, words[finish_q].word!!))
             finish_q++
-            changedQuestion(finish_q,words,questionNum)
             if (finish_q >= questionNum){
                 timer!!.cancel()
+                bundle.putSerializable("ANSWER_LIST", answer_list)
+                resultFragment.arguments = bundle
+                transaction2?.replace(R.id.fragmentGame, resultFragment)
+                transaction2?.commit()
+            }else{
+                changedQuestion(finish_q,words,questionNum)
             }
         }
         val transaction = childFragmentManager.beginTransaction()
         val tableFragment = InsertOneFragment.newInstance(answerNum)
         transaction.add(R.id.edit_table, tableFragment)
         transaction.commit()
+
     }
 
     override fun onStart() {
         super.onStart()
         // 回答時、停止処理を記述
         val answerNum = arguments!!.getInt("RETURN")
-        val editTexts = arrayOfNulls<EditText>(4)
+        val answer_list = ArrayList<AnswerData>()
 
         when(answerNum){
             1 -> {
@@ -158,12 +177,27 @@ class GameFragment : Fragment() {
         finish_q = 100
         timer!!.cancel()
     }
+    // 踏んだ韻をため込む処理
 
+    // 問題を変更する処理
     fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
         game_question_num.text = (questionNum - finish_q).toString()
         game_furigana_text.text = words[finish_q].furigana
         game_question_text.text = words[finish_q].word
         timer!!.start()
+    }
+
+    fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
+        val answerNum = arguments!!.getInt("RETURN")
+        val answerArray = ArrayList<AnswerData>()
+        val answerData =AnswerData()
+        for (i in 0 until answerNum){
+            if ( !isEmpty(editTexts[i]?.text) ){
+                answerData.answerSet(word_id, editTexts[i]?.text.toString(), word)
+                answerArray.add(answerData)
+            }
+        }
+        return answerArray
     }
 
     companion object {
