@@ -7,6 +7,7 @@ import android.os.CountDownTimer
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.text.TextUtils.isEmpty
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -129,6 +130,10 @@ class GameFragment : Fragment() {
                 transaction2?.commit()
             }else{
                 changedQuestion(finish_q,words,questionNum)
+                editTextClear()
+                game_main.setFocusable(true)
+                game_main.setFocusableInTouchMode(true)
+                game_main.requestFocus()
             }
         }
         val transaction = childFragmentManager.beginTransaction()
@@ -165,11 +170,12 @@ class GameFragment : Fragment() {
             }
         }
         for (i in 0..answerNum-1){
-            editTexts[i]!!.setOnClickListener {
-                timer!!.cancel()
+            editTexts[i]!!.setOnFocusChangeListener { v, hasFocus ->
+                if(hasFocus){
+                    timer?.cancel()
+                }
             }
         }
-
     }
 
     override fun onStop() {
@@ -187,7 +193,7 @@ class GameFragment : Fragment() {
         timer!!.start()
     }
 
-    fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
+    private fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerArray = ArrayList<AnswerData>()
         val answerData =AnswerData()
@@ -198,6 +204,12 @@ class GameFragment : Fragment() {
             }
         }
         return answerArray
+    }
+    fun editTextClear(){
+        val answerNum = arguments!!.getInt("RETURN")
+        for (i in 0 until answerNum){
+            editTexts[i]?.editableText?.clear()
+        }
     }
 
     companion object {
