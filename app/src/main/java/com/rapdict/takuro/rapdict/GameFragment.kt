@@ -27,21 +27,10 @@ import kotlin.concurrent.thread
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [GameFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [GameFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class GameFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
-    private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
@@ -53,7 +42,7 @@ class GameFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -147,7 +136,6 @@ class GameFragment : Fragment() {
         super.onStart()
         // 回答時、停止処理を記述
         val answerNum = arguments!!.getInt("RETURN")
-        val answer_list = ArrayList<AnswerData>()
 
         when(answerNum){
             1 -> {
@@ -192,13 +180,16 @@ class GameFragment : Fragment() {
         game_question_text.text = words[finish_q].word
         timer!!.start()
     }
+    // answerList を一時保存
 
     private fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerArray = ArrayList<AnswerData>()
-        val answerData =AnswerData()
+        var answerData =AnswerData()
         for (i in 0 until answerNum){
             if ( !isEmpty(editTexts[i]?.text) ){
+                answerData = AnswerData()
+                System.out.println(editTexts[i]?.text.toString() )
                 answerData.answerSet(word_id, editTexts[i]?.text.toString(), word)
                 answerArray.add(answerData)
             }
