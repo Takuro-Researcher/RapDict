@@ -75,8 +75,6 @@ class Dict__Activity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
         }
 
-
-
         //スワイプ時の削除処理
         val swipeHandler = object : SwipeToDeleteCallback(this) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -85,7 +83,6 @@ class Dict__Activity : AppCompatActivity() {
             }
         }
 
-        //
         //RecyclerViewにスワイプ処理をアタッチ
         val itemTouchHelper =ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(RecyclerView)

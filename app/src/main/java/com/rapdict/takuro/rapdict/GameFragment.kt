@@ -130,8 +130,10 @@ class GameFragment : Fragment() {
                 transaction2?.commit()
             }else{
                 changedQuestion(finish_q,words,questionNum)
+                editTextClear()
                 game_main.setFocusable(true)
                 game_main.setFocusableInTouchMode(true)
+                game_main.requestFocus()
             }
         }
         val transaction = childFragmentManager.beginTransaction()
@@ -191,7 +193,7 @@ class GameFragment : Fragment() {
         timer!!.start()
     }
 
-    fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
+    private fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerArray = ArrayList<AnswerData>()
         val answerData =AnswerData()
@@ -202,6 +204,12 @@ class GameFragment : Fragment() {
             }
         }
         return answerArray
+    }
+    fun editTextClear(){
+        val answerNum = arguments!!.getInt("RETURN")
+        for (i in 0 until answerNum){
+            editTexts[i]?.editableText?.clear()
+        }
     }
 
     companion object {
