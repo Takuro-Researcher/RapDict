@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import sample.intent.AnswerData
 
 import java.io.BufferedReader
 import java.io.InputStream
@@ -81,11 +82,11 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         db.insert("wordtable", null, values)
     }
 
-    fun answer_saveData(db: SQLiteDatabase, answer: String, word_id: Int, favorite:Int) {
+    fun answer_saveData(db: SQLiteDatabase, answer:AnswerData) {
         val values = ContentValues()
-        values.put("question_id", word_id)
-        values.put("answer", answer)
-        values.put("favorite",favorite)
+        values.put("question_id", answer.question_id)
+        values.put("answer", answer.answer)
+        values.put("favorite",answer.favorite)
         db.insert("answertable", null, values)
     }
 

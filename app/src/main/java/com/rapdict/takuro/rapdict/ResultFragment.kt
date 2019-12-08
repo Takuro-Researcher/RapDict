@@ -3,10 +3,13 @@ package com.rapdict.takuro.rapdict
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.os.strictmode.SqliteObjectLeakedViolation
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.gson.Gson
+import sample.intent.AnswerData
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,8 +38,9 @@ class ResultFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val answer_list = arguments?.getSerializable("ANSWER_LIST")
-
+        val helper =SQLiteOpenHelper(activity!!.applicationContext)
+        val db = helper.readableDatabase
+        val answerList = arguments?.getString("ANSWER_LIST")
     }
 
     // TODO: Rename method, update argument and hook method into UI event

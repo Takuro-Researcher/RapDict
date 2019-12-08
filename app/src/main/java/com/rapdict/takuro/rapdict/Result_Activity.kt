@@ -141,7 +141,7 @@ class Result_Activity : AppCompatActivity() {
             dialog.message = record_list.count().toString()+"個の韻を保存します"
             dialog.onOkClickListener = DialogInterface.OnClickListener { dialog, id ->
                for(answer in record_list){
-                    helper!!.answer_saveData(db!!,answer.answer!!, answer.question_id!!,0)
+                    helper!!.answer_saveData(db!!,answer)
                }
                 //val intent = Intent(applicationContext, Rhyme_Return_Setting_Activity::class.java)
                 startActivity(intent)

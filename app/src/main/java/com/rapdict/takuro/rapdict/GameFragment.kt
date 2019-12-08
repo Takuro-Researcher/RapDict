@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_insert_four.*
 import kotlinx.android.synthetic.main.fragment_insert_one.*
@@ -97,7 +98,7 @@ class GameFragment : Fragment() {
 
                 if (finish_q >= questionNum-1){
                     cancel()
-                    bundle.putSerializable("ANSWER_LIST", answer_list)
+                    bundle.putString("ANSWER_LIST", Gson().toJson(answer_list))
                     resultFragment.arguments = bundle
                     transaction2?.replace(R.id.fragmentGame, resultFragment)
                     transaction2?.commit()
@@ -113,7 +114,7 @@ class GameFragment : Fragment() {
             finish_q++
             if (finish_q >= questionNum){
                 timer!!.cancel()
-                bundle.putSerializable("ANSWER_LIST", answer_list)
+                bundle.putString("ANSWER_LIST", Gson().toJson(answer_list))
                 resultFragment.arguments = bundle
                 transaction2?.replace(R.id.fragmentGame, resultFragment)
                 transaction2?.commit()
