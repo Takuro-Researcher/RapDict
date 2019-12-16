@@ -1,17 +1,19 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.fragment
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
 import android.text.TextUtils.isEmpty
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.google.gson.Gson
+import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.Word
+import com.rapdict.takuro.rapdict.common.WordAccess
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_insert_four.*
 import kotlinx.android.synthetic.main.fragment_insert_one.*
@@ -21,27 +23,15 @@ import sample.intent.AnswerData
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [GameFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [GameFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class GameFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
-    private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
@@ -53,7 +43,7 @@ class GameFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,7 +69,7 @@ class GameFragment : Fragment() {
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val helper =SQLiteOpenHelper(activity!!.applicationContext)
+        val helper = SQLiteOpenHelper(activity!!.applicationContext)
         val db = helper.readableDatabase
         val wordAccess = WordAccess()
 
@@ -91,7 +81,7 @@ class GameFragment : Fragment() {
         val words = wordAccess.getWords(db, minNum, maxNum, questionNum)
 
         val transaction2 = fragmentManager?.beginTransaction()
-        val resultFragment =ResultFragment()
+        val resultFragment = ResultFragment()
         val bundle:Bundle = Bundle()
         val answer_list = ArrayList<AnswerData>()
 
@@ -108,7 +98,7 @@ class GameFragment : Fragment() {
 
                 if (finish_q >= questionNum-1){
                     cancel()
-                    bundle.putSerializable("ANSWER_LIST", answer_list)
+                    bundle.putString("ANSWER_LIST", Gson().toJson(answer_list))
                     resultFragment.arguments = bundle
                     transaction2?.replace(R.id.fragmentGame, resultFragment)
                     transaction2?.commit()
@@ -124,7 +114,7 @@ class GameFragment : Fragment() {
             finish_q++
             if (finish_q >= questionNum){
                 timer!!.cancel()
-                bundle.putSerializable("ANSWER_LIST", answer_list)
+                bundle.putString("ANSWER_LIST", Gson().toJson(answer_list))
                 resultFragment.arguments = bundle
                 transaction2?.replace(R.id.fragmentGame, resultFragment)
                 transaction2?.commit()
@@ -147,7 +137,6 @@ class GameFragment : Fragment() {
         super.onStart()
         // 回答時、停止処理を記述
         val answerNum = arguments!!.getInt("RETURN")
-        val answer_list = ArrayList<AnswerData>()
 
         when(answerNum){
             1 -> {
@@ -192,13 +181,16 @@ class GameFragment : Fragment() {
         game_question_text.text = words[finish_q].word
         timer!!.start()
     }
+    // answerList を一時保存
 
     private fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerArray = ArrayList<AnswerData>()
-        val answerData =AnswerData()
+        var answerData =AnswerData()
         for (i in 0 until answerNum){
             if ( !isEmpty(editTexts[i]?.text) ){
+                answerData = AnswerData()
+                System.out.println(editTexts[i]?.text.toString() )
                 answerData.answerSet(word_id, editTexts[i]?.text.toString(), word)
                 answerArray.add(answerData)
             }

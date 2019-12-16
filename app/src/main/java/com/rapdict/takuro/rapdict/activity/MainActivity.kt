@@ -1,18 +1,16 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.activity
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.AnimationDrawable
-import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_main.*
+import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.fragment.GameSettingFragment
+import com.rapdict.takuro.rapdict.fragment.UserExpFragment
+import com.rapdict.takuro.rapdict.fragment.UserSettingFragment
 
 open class MainActivity : AppCompatActivity() {
 
@@ -40,7 +38,7 @@ open class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.rhyme_return -> {
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentFrameLayout,GameSettingFragment())
+                        .replace(R.id.fragmentFrameLayout, GameSettingFragment())
                         .commit()
                 return true
             }
@@ -51,13 +49,13 @@ open class MainActivity : AppCompatActivity() {
             }
             R.id.settings -> {
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentFrameLayout,UserSettingFragment())
+                        .replace(R.id.fragmentFrameLayout, UserSettingFragment())
                         .commit()
                 return true
             }
-            R.id.user_exp->{
+            R.id.user_exp ->{
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentFrameLayout,UserExpFragment())
+                        .replace(R.id.fragmentFrameLayout, UserExpFragment())
                         .commit()
                 return true
             }

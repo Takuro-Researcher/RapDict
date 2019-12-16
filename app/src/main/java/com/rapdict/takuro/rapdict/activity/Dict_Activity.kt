@@ -1,16 +1,18 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import apps.test.marketableskill.biz.recyclerview.ListAdapter
+import com.rapdict.takuro.rapdict.*
+import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.common.WordAccess
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
 import kotlin.collections.ArrayList
@@ -90,13 +92,13 @@ class Dict__Activity : AppCompatActivity() {
 
     private fun bindData(answerList:ArrayList<AnswerView>) {
         for (answer in answerList){
-            val rhyme =RhymeData(answer.answer.toString(),answer.question.toString(),answer.favorite!!,answer.answerview_id)
+            val rhyme = RhymeData(answer.answer.toString(), answer.question.toString(), answer.favorite!!, answer.answerview_id)
             rhymeData.add(rhyme)
         }
     }
 
     private fun getSearchFav(id:Int):Int{
-        if (id==R.id.withoutFav){
+        if (id== R.id.withoutFav){
             return 0
         }else if(id == R.id.onlyFav){
             return 1

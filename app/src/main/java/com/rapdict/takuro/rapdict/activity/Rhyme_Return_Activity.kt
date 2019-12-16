@@ -1,7 +1,6 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.activity
 
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v7.app.AppCompatActivity
@@ -20,9 +19,11 @@ import sample.intent.AnswerData
 import android.text.TextUtils.isEmpty
 import android.view.Gravity.CENTER
 import android.view.Gravity.TOP
-import com.rapdict.takuro.rapdict.WidgetController.Companion.int_Dp2Px
-import android.R.string.cancel
-import kotlin.concurrent.timer
+import com.rapdict.takuro.rapdict.Word
+import com.rapdict.takuro.rapdict.common.WidgetController.Companion.int_Dp2Px
+import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.common.WidgetController
+import com.rapdict.takuro.rapdict.common.WordAccess
 
 
 class Rhyme_Return_Activity : AppCompatActivity() {

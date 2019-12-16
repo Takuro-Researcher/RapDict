@@ -1,12 +1,18 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.fragment
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.ResultListAdapter
+import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
+import kotlinx.android.synthetic.main.fragment_result.*
+import sample.intent.AnswerData
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,10 +39,28 @@ class ResultFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_result, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val helper = SQLiteOpenHelper(activity!!.applicationContext)
+        val db = helper.readableDatabase
+        val answerList = arguments?.getString("ANSWER_LIST")
+        val typeToken = object : TypeToken<Array<AnswerData>>() {}
+        val list = Gson().fromJson<Array<AnswerData>>(answerList, typeToken.type)
+
+        val listView = rhyme_list_view
+
+        listView.adapter = ResultListAdapter(context!!,list)
+        list?.forEach {
+              helper.answer_saveData(db, it)
+        }
+
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
+
 
 
     interface OnFragmentInteractionListener {

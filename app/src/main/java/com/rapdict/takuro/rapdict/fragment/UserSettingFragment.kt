@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.fragment
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -8,6 +8,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.common.WordAccess
 import kotlinx.android.synthetic.main.fragment_user_setting.*
 
 
@@ -49,7 +52,7 @@ class UserSettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val wordAccess=WordAccess()
+        val wordAccess= WordAccess()
         //踏んだ韻を数える処理
         helper = SQLiteOpenHelper(view.context)
         db = helper!!.writableDatabase
@@ -72,7 +75,7 @@ class UserSettingFragment : Fragment() {
             editor.apply()
             val fm=fragmentManager
             fm?.beginTransaction()?.
-                    replace(R.id.fragmentFrameLayout,UserExpFragment())?.
+                    replace(R.id.fragmentFrameLayout, UserExpFragment())?.
                     commit()
         }
     }

@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.rapdict.takuro.rapdict.*
+import com.rapdict.takuro.rapdict.activity.Dict__Activity
+import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
 
 open class ListAdapter(private val mParentActivity : Dict__Activity, private val mValues: ArrayList<RhymeData>) : RecyclerView.Adapter<ListViewHolder>() {
     private var helper: SQLiteOpenHelper? = null

@@ -1,12 +1,9 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import com.rapdict.takuro.rapdict.fragment.GameFragment
+import com.rapdict.takuro.rapdict.R
 
 open class GameActivity : AppCompatActivity() {
 

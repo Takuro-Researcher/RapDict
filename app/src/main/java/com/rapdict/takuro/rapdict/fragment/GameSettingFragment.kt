@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.fragment
 
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.activity.GameActivity
 import kotlinx.android.synthetic.main.fragment_game_setting.*
 
 class GameSettingFragment : Fragment() {
@@ -71,7 +73,7 @@ class GameSettingFragment : Fragment() {
         }
 
         start_button.setOnClickListener {
-            val intent: Intent = Intent(view.context,GameActivity::class.java)
+            val intent: Intent = Intent(view.context, GameActivity::class.java)
             intent.putExtra("QUESTION",questionSpinner.selectedItem as Int)
             intent.putExtra("TIME",timeSpinner.selectedItem as Int)
             intent.putExtra("MIN_WORD",minSpinner.selectedItem as Int)
