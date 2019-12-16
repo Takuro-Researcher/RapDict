@@ -1,8 +1,9 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.common
 
-import android.database.Cursor
 import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
+import com.rapdict.takuro.rapdict.AnswerView
+import com.rapdict.takuro.rapdict.Word
 
 import java.util.ArrayList
 
@@ -87,7 +88,7 @@ class WordAccess {
     }
 
     fun getLengthMinMax(database: SQLiteDatabase):ArrayList<Int>{
-        val sql = ("SELECT DISTINCT "+ COLUMN_NAME_WORD_LEN+ " FROM " + ANSWER_TABLE_NAME + " INNER JOIN " + WORD_TABLE_NAME + " ON " +
+        val sql = ("SELECT DISTINCT "+ COLUMN_NAME_WORD_LEN + " FROM " + ANSWER_TABLE_NAME + " INNER JOIN " + WORD_TABLE_NAME + " ON " +
                 ANSWER_TABLE_NAME + "." + COLUMN_NAME_QUESTION_ID + " = " + WORD_TABLE_NAME + "." + COLUMN_NAME_WORD_ID)
         val cursor = database.rawQuery(sql, null)
         val result = ArrayList<Int>()

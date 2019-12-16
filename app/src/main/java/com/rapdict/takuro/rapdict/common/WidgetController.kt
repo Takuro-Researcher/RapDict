@@ -1,7 +1,6 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.common
 
 import android.content.Context
-import android.util.DisplayMetrics
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -42,14 +41,11 @@ class WidgetController(internal var context: Context) {
             val metrics = context.resources.displayMetrics
             return dp * metrics.density
         }
-
         //Dpをピクセルに変換、int型に変換する。
         fun int_Dp2Px(dp: Float, context: Context): Int {
             val metrics = context.resources.displayMetrics
             val n = dp * metrics.density
             return n.toInt()
         }
-
-
     }
 }

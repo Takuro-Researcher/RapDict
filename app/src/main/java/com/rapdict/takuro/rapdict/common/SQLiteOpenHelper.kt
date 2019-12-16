@@ -1,14 +1,12 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.common
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.res.AssetManager
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
+import com.rapdict.takuro.rapdict.Word
 import sample.intent.AnswerData
 
 import java.io.BufferedReader
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.ArrayList
 
@@ -135,7 +133,7 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         private val SQL_CREATE_ANSWER_TABLE = "CREATE TABLE " + ANSWER_TABLE_NAME + " (" +
                 COLUMN_NAME_ANSWER_ID + " INTEGER PRIMARY KEY autoincrement," +
                 COLUMN_NAME_ANSWER + " TEXT," +
-                COLUMN_NAME_FAVORITE+" INTEGER "+"check(" + COLUMN_NAME_FAVORITE + " IN (0, 1)) ,"+
+                COLUMN_NAME_FAVORITE +" INTEGER "+"check(" + COLUMN_NAME_FAVORITE + " IN (0, 1)) ,"+
                 COLUMN_NAME_QUESTION_ID + " INTEGER)"
 
         private val SQL_QUESTION_DELETE = "DROP TABLE IF EXISTS $QUESTION_TABLE_NAME"

@@ -1,15 +1,11 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.activity
 
-import android.app.FragmentManager
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.drawable.AnimationDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.view.ViewGroup
 import java.util.ArrayList
 
@@ -17,11 +13,12 @@ import sample.intent.AnswerData
 
 import android.view.Gravity.CENTER
 import android.view.Gravity.TOP
-import android.view.animation.Animation
 import android.widget.*
-import com.airbnb.lottie.LottieAnimationView
-import com.rapdict.takuro.rapdict.WidgetController.Companion.int_Dp2Px
-import android.view.animation.AlphaAnimation as AlphaAnimation1
+import com.rapdict.takuro.rapdict.Db_DialogFragment
+import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.common.WidgetController
+import com.rapdict.takuro.rapdict.common.WidgetController.Companion.int_Dp2Px
 
 class Result_Activity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
@@ -130,7 +127,7 @@ class Result_Activity : AppCompatActivity() {
         val answer = arrayOf<AnswerData>(AnswerData())
 
         record_button.setOnClickListener {
-            var dialog =Db_DialogFragment()
+            var dialog = Db_DialogFragment()
             dialog.title="データの保存確認"
             for (i in answer_list.indices) {
                 if (checkBox[i]?.isChecked() == true) {

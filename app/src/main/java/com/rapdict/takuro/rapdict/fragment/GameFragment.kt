@@ -1,18 +1,19 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.fragment
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
 import android.text.TextUtils.isEmpty
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import com.google.gson.Gson
+import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.Word
+import com.rapdict.takuro.rapdict.common.WordAccess
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_insert_four.*
 import kotlinx.android.synthetic.main.fragment_insert_one.*
@@ -22,7 +23,6 @@ import sample.intent.AnswerData
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -69,7 +69,7 @@ class GameFragment : Fragment() {
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val helper =SQLiteOpenHelper(activity!!.applicationContext)
+        val helper = SQLiteOpenHelper(activity!!.applicationContext)
         val db = helper.readableDatabase
         val wordAccess = WordAccess()
 
@@ -81,7 +81,7 @@ class GameFragment : Fragment() {
         val words = wordAccess.getWords(db, minNum, maxNum, questionNum)
 
         val transaction2 = fragmentManager?.beginTransaction()
-        val resultFragment =ResultFragment()
+        val resultFragment = ResultFragment()
         val bundle:Bundle = Bundle()
         val answer_list = ArrayList<AnswerData>()
 

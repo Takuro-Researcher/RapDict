@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,11 +22,11 @@
 
 
         <activity
-            android:name=".Rhyme_Return_Activity"
+            android:name=".activity.Rhyme_Return_Activity"
             android:label="@string/app_name" />
-        <activity android:name=".Result_Activity" />
-        <activity android:name=".Dict__Activity" />
-        <activity android:name=".GameActivity"/>
+        <activity android:name=".activity.Result_Activity" />
+        <activity android:name=".activity.Dict__Activity" />
+        <activity android:name=".activity.GameActivity"/>
 
     </application>
 
