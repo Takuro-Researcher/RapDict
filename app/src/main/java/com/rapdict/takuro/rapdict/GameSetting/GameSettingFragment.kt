@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.fragment
+package com.rapdict.takuro.rapdict.GameSetting
 
 import android.content.Intent
 import android.net.Uri
@@ -11,7 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.activity.GameActivity
+import com.rapdict.takuro.rapdict.Game.GameActivity
 import kotlinx.android.synthetic.main.fragment_game_setting.*
 
 class GameSettingFragment : Fragment() {

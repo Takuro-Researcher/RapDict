@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.activity
+package com.rapdict.takuro.rapdict.Dict
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,8 +11,9 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import com.rapdict.takuro.rapdict.*
-import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
-import com.rapdict.takuro.rapdict.common.WordAccess
+import com.rapdict.takuro.rapdict.Main.MainActivity
+import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.helper.WordAccess
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
 import kotlin.collections.ArrayList

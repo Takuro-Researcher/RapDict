@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.common
+package com.rapdict.takuro.rapdict.helper
 
 import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase

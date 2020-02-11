@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.fragment
+package com.rapdict.takuro.rapdict.Dict
 
 import android.net.Uri
 import android.os.Bundle
@@ -10,7 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.ResultListAdapter
-import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import kotlinx.android.synthetic.main.fragment_result.*
 import sample.intent.AnswerData
 
