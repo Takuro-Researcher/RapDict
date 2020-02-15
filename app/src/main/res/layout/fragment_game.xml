@@ -7,7 +7,7 @@
     android:focusableInTouchMode="true"
     android:id="@+id/game_main"
     android:background="#000000"
-    tools:context=".fragment.GameFragment">
+    tools:context=".Game.GameFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

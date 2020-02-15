@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.activity
+package com.rapdict.takuro.rapdict.Main
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -8,9 +8,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.fragment.GameSettingFragment
-import com.rapdict.takuro.rapdict.fragment.UserExpFragment
-import com.rapdict.takuro.rapdict.fragment.UserSettingFragment
+import com.rapdict.takuro.rapdict.GameSetting.GameSettingFragment
+import com.rapdict.takuro.rapdict.Dict.Dict__Activity
+import com.rapdict.takuro.rapdict.Exp.UserExpFragment
+import com.rapdict.takuro.rapdict.UserSetting.UserSettingFragment
 
 open class MainActivity : AppCompatActivity() {
 

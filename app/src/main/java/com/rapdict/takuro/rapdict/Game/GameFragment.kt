@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.fragment
+package com.rapdict.takuro.rapdict.Game
 
 import android.net.Uri
 import android.os.Bundle
@@ -11,9 +11,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.common.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.Word
-import com.rapdict.takuro.rapdict.common.WordAccess
+import com.rapdict.takuro.rapdict.helper.WordAccess
+import com.rapdict.takuro.rapdict.Common.InsertOneFragment
+import com.rapdict.takuro.rapdict.Dict.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_insert_four.*
 import kotlinx.android.synthetic.main.fragment_insert_one.*
