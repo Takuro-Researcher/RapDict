@@ -3,7 +3,7 @@ package com.rapdict.takuro.rapdict.Game
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.text.TextUtils.isEmpty
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +31,7 @@ import kotlin.collections.ArrayList
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 
-class GameFragment : Fragment() {
+class GameFragment : androidx.fragment.app.Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var listener: OnFragmentInteractionListener? = null

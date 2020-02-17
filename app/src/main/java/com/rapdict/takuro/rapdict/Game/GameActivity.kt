@@ -1,7 +1,7 @@
 package com.rapdict.takuro.rapdict.Game
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.rapdict.takuro.rapdict.Game.GameFragment
 import com.rapdict.takuro.rapdict.R
 

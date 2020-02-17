@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import com.rapdict.takuro.rapdict.*
 import com.rapdict.takuro.rapdict.Main.MainActivity
@@ -64,7 +64,7 @@ class Dict__Activity : AppCompatActivity() {
 
         // RecyclerViewにAdapterとLayoutManagerの設定
         RecyclerView.adapter =adapter
-        RecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        RecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
 
 
         //検索
@@ -80,7 +80,7 @@ class Dict__Activity : AppCompatActivity() {
 
         //スワイプ時の削除処理
         val swipeHandler = object : SwipeToDeleteCallback(this) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {
                 val swipePosition = viewHolder.adapterPosition
                 adapter.rhymeRemove(swipePosition)
             }
