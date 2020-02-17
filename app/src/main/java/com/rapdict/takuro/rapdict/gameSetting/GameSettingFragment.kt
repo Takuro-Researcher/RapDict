@@ -1,9 +1,8 @@
-package com.rapdict.takuro.rapdict.GameSetting
+package com.rapdict.takuro.rapdict.gameSetting
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.Game.GameActivity
+import com.rapdict.takuro.rapdict.game.GameActivity
 import kotlinx.android.synthetic.main.fragment_game_setting.*
 
-class GameSettingFragment : Fragment() {
+class GameSettingFragment : androidx.fragment.app.Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null

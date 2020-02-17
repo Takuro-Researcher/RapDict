@@ -1,18 +1,18 @@
 
-package com.rapdict.takuro.rapdict.UserSetting
+package com.rapdict.takuro.rapdict.userSetting
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.helper.WordAccess
-import com.rapdict.takuro.rapdict.Exp.UserExpFragment
+import com.rapdict.takuro.rapdict.exp.UserExpFragment
 import kotlinx.android.synthetic.main.fragment_user_setting.*
 
 
@@ -30,7 +30,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class UserSettingFragment : Fragment() {
+class UserSettingFragment : androidx.fragment.app.Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null

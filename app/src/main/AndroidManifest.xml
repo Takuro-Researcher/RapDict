@@ -11,15 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Main.MainActivity">
+        <activity android:name="main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Dict.Dict__Activity" />
-        <activity android:name=".Game.GameActivity"/>
+        <activity android:name="dict.DictActivity" />
+        <activity android:name="game.GameActivity"/>
 
     </application>
 

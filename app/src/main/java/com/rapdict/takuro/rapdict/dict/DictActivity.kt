@@ -1,17 +1,15 @@
-package com.rapdict.takuro.rapdict.Dict
+package com.rapdict.takuro.rapdict.dict
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import com.rapdict.takuro.rapdict.*
-import com.rapdict.takuro.rapdict.Main.MainActivity
+import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.helper.WordAccess
 import kotlinx.android.synthetic.main.activity_dict.*
@@ -19,7 +17,7 @@ import kotlinx.android.synthetic.main.content_list.*
 import kotlin.collections.ArrayList
 
 
-class Dict__Activity : AppCompatActivity() {
+class DictActivity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
     private var rhymeData : ArrayList<RhymeData> = ArrayList<RhymeData>()
@@ -42,17 +40,17 @@ class Dict__Activity : AppCompatActivity() {
         var min =lengthWords.min()?.toFloat()
         val recomIntent  = Intent(this, MainActivity::class.java)
 
-        val dialog =AlertDialog.Builder(this)
-        dialog.setCancelable(false)
-        dialog.setMessage("韻を踏みに行きましょう")
-        dialog.setPositiveButton("戻る"){
-            dialog, which -> startActivity(recomIntent)
+        val recomdialog =AlertDialog.Builder(this)
+        recomdialog.setCancelable(false)
+        recomdialog.setMessage("韻を踏みに行きましょう")
+        recomdialog.setPositiveButton("戻る"){
+            _, _ -> startActivity(recomIntent)
         }
 
         if (lengthWords.size==0 || lengthWords.size ==1) {
             max = 10.toFloat()
             min = 1.toFloat()
-            dialog.show()
+            recomdialog.show()
         }
         //韻呼び出し
         range_progress_seek_bar.setRange(min!!, max!!,1.0f)
@@ -64,7 +62,7 @@ class Dict__Activity : AppCompatActivity() {
 
         // RecyclerViewにAdapterとLayoutManagerの設定
         RecyclerView.adapter =adapter
-        RecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        RecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
 
 
         //検索
@@ -79,8 +77,8 @@ class Dict__Activity : AppCompatActivity() {
         }
 
         //スワイプ時の削除処理
-        val swipeHandler = object : SwipeToDeleteCallback(this) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        val swipeHandler = object : SwipeToDeleteCallback() {
+            override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {
                 val swipePosition = viewHolder.adapterPosition
                 adapter.rhymeRemove(swipePosition)
             }
