@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.Main
+package com.rapdict.takuro.rapdict.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,10 +8,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.GameSetting.GameSettingFragment
-import com.rapdict.takuro.rapdict.Dict.Dict__Activity
-import com.rapdict.takuro.rapdict.Exp.UserExpFragment
-import com.rapdict.takuro.rapdict.UserSetting.UserSettingFragment
+import com.rapdict.takuro.rapdict.gameSetting.GameSettingFragment
+import com.rapdict.takuro.rapdict.dict.DictActivity
+import com.rapdict.takuro.rapdict.exp.UserExpFragment
+import com.rapdict.takuro.rapdict.userSetting.UserSettingFragment
 
 open class MainActivity : AppCompatActivity() {
 
@@ -44,7 +44,7 @@ open class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.rhyme_dict -> {
-                val intent = Intent(this, Dict__Activity::class.java)
+                val intent = Intent(this, DictActivity::class.java)
                 startActivity(intent)
                 return true
             }

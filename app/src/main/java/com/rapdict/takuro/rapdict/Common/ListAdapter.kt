@@ -2,14 +2,13 @@ package apps.test.marketableskill.biz.recyclerview
 
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.rapdict.takuro.rapdict.*
-import com.rapdict.takuro.rapdict.Dict.Dict__Activity
+import com.rapdict.takuro.rapdict.dict.DictActivity
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 
-open class ListAdapter(private val mParentActivity : Dict__Activity, private val mValues: ArrayList<RhymeData>) : androidx.recyclerview.widget.RecyclerView.Adapter<ListViewHolder>() {
+open class ListAdapter(private val mParentActivity : DictActivity, private val mValues: ArrayList<RhymeData>) : androidx.recyclerview.widget.RecyclerView.Adapter<ListViewHolder>() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
 
@@ -60,7 +59,6 @@ open class ListAdapter(private val mParentActivity : Dict__Activity, private val
 
     }
     fun favo2background(favorite:Boolean):Int{
-        val colorId:Int
         return if (favorite){
             Color.YELLOW
         }else{

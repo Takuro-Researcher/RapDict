@@ -1,9 +1,8 @@
-package com.rapdict.takuro.rapdict.Game
+package com.rapdict.takuro.rapdict.game
 
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
-import androidx.fragment.app.Fragment
 import android.text.TextUtils.isEmpty
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.helper.WordAccess
 import com.rapdict.takuro.rapdict.Common.InsertOneFragment
-import com.rapdict.takuro.rapdict.Dict.ResultFragment
+import com.rapdict.takuro.rapdict.dict.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_insert_four.*
 import kotlinx.android.synthetic.main.fragment_insert_one.*
@@ -84,8 +83,8 @@ class GameFragment : androidx.fragment.app.Fragment() {
 
         val transaction2 = fragmentManager?.beginTransaction()
         val resultFragment = ResultFragment()
-        val bundle:Bundle = Bundle()
-        val answer_list = ArrayList<AnswerData>()
+        val bundle = Bundle()
+        val answerList = ArrayList<AnswerData>()
 
         // 初期描画
         game_question_num.text = questionNum.toString()
@@ -100,7 +99,7 @@ class GameFragment : androidx.fragment.app.Fragment() {
 
                 if (finish_q >= questionNum-1){
                     cancel()
-                    bundle.putString("ANSWER_LIST", Gson().toJson(answer_list))
+                    bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
                     resultFragment.arguments = bundle
                     transaction2?.replace(R.id.fragmentGame, resultFragment)
                     transaction2?.commit()
@@ -112,11 +111,11 @@ class GameFragment : androidx.fragment.app.Fragment() {
         }.start()
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
-            answer_list.addAll(saveAnswer(words[finish_q].word_id!!, words[finish_q].word!!))
+            answerList.addAll(saveAnswer(words[finish_q].word_id!!, words[finish_q].word!!))
             finish_q++
             if (finish_q >= questionNum){
                 timer!!.cancel()
-                bundle.putString("ANSWER_LIST", Gson().toJson(answer_list))
+                bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
                 resultFragment.arguments = bundle
                 transaction2?.replace(R.id.fragmentGame, resultFragment)
                 transaction2?.commit()
@@ -161,7 +160,7 @@ class GameFragment : androidx.fragment.app.Fragment() {
             }
         }
         for (i in 0..answerNum-1){
-            editTexts[i]!!.setOnFocusChangeListener { v, hasFocus ->
+            editTexts[i]!!.setOnFocusChangeListener { _, hasFocus ->
                 if(hasFocus){
                     timer?.cancel()
                 }
@@ -188,7 +187,7 @@ class GameFragment : androidx.fragment.app.Fragment() {
     private fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerArray = ArrayList<AnswerData>()
-        var answerData =AnswerData()
+        var answerData:AnswerData
         for (i in 0 until answerNum){
             if ( !isEmpty(editTexts[i]?.text) ){
                 answerData = AnswerData()

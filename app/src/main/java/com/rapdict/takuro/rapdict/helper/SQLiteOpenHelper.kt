@@ -24,14 +24,14 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         try {
             val inputStream = assetManager.open("wordlist.csv")
             val inputStreamReader = InputStreamReader(inputStream)
-            br = BufferedReader(inputStreamReader!!)
+            br = BufferedReader(inputStreamReader)
             val arr = arrayOf("furigana", "word", "word_len")
             var line: String?
 
             do {
                 line = br.readLine()
                 if(line==null)
-                    break;
+                    break
 
                 val data = line.split(",".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
                 var colno = 0
@@ -90,9 +90,9 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
 
     fun answer_update_fav(db: SQLiteDatabase,answer_id:Int,favorite:Boolean){
         val values = ContentValues()
-        val favorite:Int=bool2Int(favorite)
+        val intFavorite:Int=bool2Int(favorite)
         val sql ="answer_id = "+answer_id
-        values.put("favorite",favorite)
+        values.put("favorite",intFavorite)
         db.update("answertable", values, sql,null)
     }
 

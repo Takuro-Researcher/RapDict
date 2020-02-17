@@ -1,5 +1,5 @@
 
-package com.rapdict.takuro.rapdict.UserSetting
+package com.rapdict.takuro.rapdict.userSetting
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.helper.WordAccess
-import com.rapdict.takuro.rapdict.Exp.UserExpFragment
+import com.rapdict.takuro.rapdict.exp.UserExpFragment
 import kotlinx.android.synthetic.main.fragment_user_setting.*
 
 
