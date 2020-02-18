@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.databinding.FragmentUserExpBinding
 import kotlinx.android.synthetic.main.fragment_user_exp.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -17,34 +21,37 @@ private const val ARG_PARAM2 = "param2"
 
 class UserExpFragment : androidx.fragment.app.Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
     private var listener: OnFragmentInteractionListener? = null
+    private var binding: FragmentUserExpBinding? = null
+    private var userExpViewModel: UserExpViewModel? = null
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val spf = this.getActivity()!!.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE);
-        val userName = spf.getString("user_name","ゲスト")
-        user_name.text = userName
-        shougou.text
+       // val spf = this.activity!!.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
+//        val userName = spf.getString("user_name","ゲスト")
+//        user_name.text = userName
+//        shougou.text
         progressbar.max =100
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        container?.removeAllViews()
-        return inflater.inflate(R.layout.fragment_user_exp, container, false)
+        binding = FragmentUserExpBinding.inflate(inflater, container,false)
+        binding!!.lifecycleOwner = this
+        return binding!!.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val userExpviewModel:UserExpViewModel by viewModel()
+        binding?.userData   = userExpviewModel
     }
 
     // TODO: Rename method, update argument and hook method into UI event
