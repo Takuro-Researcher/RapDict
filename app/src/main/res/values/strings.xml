@@ -6,7 +6,7 @@
     <string name="dict">韻辞書</string>
     <string name="user_achieve">称号</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="user_name_hint">ユーザー名</string>
+    <string name="user_name">ユーザー名</string>
     <string name="question_num">問題数</string>>
     <string name="return_num">踏み返しの数</string>
     <string name="limit_time">制限時間</string>
@@ -17,6 +17,9 @@
     <string name="only_favorite">お気に入りのみ</string>
     <string name="without_favorite">お気に入りなし</string>
     <string name="none_favorite">指定なし</string>
+    <string name="target">目標の韻</string>
     <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="unSetting">%sが設定されていません</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

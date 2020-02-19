@@ -1,0 +1,46 @@
+package com.rapdict.takuro.rapdict.exp
+
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
+import android.graphics.Color
+import android.preference.Preference
+import android.preference.PreferenceManager
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.rapdict.takuro.rapdict.R
+import kotlinx.coroutines.launch
+
+class UserExpViewModel(application: Application) : AndroidViewModel(application) {
+
+    //監視対象のLiveData
+    var userName: MutableLiveData<String> = MutableLiveData()
+    var target: MutableLiveData<String> = MutableLiveData()
+    var userNameColor: MutableLiveData<Int> = MutableLiveData()
+    var targetColor: MutableLiveData<Int> = MutableLiveData()
+    val spf:SharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplication())
+
+    //ViewModel初期化時にロード
+    init {
+        loadUserData()
+        loadTextColor()
+    }
+    private fun loadUserData(){
+        val app = getApplication<Application>()
+        userName.value = spf.getString("userName",String.format(app.getString(R.string.unSetting),app.getString(R.string.user_name)))
+        target.value = spf.getString("target",String.format(app.getString(R.string.unSetting),app.getString(R.string.target)))
+    }
+    private fun loadTextColor(){
+        userNameColor.value = Color.BLACK
+        targetColor.value =Color.BLACK
+        if(spf.getBoolean("userName",true)){
+            userNameColor.value = Color.GRAY
+        }
+        if(spf.getBoolean("target",true)){
+            targetColor.value = Color.GRAY
+        }
+    }
+
+
+}
