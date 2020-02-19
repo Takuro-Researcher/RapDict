@@ -24,7 +24,7 @@
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:padding="30dp"
-        android:hint="@string/user_name_hint"
+        android:hint="@string/user_name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/exp_disp"/>
     <TextView

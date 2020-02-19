@@ -27,28 +27,10 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text ="@{userData.userName}"
+            android:textColor = "@{userData.userNameColor}"
             app:layout_constraintTop_toBottomOf="@id/hello_message"
             app:layout_constraintStart_toStartOf="parent"/>
-        <TextView
-            android:padding="20dp"
-            android:id="@+id/current_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="@{userData.target}"
-            app:layout_constraintTop_toBottomOf="@+id/user_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-        <TextView
-            android:padding="20dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/shougou"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            app:layout_constraintTop_toBottomOf="@id/current_message"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+
         <TextView
             android:padding="20dp"
             android:layout_marginTop="10dp"
@@ -56,8 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="次の称号まで"
-            app:layout_constraintTop_toBottomOf="@id/shougou"
+            android:text="@{userData.target}"
+            android:textColor="@{userData.targetColor}"
+            app:layout_constraintTop_toBottomOf="@id/user_name"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <ProgressBar
