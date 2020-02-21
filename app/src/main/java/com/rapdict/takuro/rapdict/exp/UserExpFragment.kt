@@ -24,9 +24,6 @@ class UserExpFragment : androidx.fragment.app.Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
     private var binding: FragmentUserExpBinding? = null
-    private var userExpViewModel: UserExpViewModel? = null
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +31,6 @@ class UserExpFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // val spf = this.activity!!.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
-//        val userName = spf.getString("user_name","ゲスト")
-//        user_name.text = userName
-//        shougou.text
         progressbar.max =100
     }
 
@@ -62,21 +55,5 @@ class UserExpFragment : androidx.fragment.app.Fragment() {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
-    }
-
-    companion object {
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance() =
-                UserExpFragment().apply {
-
-                }
-        fun createInstance(): UserExpFragment {
-            val carDetailFragment = UserExpFragment()
-            val args = Bundle()
-            carDetailFragment.arguments = args
-            return carDetailFragment
-        }
-
     }
 }

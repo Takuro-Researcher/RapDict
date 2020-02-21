@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".userSetting.UserSettingFragment">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="data" type="com.rapdict.takuro.rapdict.userSetting.UserSettingViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".userSetting.UserSettingFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -25,27 +29,9 @@
         android:layout_margin="10dp"
         android:padding="30dp"
         android:hint="@string/user_name"
+        android:text="@{data.userName}"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/exp_disp"/>
-    <TextView
-        android:padding="30dp"
-        android:layout_margin="10dp"
-        android:id="@+id/exp_disp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="経験値"
-        app:layout_constraintTop_toBottomOf="@+id/user_name_disp"
-        app:layout_constraintStart_toStartOf="parent"/>
-    <TextView
-        android:layout_margin="10dp"
-        android:padding="30dp"
-        android:id="@+id/user_exp_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/edit_user_name"
-        app:layout_constraintStart_toEndOf="@id/exp_disp"/>
+        app:layout_constraintStart_toEndOf="@id/user_name_disp"/>
     <TextView
         android:padding="30dp"
         android:layout_margin="10dp"
@@ -54,7 +40,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="踏んだ韻"
-        app:layout_constraintTop_toBottomOf="@+id/exp_disp"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_disp"
         app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:layout_margin="10dp"
@@ -63,20 +49,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/user_exp_num"
-        app:layout_constraintStart_toEndOf="@id/exp_disp"/>
-
+        app:layout_constraintTop_toBottomOf="@id/user_name_disp"
+        app:layout_constraintStart_toEndOf="@id/rhyme_num_disp"/>
+    <TextView
+        android:padding="30dp"
+        android:layout_margin="10dp"
+        android:id="@+id/target_rhyme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="今日踏む韻"
+        app:layout_constraintTop_toBottomOf="@+id/rhyme_num_disp"
+        app:layout_constraintStart_toStartOf="parent"/>
     <Button
         android:id="@+id/rename_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="90dp"
-        android:padding="30dp"
+        android:padding="20dp"
         android:elevation="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/rhyme_num"
+        app:layout_constraintTop_toBottomOf="@+id/target_rhyme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="名前を変更する" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

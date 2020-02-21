@@ -34,10 +34,10 @@ class UserExpViewModel(application: Application) : AndroidViewModel(application)
     private fun loadTextColor(){
         userNameColor.value = Color.BLACK
         targetColor.value =Color.BLACK
-        if(spf.getBoolean("userName",true)){
+        if(spf.getString("userName","")!!.isBlank()){
             userNameColor.value = Color.GRAY
         }
-        if(spf.getBoolean("target",true)){
+        if(spf.getString("target","")!!.isBlank()){
             targetColor.value = Color.GRAY
         }
     }
