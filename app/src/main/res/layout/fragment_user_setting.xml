@@ -49,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:text="@{data.rhymeCount}"
         app:layout_constraintTop_toBottomOf="@id/user_name_disp"
         app:layout_constraintStart_toEndOf="@id/rhyme_num_disp"/>
     <TextView
@@ -64,11 +65,12 @@
      <Spinner
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:id="@+id/target_spinner"
          app:layout_constraintStart_toEndOf="@id/target_rhyme"
          app:layout_constraintTop_toTopOf="@id/target_rhyme"
          app:layout_constraintBottom_toBottomOf="@+id/target_rhyme"
          android:entries="@{data.numberArray}"
-         
+
          tools:ignore="MissingConstraints" />
     <Button
         android:id="@+id/rename_button"

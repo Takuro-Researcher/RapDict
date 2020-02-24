@@ -18,8 +18,10 @@
     <string name="without_favorite">お気に入りなし</string>
     <string name="none_favorite">指定なし</string>
     <string name="target">目標の韻</string>
+    <string name="todaysTarget">今日の目標の数は%sです</string>
     <!-- TODO: Remove or change this placeholder text -->
 
     <string name="unSetting">%sが設定されていません</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
