@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="data" type="com.rapdict.takuro.rapdict.userSetting.UserSettingViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".userSetting.UserSettingFragment">
@@ -61,6 +61,15 @@
         android:text="今日踏む韻"
         app:layout_constraintTop_toBottomOf="@+id/rhyme_num_disp"
         app:layout_constraintStart_toStartOf="parent"/>
+     <Spinner
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         app:layout_constraintStart_toEndOf="@id/target_rhyme"
+         app:layout_constraintTop_toTopOf="@id/target_rhyme"
+         app:layout_constraintBottom_toBottomOf="@+id/target_rhyme"
+         android:entries="@{data.numberArray}"
+         
+         tools:ignore="MissingConstraints" />
     <Button
         android:id="@+id/rename_button"
         android:layout_width="wrap_content"
