@@ -29,15 +29,21 @@ class UserExpViewModel(application: Application) : AndroidViewModel(application)
     private fun loadUserData(){
         val app = getApplication<Application>()
         userName.value = spf.getString("userName",String.format(app.getString(R.string.unSetting),app.getString(R.string.user_name)))
-        target.value = spf.getString("target",String.format(app.getString(R.string.unSetting),app.getString(R.string.target)))
+        var targetVal = spf.getInt("target",-1)
+        if (targetVal == -1){
+            target.value = String.format(app.getString(R.string.unSetting),app.getString(R.string.target))
+        }else{
+            target.value = String.format(app.getString(R.string.todaysTarget),targetVal.toString())
+        }
+
     }
     private fun loadTextColor(){
         userNameColor.value = Color.BLACK
         targetColor.value =Color.BLACK
-        if(spf.getBoolean("userName",true)){
+        if(spf.getString("userName","")!!.isBlank()){
             userNameColor.value = Color.GRAY
         }
-        if(spf.getBoolean("target",true)){
+        if(spf.getInt("target",-1)!! == -1){
             targetColor.value = Color.GRAY
         }
     }
