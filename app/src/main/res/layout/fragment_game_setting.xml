@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="settingData" type="com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel" />
+    </data>
+
+<TableLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    >
 
     <TableRow
         android:layout_width="match_parent"
@@ -21,6 +29,7 @@
             android:layout_width="4dp"
             android:layout_height="80dp"
             android:layout_weight="1"
+            android:entries="@{settingData.questionArray}"
             android:dropDownWidth="match_parent" />
 
     </TableRow>
@@ -41,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="1"
+            android:entries="@{settingData.timeArray}"
             android:dropDownWidth="match_parent" />
     </TableRow>
     <TableRow
@@ -60,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_weight="1"
+            android:entries="@{settingData.minArray}"
             android:dropDownWidth="match_parent" />
     </TableRow>
     <TableRow
@@ -79,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_weight="1"
+            android:entries="@{settingData.maxArray}"
             android:dropDownWidth="match_parent" />
     </TableRow>
     <TableRow
@@ -99,6 +111,7 @@
             android:layout_height="80dp"
             android:layout_weight="1"
             android:dropDownWidth="match_parent"
+            android:entries="@{settingData.returnArray}"
             android:textAlignment="center" />
     </TableRow>
 
@@ -116,6 +129,5 @@
             android:elevation="4dp"
             android:text="この設定で開始する" />
     </TableRow>
-
-
 </TableLayout>
+</layout>

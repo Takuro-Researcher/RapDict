@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         tools:context=".userSetting.UserSettingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:padding="30dp"
         android:layout_margin="10dp"
