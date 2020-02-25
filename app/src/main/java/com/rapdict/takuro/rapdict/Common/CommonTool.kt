@@ -1,9 +1,9 @@
 package com.rapdict.takuro.rapdict.Common
 
 class CommonTool {
-    public  fun makeNumArray(min:Int, max:Int):ArrayList<Int>{
+    public  fun makeNumArray(min:Int, max:Int, inc:Int = 1):ArrayList<Int>{
         val numArray = ArrayList<Int>()
-        for(i in min..max){
+        for(i in min..max step inc){
             numArray.add(i)
         }
         return numArray

@@ -2,6 +2,7 @@ package com.rapdict.takuro.rapdict.Common
 
 import android.app.Application
 import com.rapdict.takuro.rapdict.exp.UserExpViewModel
+import com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel
 import com.rapdict.takuro.rapdict.userSetting.UserSettingViewModel
 import org.koin.android.experimental.dsl.viewModel
 import org.koin.android.ext.koin.androidContext
@@ -23,6 +24,6 @@ class App : Application() {
     private val module: Module = module {
         viewModel { UserExpViewModel(get()) }
         viewModel { UserSettingViewModel(get()) }
-
+        viewModel { GameSettingViewModel(get()) }
     }
 }
