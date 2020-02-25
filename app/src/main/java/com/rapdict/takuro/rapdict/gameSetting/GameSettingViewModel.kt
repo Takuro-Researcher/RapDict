@@ -27,4 +27,8 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         returnArray.value = commonTool.makeNumArray(1,4)
         timeArray.value = commonTool.makeNumArray(3,10)
     }
+    public  fun updateMaxData(min:Int){
+        // TODO 現状のMinやMaxを監視し、値を更新する処理
+        maxArray.value = commonTool.makeNumArray(min+1,10)
+    }
 }

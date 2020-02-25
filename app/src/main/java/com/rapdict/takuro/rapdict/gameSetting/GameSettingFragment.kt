@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.lifecycle.ViewModel
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingBinding
 import com.rapdict.takuro.rapdict.game.GameActivity
@@ -38,20 +39,17 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val gameSettingViewModel:GameSettingViewModel by viewModel()
         val questionSpinner = question_spinner as Spinner
         val timeSpinner = time_spinner as Spinner
         val minSpinner = min_spinner as Spinner
-        val maxSpiner = max_spinner as Spinner
+        val maxSpinner = max_spinner as Spinner
         val returnSpinner = return_spinner as Spinner
-
-
 
         //最小文字>最大文字とならないように、スピナーの値を順次変更する
         minSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-
+                gameSettingViewModel.updateMaxData(minSpinner.selectedItem as Int)
             }
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
@@ -61,7 +59,7 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
             intent.putExtra("QUESTION",questionSpinner.selectedItem as Int)
             intent.putExtra("TIME",timeSpinner.selectedItem as Int)
             intent.putExtra("MIN_WORD",minSpinner.selectedItem as Int)
-            intent.putExtra("MAX_WORD",maxSpiner.selectedItem as Int)
+            intent.putExtra("MAX_WORD",maxSpinner.selectedItem as Int)
             intent.putExtra("RETURN",returnSpinner.selectedItem as Int)
             startActivity(intent)
         }
