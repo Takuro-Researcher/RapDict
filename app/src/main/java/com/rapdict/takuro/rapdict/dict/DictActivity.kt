@@ -6,14 +6,17 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import com.rapdict.takuro.rapdict.*
+import com.rapdict.takuro.rapdict.databinding.ItemListBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.helper.WordAccess
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import kotlin.collections.ArrayList
 
 
@@ -27,6 +30,12 @@ class DictActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dict)
+
+        val userExpviewModel:DictViewModel by viewModel()
+        val binding = DataBindingUtil.setContentView<ItemListBinding>(this, R.layout.item_list)
+        binding.viewModel = userExpviewModel
+        binding.lifecycleOwner = this
+
 
 
         //DbAccess関連のインスタンス生成

@@ -44,7 +44,7 @@ class UserExpFragment : androidx.fragment.app.Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val userExpviewModel:UserExpViewModel by viewModel()
-        binding?.userData   = userExpviewModel
+        binding?.userData  = userExpviewModel
     }
 
     // TODO: Rename method, update argument and hook method into UI event
