@@ -6,24 +6,21 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import com.rapdict.takuro.rapdict.*
-import com.rapdict.takuro.rapdict.databinding.ItemListBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.helper.WordAccess
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import kotlin.collections.ArrayList
 
 
 class DictActivity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
-    lateinit var mViewModel: DictViewModel
+    lateinit var mItemListViewModel: ItemListViewModel
 
 
     @SuppressLint("NewApi", "Range")
@@ -57,11 +54,10 @@ class DictActivity : AppCompatActivity() {
         }
         //韻呼び出し
         range_progress_seek_bar.setRange(min!!, max!!,1.0f)
-        val answerList:ArrayList<AnswerView> = wordAccess.getAnswers(db!!,0,30,2)
 
         // Adapter作成
-        val dictViewModel:DictViewModel by viewModel()
-        val adapter = ListAdapter(dictViewModel,this)
+        val itemListViewModel:ItemListViewModel by viewModel()
+        val adapter = ListAdapter(itemListViewModel,this)
 
         // RecyclerViewにAdapterとLayoutManagerの設定
         RecyclerView.adapter =adapter
@@ -70,34 +66,29 @@ class DictActivity : AppCompatActivity() {
 
         //検索
         search_button.setOnClickListener {
-//            rhymeData.clear()
-//            val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
-//            val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
-//            val selectedId = radioGroup.checkedRadioButtonId
-//            val searchWords =wordAccess.getAnswers(db!!,minVal,maxVal,getSearchFav(selectedId))
-//            bindData(searchWords)
-//            adapter.notifyDataSetChanged()
+            val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
+            val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
+            val selectedId = radioGroup.checkedRadioButtonId
+            val searchWords =wordAccess.getAnswers(db!!,minVal,maxVal,AnswerView.getSearchFav(selectedId))
+            itemListViewModel.bindAnswer(searchWords)
+            adapter.notifyDataSetChanged()
         }
 
         //スワイプ時の削除処理
         val swipeHandler = object : SwipeToDeleteCallback() {
             override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {
                 val swipePosition = viewHolder.adapterPosition
-                adapter.rhymeRemove(swipePosition)
+                adapter.notifyItemRemoved(swipePosition)
+                val deleteId = itemListViewModel.idList.get(swipePosition)
+                itemListViewModel.removeAnswer(swipePosition)
+                adapter.notifyItemRemoved(swipePosition)
+//                helper?.answer_delete(db!!,rhymeData.deleteId)
             }
         }
 
         //RecyclerViewにスワイプ処理をアタッチ
         val itemTouchHelper =ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(RecyclerView)
-    }
-    private fun getSearchFav(id:Int):Int{
-        if (id== R.id.withoutFav){
-            return 0
-        }else if(id == R.id.onlyFav){
-            return 1
-        }
-        return 2
     }
 
 }
