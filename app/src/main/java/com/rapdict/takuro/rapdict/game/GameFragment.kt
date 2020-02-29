@@ -14,7 +14,7 @@ import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.helper.WordAccess
 import com.rapdict.takuro.rapdict.Common.InsertOneFragment
-import com.rapdict.takuro.rapdict.dict.ResultFragment
+import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_insert_four.*
 import kotlinx.android.synthetic.main.fragment_insert_one.*
