@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.dict
+package com.rapdict.takuro.rapdict.result
 
 import android.net.Uri
 import android.os.Bundle

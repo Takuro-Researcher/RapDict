@@ -1,5 +1,7 @@
 package com.rapdict.takuro.rapdict
 
+import android.graphics.Color
+
 class AnswerView {
     var answerview_id: Int = 0
     var question_id: Int=0
@@ -18,7 +20,23 @@ class AnswerView {
     }
 
 
+    companion object {
+        // SQL用にフラグを数値に変更するプログラム
+        fun getSearchFav(id:Int):Int{
+            if (id == R.id.withoutFav){
+                return 0
+            }else if(id == R.id.onlyFav){
+                return 1
+            }
+            return 2
+        }
+        fun favo2background(favorite:Boolean):Int{
+            return if (favorite){
+                Color.YELLOW
+            }else{
+                Color.WHITE
+            }
+        }
 
-
-
+    }
 }

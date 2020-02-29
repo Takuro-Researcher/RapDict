@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="viewModel" type="com.rapdict.takuro.rapdict.dict.DictViewModel"/>
+        <variable name="viewModel" type="com.rapdict.takuro.rapdict.dict.ItemListViewModel"/>
         <variable name="position" type="Integer"/>
     </data>
     <androidx.cardview.widget.CardView
@@ -13,6 +13,7 @@
         android:clickable="true"
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="4dp"
+        card_view:cardBackgroundColor="@{viewModel.colorList[position]}"
         android:foreground="?android:attr/selectableItemBackground"
         android:focusable="true">
 
