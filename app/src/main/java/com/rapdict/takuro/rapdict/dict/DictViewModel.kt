@@ -20,7 +20,10 @@ class DictViewModel(application: Application) : AndroidViewModel(application) {
 
     //ViewModel初期化時にロード
     init {
-        loadUserData()
+        for (i in 0..3) {
+            rawList.add(MutableLiveData<String>().apply { value = "Item$i" })
+            rhymeList.add(MutableLiveData<String>().apply { value = "Rhyme$i" })
+        }
     }
     private fun loadUserData(){
         helper = SQLiteOpenHelper(getApplication())

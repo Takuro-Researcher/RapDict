@@ -23,19 +23,13 @@ import kotlin.collections.ArrayList
 class DictActivity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
-    private var rhymeData : ArrayList<RhymeData> = ArrayList<RhymeData>()
+    lateinit var mViewModel: DictViewModel
 
 
     @SuppressLint("NewApi", "Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dict)
-
-        val userExpviewModel:DictViewModel by viewModel()
-        val binding = DataBindingUtil.setContentView<ItemListBinding>(this, R.layout.item_list)
-        binding.viewModel = userExpviewModel
-        binding.lifecycleOwner = this
-
 
 
         //DbAccess関連のインスタンス生成
@@ -64,10 +58,10 @@ class DictActivity : AppCompatActivity() {
         //韻呼び出し
         range_progress_seek_bar.setRange(min!!, max!!,1.0f)
         val answerList:ArrayList<AnswerView> = wordAccess.getAnswers(db!!,0,30,2)
-        bindData(answerList)
 
         // Adapter作成
-        val adapter = ListAdapter(this,rhymeData)
+        val dictViewModel:DictViewModel by viewModel()
+        val adapter = ListAdapter(dictViewModel,this)
 
         // RecyclerViewにAdapterとLayoutManagerの設定
         RecyclerView.adapter =adapter
@@ -76,13 +70,13 @@ class DictActivity : AppCompatActivity() {
 
         //検索
         search_button.setOnClickListener {
-            rhymeData.clear()
-            val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
-            val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
-            val selectedId = radioGroup.checkedRadioButtonId
-            val searchWords =wordAccess.getAnswers(db!!,minVal,maxVal,getSearchFav(selectedId))
-            bindData(searchWords)
-            adapter.notifyDataSetChanged()
+//            rhymeData.clear()
+//            val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
+//            val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
+//            val selectedId = radioGroup.checkedRadioButtonId
+//            val searchWords =wordAccess.getAnswers(db!!,minVal,maxVal,getSearchFav(selectedId))
+//            bindData(searchWords)
+//            adapter.notifyDataSetChanged()
         }
 
         //スワイプ時の削除処理
@@ -97,14 +91,6 @@ class DictActivity : AppCompatActivity() {
         val itemTouchHelper =ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(RecyclerView)
     }
-
-    private fun bindData(answerList:ArrayList<AnswerView>) {
-        for (answer in answerList){
-            val rhyme = RhymeData(answer.answer.toString(), answer.question.toString(), answer.favorite!!, answer.answerview_id)
-            rhymeData.add(rhyme)
-        }
-    }
-
     private fun getSearchFav(id:Int):Int{
         if (id== R.id.withoutFav){
             return 0
