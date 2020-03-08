@@ -35,12 +35,14 @@ open class ListAdapter(private val viewModel : ListViewModel, private val parent
                 //お気に入り解除
                 favorite.progress = 0F
                 viewModel.favoList[position].value = false
+                viewModel.colorList[position].value = AnswerView.favo2background(false)
                 viewModel.updateFavorite(position,false)
             }else{
                 // お気に入り
                 favorite.playAnimation()
                 viewModel.favoList[position].value = true
                 viewModel.idList[position].value
+                viewModel.colorList[position].value = AnswerView.favo2background(true)
                 viewModel.updateFavorite(position,true)
             }
 
