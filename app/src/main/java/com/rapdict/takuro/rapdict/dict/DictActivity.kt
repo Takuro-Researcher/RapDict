@@ -14,13 +14,14 @@ import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.helper.WordAccess
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
+import kotlinx.android.synthetic.main.item_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class DictActivity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
-    lateinit var mItemListViewModel: ItemListViewModel
+    lateinit var mItemListViewModel: ListViewModel
 
 
     @SuppressLint("NewApi", "Range")
@@ -56,7 +57,7 @@ class DictActivity : AppCompatActivity() {
         range_progress_seek_bar.setRange(min!!, max!!,1.0f)
 
         // Adapter作成
-        val itemListViewModel:ItemListViewModel by viewModel()
+        val itemListViewModel:ListViewModel by viewModel()
         val adapter = ListAdapter(itemListViewModel,this)
 
         // RecyclerViewにAdapterとLayoutManagerの設定

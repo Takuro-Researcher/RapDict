@@ -30,6 +30,13 @@ class AnswerView {
             }
             return 2
         }
+
+        fun changeFavo(favoriteNum:Int):Int{
+            if(favoriteNum==1){
+                return 0
+            }
+            return 1
+        }
         fun favo2background(favorite:Boolean):Int{
             return if (favorite){
                 Color.YELLOW
