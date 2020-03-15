@@ -23,6 +23,7 @@
         <activity android:name=".dict.DictActivity" />
         <activity android:name=".game.GameActivity"/>
 
-    </application>
 
+    </application>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>

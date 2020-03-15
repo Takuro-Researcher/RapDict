@@ -1,16 +1,16 @@
 package com.rapdict.takuro.rapdict.gameSetting
 
+import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.lifecycle.ViewModel
-import com.rapdict.takuro.rapdict.R
+import androidx.appcompat.app.AlertDialog
 import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingBinding
 import com.rapdict.takuro.rapdict.game.GameActivity
 import kotlinx.android.synthetic.main.fragment_game_setting.*
@@ -55,13 +55,27 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
         }
 
         start_button.setOnClickListener {
-            val intent: Intent = Intent(view.context, GameActivity::class.java)
-            intent.putExtra("QUESTION",questionSpinner.selectedItem as Int)
-            intent.putExtra("TIME",timeSpinner.selectedItem as Int)
-            intent.putExtra("MIN_WORD",minSpinner.selectedItem as Int)
-            intent.putExtra("MAX_WORD",maxSpinner.selectedItem as Int)
-            intent.putExtra("RETURN",returnSpinner.selectedItem as Int)
-            startActivity(intent)
+            // TODO ネットワークに接続しているか確認する処理
+            var cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnected == true
+            if (isConnected ){
+                val intent: Intent = Intent(view.context, GameActivity::class.java)
+                intent.putExtra("QUESTION",questionSpinner.selectedItem as Int)
+                intent.putExtra("TIME",timeSpinner.selectedItem as Int)
+                intent.putExtra("MIN_WORD",minSpinner.selectedItem as Int)
+                intent.putExtra("MAX_WORD",maxSpinner.selectedItem as Int)
+                intent.putExtra("RETURN",returnSpinner.selectedItem as Int)
+                startActivity(intent)
+            }else{
+                val dialog = AlertDialog.Builder(activity!!)
+                dialog.setCancelable(false)
+                dialog.setMessage("通信を行うため、インターネットと接続してください")
+                dialog.setPositiveButton("OK",null)
+                dialog.show()
+            }
+
+
         }
     }
 
