@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.rapdict.takuro.rapdict.AnswerView
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.ResultListAdapter
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
@@ -47,10 +48,10 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         val list = Gson().fromJson<Array<AnswerData>>(answerList, typeToken.type)
 
         val listView = rhyme_list_view
-
+        val answerView = AnswerView()
         listView.adapter = ResultListAdapter(context!!,list)
         list?.forEach {
-              helper.answer_saveData(db, it)
+              answerView.answer_saveData(db, it)
         }
 
     }
