@@ -22,7 +22,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     private var db: SQLiteDatabase? = null
     private var helper: SQLiteOpenHelper? = null
-    private val wordAccess = WordAccess()
+    private val answerView = AnswerView()
 
     //ViewModel初期化時にロード
     init {
@@ -31,7 +31,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     private fun loadAnswerData(){
         helper = SQLiteOpenHelper(getApplication())
         db = helper!!.writableDatabase
-        val answerList:ArrayList<AnswerView> = wordAccess.getAnswers(db!!,0,30,2)
+        val answerList:ArrayList<AnswerView> = answerView.getAnswers(db!!,0,30,2)
         bindAnswer(answerList)
     }
 
@@ -57,9 +57,9 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun updateFavorite(position: Int,bool:Boolean){
-        helper = SQLiteOpenHelper(getApplication())
-        db = helper!!.writableDatabase
-        helper!!.answer_update_fav(db!!,idList[position].value!!,bool)
+        val answerView = AnswerView()
+        db = SQLiteOpenHelper(getApplication()).writableDatabase
+        answerView.answer_update_fav(db!!,idList[position].value!!,bool)
     }
 
     private fun clearAnswer(){

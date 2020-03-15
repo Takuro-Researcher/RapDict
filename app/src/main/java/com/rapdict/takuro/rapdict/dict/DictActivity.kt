@@ -33,10 +33,10 @@ class DictActivity : AppCompatActivity() {
         //DbAccess関連のインスタンス生成
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
-        val wordAccess = WordAccess()
+        val answerView = AnswerView()
         //検索用のレンジプログレスバーの設定
         range_progress_seek_bar.setIndicatorTextDecimalFormat("0")
-        val lengthWords =wordAccess.getLengthMinMax(db!!)
+        val lengthWords =answerView.getLengthMinMax(db!!)
         var max = lengthWords.max()?.toFloat()
         var min =lengthWords.min()?.toFloat()
         val recomIntent  = Intent(this, MainActivity::class.java)
@@ -70,7 +70,7 @@ class DictActivity : AppCompatActivity() {
             val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
             val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
             val selectedId = radioGroup.checkedRadioButtonId
-            val searchWords =wordAccess.getAnswers(db!!,minVal,maxVal,AnswerView.getSearchFav(selectedId))
+            val searchWords =answerView.getAnswers(db!!,minVal,maxVal,AnswerView.getSearchFav(selectedId))
             itemListViewModel.bindAnswer(searchWords)
             adapter.notifyDataSetChanged()
         }

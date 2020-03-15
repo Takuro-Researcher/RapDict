@@ -72,14 +72,14 @@ class GameFragment : androidx.fragment.app.Fragment() {
         super.onActivityCreated(savedInstanceState)
         val helper = SQLiteOpenHelper(activity!!.applicationContext)
         val db = helper.readableDatabase
-        val wordAccess = WordAccess()
+        val word = Word()
 
         val answerNum = arguments!!.getInt("RETURN")
         val timerNum = arguments!!.getInt("TIME")*1000.toLong()
         val questionNum = arguments!!.getInt("QUESTION")
         val minNum = arguments!!.getInt("MIN_WORD")
         val maxNum = arguments!!.getInt("MAX_WORD")
-        val words = wordAccess.getWords(db, minNum, maxNum, questionNum)
+        val words = word.getWords(db, minNum, maxNum, questionNum)
 
         val transaction2 = fragmentManager?.beginTransaction()
         val resultFragment = ResultFragment()

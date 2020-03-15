@@ -3,6 +3,7 @@ package com.rapdict.takuro.rapdict.helper
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import com.rapdict.takuro.rapdict.AnswerView
 import com.rapdict.takuro.rapdict.Word
 import sample.intent.AnswerData
 
@@ -57,8 +58,9 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
 
         }
         //wordList[]から、実際にSQLiteによる登録
+        val answerView = AnswerView()
         for (i in wordList.indices) {
-            question_saveData(db, wordList[i].furigana!!, wordList[i].word!!, wordList[i].word_len!!)
+            answerView.question_saveData(db, wordList[i].furigana!!, wordList[i].word!!, wordList[i].word_len!!)
         }
     }
 
@@ -70,40 +72,6 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
 
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         onUpgrade(db, oldVersion, newVersion)
-    }
-
-    fun question_saveData(db: SQLiteDatabase, furigana: String, word: String, word_len: Int) {
-        val values = ContentValues()
-        values.put("furigana", furigana)
-        values.put("word", word)
-        values.put("word_len", word_len)
-        db.insert("wordtable", null, values)
-    }
-
-    fun answer_saveData(db: SQLiteDatabase, answer:AnswerData) {
-        val values = ContentValues()
-        values.put("question_id", answer.question_id)
-        values.put("answer", answer.answer)
-        values.put("favorite",answer.favorite)
-        db.insert("answertable", null, values)
-    }
-
-    fun answer_update_fav(db: SQLiteDatabase,answer_id:Int,favorite:Boolean){
-        val values = ContentValues()
-        val intFavorite:Int=bool2Int(favorite)
-        val sql ="answer_id = "+answer_id
-        values.put("favorite",intFavorite)
-        db.update("answertable", values, sql,null)
-    }
-
-    fun answer_delete(db: SQLiteDatabase, deleAnswerId:Int){
-        val query = "$COLUMN_NAME_ANSWER_ID=$deleAnswerId"
-        db.delete("answertable",query,null)
-
-    }
-    fun bool2Int(flag:Boolean):Int{
-        val flagInt:Int = if(flag) 1 else 0
-        return flagInt
     }
 
 
