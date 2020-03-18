@@ -65,7 +65,6 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
             val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnected == true
 
-
             if (isConnected ){
                 val intent = Intent(view.context, GameActivity::class.java)
                 intent.putExtra("QUESTION",questionSpinner.selectedItem as Int)
@@ -81,8 +80,6 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
                 dialog.setPositiveButton("OK",null)
                 dialog.show()
             }
-
-
         }
     }
 

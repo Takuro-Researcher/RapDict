@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.Common.InsertOneFragment
 import com.rapdict.takuro.rapdict.Common.HttpApiRequest
+import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_insert_four.*
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_insert_three.*
 import kotlinx.android.synthetic.main.fragment_insert_two.*
 import org.json.JSONArray
 import org.json.JSONObject
+import org.koin.android.viewmodel.ext.android.viewModel
 import sample.intent.AnswerData
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,7 +37,7 @@ private const val ARG_PARAM1 = "param1"
 
 class GameFragment : androidx.fragment.app.Fragment() {
     private var param1: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+    private var binding: FragmentGameBinding? =null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
     internal var editTexts =arrayOfNulls<EditText>(4)
@@ -48,23 +51,21 @@ class GameFragment : androidx.fragment.app.Fragment() {
 
         }
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        container?.removeAllViews()
-        return inflater.inflate(R.layout.fragment_game, container,false)
-    }
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        binding = FragmentGameBinding.inflate(inflater,container,false)
+        binding!!.lifecycleOwner = this
+        return binding!!.root
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val word = Word()
+        val gameViewModel: GameViewModel by viewModel()
+        binding?.data = gameViewModel
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val httpApiRequest = HttpApiRequest()
         val words =ArrayList<Word>()
         httpApiRequest.setOnCallBack(object : HttpApiRequest.CallBackTask(){
