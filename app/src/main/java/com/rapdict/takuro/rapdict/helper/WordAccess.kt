@@ -34,7 +34,7 @@ class WordAccess {
             val id = cursor.getInt(word_id_id)
             word1.word = word
             word1.furigana = furigana
-            word1.word_id = id
+            word1.id = id
             result.add(word1)
         }
         return result

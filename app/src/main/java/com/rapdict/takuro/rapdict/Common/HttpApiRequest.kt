@@ -11,12 +11,14 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
-class httpApiRequest: AsyncTask<String, String, String>(){
+class HttpApiRequest: AsyncTask<String, String, String>(){
+    private var callBacktask = CallBackTask()
     override fun doInBackground(vararg params: String?): String {
         //ここでAPIを叩きます。バックグラウンドで処理する内容です。
         var connection: HttpURLConnection? = null
         var reader: BufferedReader? = null
         val buffer: StringBuffer
+
 
         try {
             //param[0]にはAPIのURI(String)を入れます(後ほど)。
@@ -49,8 +51,7 @@ class httpApiRequest: AsyncTask<String, String, String>(){
             //JSONObjectを使って、まず全体のJSONObjectを取ります。
             val parentJsonObj = JSONObject(jsonText)
 
-            val fomi = parentJsonObj.get("rhymes") as JSONArray
-
+            return parentJsonObj.toString()
 
             //ここから下は、接続エラーとかJSONのエラーとかで失敗した時にエラーを処理する為のものです。
         } catch (e: MalformedURLException) {
@@ -71,5 +72,18 @@ class httpApiRequest: AsyncTask<String, String, String>(){
         }
         //失敗した時はnullやエラーコードなどを返しましょう。
         return null.toString()
+    }
+    fun setOnCallBack(_cbj:CallBackTask){
+        callBacktask = _cbj
+    }
+
+    override fun onPostExecute(result: String?) {
+        super.onPostExecute(result)
+        callBacktask.CallBack(result.toString())
+    }
+    open class CallBackTask{
+        open fun CallBack(result:String){
+
+        }
     }
 }
