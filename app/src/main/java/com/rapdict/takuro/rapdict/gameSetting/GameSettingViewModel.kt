@@ -27,7 +27,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         returnArray.value = commonTool.makeNumArray(1,4)
         timeArray.value = commonTool.makeNumArray(3,10)
     }
-    public  fun updateMaxData(min:Int){
+    fun updateMaxData(min:Int){
         maxArray.value = commonTool.makeNumArray(min+1,10)
     }
 }

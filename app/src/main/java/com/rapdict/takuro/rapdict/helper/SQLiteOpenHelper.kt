@@ -41,7 +41,7 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
                     when (colno) {
                         0 -> word.furigana = data[colno]
                         1 -> word.word = data[colno]
-                        2 -> word.word_len = Integer.parseInt(data[colno])
+                        2 -> word.length = Integer.parseInt(data[colno])
                     }
                     colno++
                 }
@@ -60,7 +60,7 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
         //wordList[]から、実際にSQLiteによる登録
         val answerView = AnswerView()
         for (i in wordList.indices) {
-            answerView.question_saveData(db, wordList[i].furigana!!, wordList[i].word!!, wordList[i].word_len!!)
+            answerView.question_saveData(db, wordList[i].furigana!!, wordList[i].word!!, wordList[i].length!!)
         }
     }
 

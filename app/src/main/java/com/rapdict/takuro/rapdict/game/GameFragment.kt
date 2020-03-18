@@ -9,17 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.Word
-import com.rapdict.takuro.rapdict.helper.WordAccess
 import com.rapdict.takuro.rapdict.Common.InsertOneFragment
+import com.rapdict.takuro.rapdict.Common.HttpApiRequest
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_insert_four.*
 import kotlinx.android.synthetic.main.fragment_insert_one.*
 import kotlinx.android.synthetic.main.fragment_insert_three.*
 import kotlinx.android.synthetic.main.fragment_insert_two.*
+import org.json.JSONArray
+import org.json.JSONObject
 import sample.intent.AnswerData
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,7 +33,6 @@ import kotlin.collections.ArrayList
 private const val ARG_PARAM1 = "param1"
 
 class GameFragment : androidx.fragment.app.Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
@@ -55,14 +56,7 @@ class GameFragment : androidx.fragment.app.Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         container?.removeAllViews()
-
-        // 正常にfragmentを切り替えることには成功している。よって、デザインの可能性が高い。
         return inflater.inflate(R.layout.fragment_game, container,false)
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
     }
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
@@ -70,16 +64,33 @@ class GameFragment : androidx.fragment.app.Fragment() {
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val helper = SQLiteOpenHelper(activity!!.applicationContext)
-        val db = helper.readableDatabase
         val word = Word()
+        val httpApiRequest = HttpApiRequest()
+        val words =ArrayList<Word>()
+        httpApiRequest.setOnCallBack(object : HttpApiRequest.CallBackTask(){
+            override fun CallBack(result: String) {
+                super.CallBack(result)
+                val parentJsonObj = JSONObject(result)
+                val rhymes = parentJsonObj.get("rhymes") as JSONArray
+                rhymes.getJSONObject(0)
+                for(i in 0 until rhymes.length()){
+                    val jsonRhyme = rhymes.getJSONObject(i)
+                    val rhyme =Word()
+                    rhyme.id = jsonRhyme.getInt("id")
+                    rhyme.furigana = jsonRhyme.getString("furigana")
+                    rhyme.word = jsonRhyme.getString("name")
+                    rhyme.length = jsonRhyme.getInt("length")
+                    words.add(rhyme)
+                }
+            }
+        })
+        // TODO 実際の描画やViewModelの検討など
 
         val answerNum = arguments!!.getInt("RETURN")
         val timerNum = arguments!!.getInt("TIME")*1000.toLong()
         val questionNum = arguments!!.getInt("QUESTION")
         val minNum = arguments!!.getInt("MIN_WORD")
         val maxNum = arguments!!.getInt("MAX_WORD")
-        val words = word.getWords(db, minNum, maxNum, questionNum)
 
         val transaction2 = fragmentManager?.beginTransaction()
         val resultFragment = ResultFragment()
@@ -111,7 +122,7 @@ class GameFragment : androidx.fragment.app.Fragment() {
         }.start()
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
-            answerList.addAll(saveAnswer(words[finish_q].word_id!!, words[finish_q].word!!))
+            answerList.addAll(saveAnswer(words[finish_q].id!!, words[finish_q].word!!))
             finish_q++
             if (finish_q >= questionNum){
                 timer!!.cancel()
@@ -203,16 +214,5 @@ class GameFragment : androidx.fragment.app.Fragment() {
         for (i in 0 until answerNum){
             editTexts[i]?.editableText?.clear()
         }
-    }
-
-    companion object {
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(answerNum:Int) =
-                GameFragment().apply {
-                    arguments = Bundle().apply {
-                        putInt(ARG_PARAM1, answerNum)
-                    }
-                }
     }
 }
