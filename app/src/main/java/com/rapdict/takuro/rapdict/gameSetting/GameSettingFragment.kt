@@ -13,9 +13,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
+import com.rapdict.takuro.rapdict.Common.httpApiRequest
 import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingBinding
 import com.rapdict.takuro.rapdict.game.GameActivity
 import kotlinx.android.synthetic.main.fragment_game_setting.*
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -71,7 +73,8 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
             val isConnected: Boolean = activeNetwork?.isConnected == true
 
             if (isConnected ){
-                HitAPITask().execute("https://script.google.com/macros/s/AKfycbwlFWDy9zFZK2nWMyXrHdHrlIJ2wZPx-ufvaLwukpjs0fMzqg/exec?min=6&max=12&num=30")
+                httpApiRequest().execute("https://script.google.com/macros/s/AKfycbwlFWDy9zFZK2nWMyXrHdHrlIJ2wZPx-ufvaLwukpjs0fMzqg/exec?min=6&max=12&num=30")
+                // HitAPITask().execute("https://script.google.com/macros/s/AKfycbwlFWDy9zFZK2nWMyXrHdHrlIJ2wZPx-ufvaLwukpjs0fMzqg/exec?min=6&max=12&num=30")
 
                 val intent = Intent(view.context, GameActivity::class.java)
                 intent.putExtra("QUESTION",questionSpinner.selectedItem as Int)
@@ -130,6 +133,8 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
                 //JSONObjectを使って、まず全体のJSONObjectを取ります。
                 val parentJsonObj = JSONObject(jsonText)
 
+                val fomi = parentJsonObj.get("rhymes") as JSONArray
+                System.out.println(fomi[0])
 
                 //ここから下は、接続エラーとかJSONのエラーとかで失敗した時にエラーを処理する為のものです。
             } catch (e: MalformedURLException) {
