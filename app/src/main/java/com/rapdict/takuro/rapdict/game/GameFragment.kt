@@ -67,60 +67,50 @@ class GameFragment : androidx.fragment.app.Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val httpApiRequest = HttpApiRequest()
+
         val answerNum = arguments!!.getInt("RETURN")
         val timerNum = arguments!!.getInt("TIME")*1000.toLong()
         val questionNum = arguments!!.getInt("QUESTION")
-        val minNum = arguments!!.getInt("MIN_WORD")
-        val maxNum = arguments!!.getInt("MAX_WORD")
+        val words =ArrayList<Word>()
+        val rhymes = JSONObject(arguments!!.getString("RHYMES")).get("rhymes") as JSONArray
+        for(i in 0 until rhymes.length()){
+            val questionWord =Word()
+            val jsonQuestionWord = rhymes.getJSONObject(i)
+            questionWord.id = jsonQuestionWord.getInt("id")
+            questionWord.furigana = jsonQuestionWord.getString("furigana")
+            questionWord.word = jsonQuestionWord.getString("word")
+            questionWord.length = jsonQuestionWord.getInt("length")
+            words.add(questionWord)
+        }
+
 
         val transaction2 = fragmentManager?.beginTransaction()
         val resultFragment = ResultFragment()
         val bundle = Bundle()
         val answerList = ArrayList<AnswerData>()
-        val words =ArrayList<Word>()
 
 
-        httpApiRequest.setOnCallBack(object : HttpApiRequest.CallBackTask(){
-            override fun CallBack(result: String) {
-                super.CallBack(result)
-                val parentJsonObj = JSONObject(result)
-                val rhymes = parentJsonObj.get("rhymes") as JSONArray
-                rhymes.getJSONObject(0)
-                for(i in 0 until rhymes.length()){
-                    val jsonRhyme = rhymes.getJSONObject(i)
-                    val rhyme =Word()
-                    rhyme.id = jsonRhyme.getInt("id")
-                    rhyme.furigana = jsonRhyme.getString("furigana")
-                    rhyme.word = jsonRhyme.getString("word")
-                    rhyme.length = jsonRhyme.getInt("length")
-                    words.add(rhyme)
-                }
-                game_question_num.text = questionNum.toString()
-                game_question_text.text = words[finish_q].word
-                game_furigana_text.text = words[finish_q].furigana
-                timer = object:CountDownTimer(timerNum,100.toLong()){
-                    override fun onTick(millisUntilFinished: Long) {
-                        game_sec_display.text = dataFormat.format(millisUntilFinished)
-                    }
-                    override fun onFinish() {
-
-                        if (finish_q >= questionNum-1){
-                            cancel()
-                            bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
-                            resultFragment.arguments = bundle
-                            transaction2?.replace(R.id.fragmentGame, resultFragment)
-                            transaction2?.commit()
-                        }else{
-                            finish_q++
-                            changedQuestion(finish_q, words, questionNum)
-                        }
-                    }
-                }.start()
+        game_question_num.text = questionNum.toString()
+        game_question_text.text = words[finish_q].word
+        game_furigana_text.text = words[finish_q].furigana
+        timer = object:CountDownTimer(timerNum,100.toLong()){
+            override fun onTick(millisUntilFinished: Long) {
+                game_sec_display.text = dataFormat.format(millisUntilFinished)
             }
-        })
+            override fun onFinish() {
 
-        httpApiRequest.execute(CommonTool.makeApiUrl(6,12,10))
+                if (finish_q >= questionNum-1){
+                    cancel()
+                    bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
+                    resultFragment.arguments = bundle
+                    transaction2?.replace(R.id.fragmentGame, resultFragment)
+                    transaction2?.commit()
+                }else{
+                    finish_q++
+                    changedQuestion(finish_q, words, questionNum)
+                }
+            }
+        }.start()
 
 
         //問題変更ボタン処理
