@@ -19,6 +19,9 @@
     <string name="none_favorite">指定なし</string>
     <string name="target">目標の韻</string>
     <string name="todaysTarget">今日の目標の数は%sです</string>
+    <string name="waitingDisp">サーバーと通信しています… \n 少しだけお待ちください</string>
+    <string name="startingDisp">通信が完了しました！\n 下記ボタンからスタートできます</string>
+    <string name="gameStart">ゲーム開始ィ！</string>
     <!-- TODO: Remove or change this placeholder text -->
 
     <string name="unSetting">%sが設定されていません</string>
