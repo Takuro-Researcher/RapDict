@@ -32,6 +32,7 @@ open class GameActivity : AppCompatActivity() {
                 bundle.putString("RHYMES",result)
                 waiting_display.text =  application.getString(R.string.startingDisp)
                 game_start_button.visibility = View.VISIBLE
+                loading.visibility = View.INVISIBLE
             }
         })
 
