@@ -8,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.JsonArray
+import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.Common.InsertOneFragment
 import com.rapdict.takuro.rapdict.Common.HttpApiRequest
+import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_insert_four.*
@@ -22,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_insert_three.*
 import kotlinx.android.synthetic.main.fragment_insert_two.*
 import org.json.JSONArray
 import org.json.JSONObject
+import org.koin.android.viewmodel.ext.android.viewModel
 import sample.intent.AnswerData
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,7 +38,7 @@ private const val ARG_PARAM1 = "param1"
 
 class GameFragment : androidx.fragment.app.Fragment() {
     private var param1: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+    private var binding: FragmentGameBinding? =null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
     internal var editTexts =arrayOfNulls<EditText>(4)
@@ -48,25 +52,35 @@ class GameFragment : androidx.fragment.app.Fragment() {
 
         }
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        container?.removeAllViews()
-        return inflater.inflate(R.layout.fragment_game, container,false)
-    }
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        binding = FragmentGameBinding.inflate(inflater,container,false)
+        binding!!.lifecycleOwner = this
+        return binding!!.root
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val word = Word()
+        val gameViewModel: GameViewModel by viewModel()
+        binding?.data = gameViewModel
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val httpApiRequest = HttpApiRequest()
+        val answerNum = arguments!!.getInt("RETURN")
+        val timerNum = arguments!!.getInt("TIME")*1000.toLong()
+        val questionNum = arguments!!.getInt("QUESTION")
+        val minNum = arguments!!.getInt("MIN_WORD")
+        val maxNum = arguments!!.getInt("MAX_WORD")
+
+        val transaction2 = fragmentManager?.beginTransaction()
+        val resultFragment = ResultFragment()
+        val bundle = Bundle()
+        val answerList = ArrayList<AnswerData>()
         val words =ArrayList<Word>()
+
+
         httpApiRequest.setOnCallBack(object : HttpApiRequest.CallBackTask(){
             override fun CallBack(result: String) {
                 super.CallBack(result)
@@ -78,48 +92,37 @@ class GameFragment : androidx.fragment.app.Fragment() {
                     val rhyme =Word()
                     rhyme.id = jsonRhyme.getInt("id")
                     rhyme.furigana = jsonRhyme.getString("furigana")
-                    rhyme.word = jsonRhyme.getString("name")
+                    rhyme.word = jsonRhyme.getString("word")
                     rhyme.length = jsonRhyme.getInt("length")
                     words.add(rhyme)
                 }
+                game_question_num.text = questionNum.toString()
+                game_question_text.text = words[finish_q].word
+                game_furigana_text.text = words[finish_q].furigana
+                timer = object:CountDownTimer(timerNum,100.toLong()){
+                    override fun onTick(millisUntilFinished: Long) {
+                        game_sec_display.text = dataFormat.format(millisUntilFinished)
+                    }
+                    override fun onFinish() {
+
+                        if (finish_q >= questionNum-1){
+                            cancel()
+                            bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
+                            resultFragment.arguments = bundle
+                            transaction2?.replace(R.id.fragmentGame, resultFragment)
+                            transaction2?.commit()
+                        }else{
+                            finish_q++
+                            changedQuestion(finish_q, words, questionNum)
+                        }
+                    }
+                }.start()
             }
         })
-        // TODO 実際の描画やViewModelの検討など
 
-        val answerNum = arguments!!.getInt("RETURN")
-        val timerNum = arguments!!.getInt("TIME")*1000.toLong()
-        val questionNum = arguments!!.getInt("QUESTION")
-        val minNum = arguments!!.getInt("MIN_WORD")
-        val maxNum = arguments!!.getInt("MAX_WORD")
+        httpApiRequest.execute(CommonTool.makeApiUrl(6,12,10))
 
-        val transaction2 = fragmentManager?.beginTransaction()
-        val resultFragment = ResultFragment()
-        val bundle = Bundle()
-        val answerList = ArrayList<AnswerData>()
 
-        // 初期描画
-        game_question_num.text = questionNum.toString()
-        game_question_text.text = words[finish_q].word
-        game_furigana_text.text = words[finish_q].furigana
-
-        timer = object:CountDownTimer(timerNum,100.toLong()){
-            override fun onTick(millisUntilFinished: Long) {
-                game_sec_display.text = dataFormat.format(millisUntilFinished)
-            }
-            override fun onFinish() {
-
-                if (finish_q >= questionNum-1){
-                    cancel()
-                    bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
-                    resultFragment.arguments = bundle
-                    transaction2?.replace(R.id.fragmentGame, resultFragment)
-                    transaction2?.commit()
-                }else{
-                    finish_q++
-                    changedQuestion(finish_q, words, questionNum)
-                }
-            }
-        }.start()
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
             answerList.addAll(saveAnswer(words[finish_q].id!!, words[finish_q].word!!))
