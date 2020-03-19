@@ -1,13 +1,13 @@
 package com.rapdict.takuro.rapdict.game
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Common.HttpApiRequest
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.Word
-import org.json.JSONArray
-import org.json.JSONObject
+import kotlinx.android.synthetic.main.activity_game.*
+
 
 open class GameActivity : AppCompatActivity() {
 
@@ -19,29 +19,38 @@ open class GameActivity : AppCompatActivity() {
         val questionNum =intent.getIntExtra("QUESTION",0)
         val minWordNum = intent.getIntExtra("MIN_WORD",0)
         val maxWordNum = intent.getIntExtra("MAX_WORD",0)
+
+
+        val transaction = supportFragmentManager.beginTransaction()
+
         val bundle =Bundle()
-        val words = ArrayList<Word>()
         val httpApiRequest =HttpApiRequest()
-        var rhyme = String()
+
         httpApiRequest.setOnCallBack(object : HttpApiRequest.CallBackTask(){
             override fun CallBack(result: String) {
                 super.CallBack(result)
                 bundle.putString("RHYMES",result)
-                val transaction = supportFragmentManager.beginTransaction()
-                val gameFragment = GameFragment()
-                gameFragment.arguments = bundle
-                transaction.add(R.id.fragmentGame, gameFragment)
-                transaction.commit()
+                waiting_display.text =  application.getString(R.string.startingDisp)
+                game_start_button.visibility = View.VISIBLE
+                loading.visibility = View.INVISIBLE
             }
         })
 
         bundle.putInt("RETURN",answerNum)
         bundle.putInt("TIME",timeNum)
         bundle.putInt("QUESTION",questionNum)
-        bundle.putInt("MIN_WORD",minWordNum)
-        bundle.putInt("MAX_WORD",maxWordNum)
 
         setContentView(R.layout.activity_game)
+
+        game_start_button.setOnClickListener {
+            game_start_button.visibility = View.INVISIBLE
+            waiting_display.visibility = View.INVISIBLE
+
+            val gameFragment = GameFragment()
+            gameFragment.arguments = bundle
+            transaction.add(R.id.fragmentGame, gameFragment)
+            transaction.commit()
+        }
         // コードからフラグメントを追加
         if (savedInstanceState == null) {
             httpApiRequest.execute(CommonTool.makeApiUrl(minWordNum,maxWordNum,questionNum))
