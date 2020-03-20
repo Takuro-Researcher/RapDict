@@ -1,6 +1,5 @@
 package com.rapdict.takuro.rapdict.game
 
-import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils.isEmpty
@@ -8,14 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
-import com.rapdict.takuro.rapdict.Common.InsertOneFragment
-import com.rapdict.takuro.rapdict.Common.HttpApiRequest
+import com.rapdict.takuro.rapdict.Common.InsertRhymeFragment
 import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
@@ -98,7 +93,6 @@ class GameFragment : androidx.fragment.app.Fragment() {
                 game_sec_display.text = dataFormat.format(millisUntilFinished)
             }
             override fun onFinish() {
-
                 if (finish_q >= questionNum-1){
                     cancel()
                     bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
@@ -132,7 +126,7 @@ class GameFragment : androidx.fragment.app.Fragment() {
             }
         }
         val transaction = childFragmentManager.beginTransaction()
-        val tableFragment = InsertOneFragment.newInstance(answerNum)
+        val tableFragment = InsertRhymeFragment.newInstance(answerNum)
         transaction.add(R.id.edit_table, tableFragment)
         transaction.commit()
 
@@ -195,7 +189,6 @@ class GameFragment : androidx.fragment.app.Fragment() {
         for (i in 0 until answerNum){
             if ( !isEmpty(editTexts[i]?.text) ){
                 answerData = AnswerData()
-                System.out.println(editTexts[i]?.text.toString() )
                 answerData.answerSet(word_id, editTexts[i]?.text.toString(), word)
                 answerArray.add(answerData)
             }

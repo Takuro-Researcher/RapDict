@@ -45,7 +45,6 @@ open class GameActivity : AppCompatActivity() {
         game_start_button.setOnClickListener {
             game_start_button.visibility = View.INVISIBLE
             waiting_display.visibility = View.INVISIBLE
-
             val gameFragment = GameFragment()
             gameFragment.arguments = bundle
             transaction.add(R.id.fragmentGame, gameFragment)
