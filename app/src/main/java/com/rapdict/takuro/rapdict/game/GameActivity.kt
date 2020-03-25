@@ -36,6 +36,8 @@ open class GameActivity : AppCompatActivity() {
             }
         })
 
+
+
         bundle.putInt("RETURN",answerNum)
         bundle.putInt("TIME",timeNum)
         bundle.putInt("QUESTION",questionNum)
@@ -45,7 +47,7 @@ open class GameActivity : AppCompatActivity() {
         game_start_button.setOnClickListener {
             game_start_button.visibility = View.INVISIBLE
             waiting_display.visibility = View.INVISIBLE
-            val gameFragment = GameFragment()
+            val gameFragment = GamePlayFragment()
             gameFragment.arguments = bundle
             transaction.add(R.id.fragmentGame, gameFragment)
             transaction.commit()

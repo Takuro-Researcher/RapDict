@@ -3,7 +3,7 @@ package com.rapdict.takuro.rapdict.game
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 
-class GameViewModel(application: Application) : AndroidViewModel(application) {
+class GamePlayViewModel(application: Application) : AndroidViewModel(application) {
 
     //監視対象のLiveData
 

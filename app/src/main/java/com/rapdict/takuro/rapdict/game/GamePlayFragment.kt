@@ -6,7 +6,9 @@ import android.text.TextUtils.isEmpty
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TableRow
 import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
@@ -31,12 +33,11 @@ import kotlin.collections.ArrayList
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 
-class GameFragment : androidx.fragment.app.Fragment() {
+class GamePlayFragment : androidx.fragment.app.Fragment() {
     private var param1: String? = null
     private var binding: FragmentGameBinding? =null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
-    internal var editTexts =arrayOfNulls<EditText>(4)
     private var timer:CountDownTimer?= null
 
 
@@ -57,7 +58,7 @@ class GameFragment : androidx.fragment.app.Fragment() {
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val gameViewModel: GameViewModel by viewModel()
+        val gameViewModel: GamePlayViewModel by viewModel()
         binding?.data = gameViewModel
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,6 +78,10 @@ class GameFragment : androidx.fragment.app.Fragment() {
             questionWord.length = jsonQuestionWord.getInt("length")
             words.add(questionWord)
         }
+        // TODO TableRowにEditTextを入れる
+        val editTable = edit_table
+        val tableRow = ArrayList<TableRow>()
+
 
 
         val transaction2 = fragmentManager?.beginTransaction()
@@ -107,6 +112,7 @@ class GameFragment : androidx.fragment.app.Fragment() {
         }.start()
 
 
+
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
             answerList.addAll(saveAnswer(words[finish_q].id!!, words[finish_q].word!!))
@@ -125,45 +131,13 @@ class GameFragment : androidx.fragment.app.Fragment() {
                 game_main.requestFocus()
             }
         }
-        val transaction = childFragmentManager.beginTransaction()
-        val tableFragment = InsertRhymeFragment.newInstance(answerNum)
-        transaction.add(R.id.edit_table, tableFragment)
-        transaction.commit()
-
     }
+
 
     override fun onStart() {
         super.onStart()
         // 回答時、停止処理を記述
-        val answerNum = arguments!!.getInt("RETURN")
 
-        when(answerNum){
-            1 -> {
-                editTexts[0] = rhyme_one_one
-            }
-            2 -> {
-                editTexts[0] = rhyme_two_one
-                editTexts[1] = rhyme_two_two
-            }
-            3 -> {
-                editTexts[0] = rhyme_three_one
-                editTexts[1] = rhyme_three_two
-                editTexts[2] = rhyme_three_three
-            }
-            4 -> {
-                editTexts[0] = rhyme_four_one
-                editTexts[1] = rhyme_four_two
-                editTexts[2] = rhyme_four_three
-                editTexts[3] = rhyme_four_four
-            }
-        }
-        for (i in 0..answerNum-1){
-            editTexts[i]!!.setOnFocusChangeListener { _, hasFocus ->
-                if(hasFocus){
-                    timer?.cancel()
-                }
-            }
-        }
     }
 
     override fun onStop() {
@@ -186,19 +160,10 @@ class GameFragment : androidx.fragment.app.Fragment() {
         val answerNum = arguments!!.getInt("RETURN")
         val answerArray = ArrayList<AnswerData>()
         var answerData:AnswerData
-        for (i in 0 until answerNum){
-            if ( !isEmpty(editTexts[i]?.text) ){
-                answerData = AnswerData()
-                answerData.answerSet(word_id, editTexts[i]?.text.toString(), word)
-                answerArray.add(answerData)
-            }
-        }
+
         return answerArray
     }
     fun editTextClear(){
         val answerNum = arguments!!.getInt("RETURN")
-        for (i in 0 until answerNum){
-            editTexts[i]?.editableText?.clear()
-        }
     }
 }

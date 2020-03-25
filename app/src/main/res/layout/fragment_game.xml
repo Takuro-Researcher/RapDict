@@ -14,7 +14,7 @@
     android:focusableInTouchMode="true"
     android:id="@+id/game_main"
     android:background="#000000"
-    tools:context=".game.GameFragment">
+    tools:context=".game.GamePlayFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -90,7 +90,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/edit_table"
         app:layout_constraintTop_toBottomOf="@id/game_furigana_text">
-        
     </TableLayout>
     <Button
         android:layout_width="wrap_content"
