@@ -3,7 +3,7 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.game.GameViewModel" />
+        <variable name="data" type="com.rapdict.takuro.rapdict.game.GamePlayViewModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
 
@@ -14,7 +14,7 @@
     android:focusableInTouchMode="true"
     android:id="@+id/game_main"
     android:background="#000000"
-    tools:context=".game.GameFragment">
+    tools:context=".game.GamePlayFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -90,7 +90,41 @@
         android:layout_height="wrap_content"
         android:id="@+id/edit_table"
         app:layout_constraintTop_toBottomOf="@id/game_furigana_text">
-        
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{data.oneRowVisibility}">
+
+            <EditText
+                android:id="@+id/rhyme_edit_one"
+                android:layout_width="0dp"
+                android:layout_weight="@{data.editOneWeight}"
+                android:layout_height="wrap_content"
+                />
+            <EditText
+                android:id="@+id/rhyme_edit_two"
+                android:layout_width="0dp"
+                android:layout_weight="@{data.editTwoWeight}"
+                android:layout_height="wrap_content"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{data.twoRowVisibility}">
+            <EditText
+                android:id="@+id/rhyme_edit_three"
+                android:layout_width="0dp"
+                android:layout_weight="@{data.editThreeWeight}"
+                android:layout_height="wrap_content"
+                />
+            <EditText
+                android:id="@+id/rhyme_edit_four"
+                android:layout_width="0dp"
+                android:layout_weight="@{data.editFourWeight}"
+                android:layout_height="wrap_content"
+                />
+        </TableRow>
     </TableLayout>
     <Button
         android:layout_width="wrap_content"

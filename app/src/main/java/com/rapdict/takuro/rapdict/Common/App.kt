@@ -3,7 +3,7 @@ package com.rapdict.takuro.rapdict.Common
 import android.app.Application
 import com.rapdict.takuro.rapdict.dict.ListViewModel
 import com.rapdict.takuro.rapdict.exp.UserExpViewModel
-import com.rapdict.takuro.rapdict.game.GameViewModel
+import com.rapdict.takuro.rapdict.game.GamePlayViewModel
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel
 import com.rapdict.takuro.rapdict.userSetting.UserSettingViewModel
 import org.koin.android.experimental.dsl.viewModel
@@ -28,6 +28,6 @@ class App : Application() {
         viewModel { UserSettingViewModel(get()) }
         viewModel { GameSettingViewModel(get()) }
         viewModel { ListViewModel(get()) }
-        viewModel { GameViewModel(get()) }
+        viewModel { GamePlayViewModel(get()) }
     }
 }
