@@ -8,18 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TableRow
 import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
-import com.rapdict.takuro.rapdict.Common.InsertRhymeFragment
 import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
-import kotlinx.android.synthetic.main.fragment_insert_four.*
-import kotlinx.android.synthetic.main.fragment_insert_one.*
-import kotlinx.android.synthetic.main.fragment_insert_three.*
-import kotlinx.android.synthetic.main.fragment_insert_two.*
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -38,6 +34,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     private var binding: FragmentGameBinding? =null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
+    val editTexts = ArrayList<EditText>()
     private var timer:CountDownTimer?= null
 
 
@@ -80,7 +77,8 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         }
         // TODO TableRowにEditTextを入れる
         val editTable = edit_table
-        val tableRow = ArrayList<TableRow>()
+
+
 
 
 
@@ -155,7 +153,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         timer!!.start()
     }
     // answerList を一時保存
-
     private fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerArray = ArrayList<AnswerData>()
@@ -163,6 +160,8 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
         return answerArray
     }
+
+
     fun editTextClear(){
         val answerNum = arguments!!.getInt("RETURN")
     }
