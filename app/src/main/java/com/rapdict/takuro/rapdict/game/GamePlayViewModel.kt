@@ -25,10 +25,26 @@ class GamePlayViewModel(application: Application) : AndroidViewModel(application
         editTwoWeight.value = 0f
         editThreeWeight.value = 0f
         editFourWeight.value = 0f
-
     }
 
     fun draw(answer:Int){
-
+        when(answer) {
+            2 -> {
+                editOneWeight.value = 0.5f
+                editTwoWeight.value = 0.5f
+            }
+            3 -> {
+                twoRowVisibility.value = View.VISIBLE
+                editThreeWeight.value = 0.5f
+                editFourWeight.value = 0.5f
+            }
+            4 -> {
+                twoRowVisibility.value = View.VISIBLE
+                editOneWeight.value = 0.5f
+                editTwoWeight.value = 0.5f
+                editThreeWeight.value = 0.5f
+                editFourWeight.value = 0.5f
+            }
+        }
     }
 }
