@@ -74,12 +74,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             questionWord.length = jsonQuestionWord.getInt("length")
             words.add(questionWord)
         }
-        // TODO TableRowにEditTextを入れる
-
-
-
-
-
 
         val transaction2 = fragmentManager?.beginTransaction()
         val resultFragment = ResultFragment()
