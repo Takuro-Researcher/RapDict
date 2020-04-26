@@ -97,15 +97,20 @@
 
             <EditText
                 android:id="@+id/rhyme_edit_one"
+                android:background="@color/colorWhite"
                 android:layout_width="0dp"
+                android:layout_margin="20sp"
                 android:layout_weight="@{data.editOneWeight}"
                 android:layout_height="wrap_content"
                 />
             <EditText
                 android:id="@+id/rhyme_edit_two"
                 android:layout_width="0dp"
+                android:background="@color/colorWhite"
+                android:layout_margin="20sp"
                 android:layout_weight="@{data.editTwoWeight}"
                 android:layout_height="wrap_content"
+                android:visibility="@{data.editTwoVisibility}"
                 />
         </TableRow>
         <TableRow
@@ -115,12 +120,16 @@
             <EditText
                 android:id="@+id/rhyme_edit_three"
                 android:layout_width="0dp"
+                android:background="@color/colorWhite"
+                android:layout_margin="20sp"
                 android:layout_weight="@{data.editThreeWeight}"
                 android:layout_height="wrap_content"
                 />
             <EditText
                 android:id="@+id/rhyme_edit_four"
+                android:background="@color/colorWhite"
                 android:layout_width="0dp"
+                android:layout_margin="20sp"
                 android:layout_weight="@{data.editFourWeight}"
                 android:layout_height="wrap_content"
                 />

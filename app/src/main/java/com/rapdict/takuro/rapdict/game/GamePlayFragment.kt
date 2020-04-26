@@ -34,7 +34,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     private var binding: FragmentGameBinding? =null
     private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
-    val editTexts = ArrayList<EditText>()
     private var timer:CountDownTimer?= null
 
 
@@ -56,11 +55,11 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     override fun onActivityCreated(savedInstanceState:Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val gameViewModel: GamePlayViewModel by viewModel()
+        gameViewModel.draw(arguments!!.getInt("RETURN"))
         binding?.data = gameViewModel
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val answerNum = arguments!!.getInt("RETURN")
         val timerNum = arguments!!.getInt("TIME")*1000.toLong()
         val questionNum = arguments!!.getInt("QUESTION")
@@ -75,12 +74,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             questionWord.length = jsonQuestionWord.getInt("length")
             words.add(questionWord)
         }
-        // TODO TableRowにEditTextを入れる
-        val editTable = edit_table
-
-
-
-
 
         val transaction2 = fragmentManager?.beginTransaction()
         val resultFragment = ResultFragment()
