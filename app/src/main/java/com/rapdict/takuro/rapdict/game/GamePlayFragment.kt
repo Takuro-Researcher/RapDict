@@ -2,14 +2,9 @@ package com.rapdict.takuro.rapdict.game
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.TextUtils.isEmpty
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TableRow
 import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
@@ -50,6 +45,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentGameBinding.inflate(inflater,container,false)
         binding!!.lifecycleOwner = this
+        binding!!.fragment = this
         return binding!!.root
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
@@ -120,15 +116,26 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 game_main.setFocusable(true)
                 game_main.setFocusableInTouchMode(true)
                 game_main.requestFocus()
+
             }
         }
-    }
 
+    }
 
     override fun onStart() {
         super.onStart()
-        // 回答時、停止処理を記述
-
+        // 回答時にストップウォッチの停止処理を記述
+        var editTextOnFocus: View.OnFocusChangeListener = object :View.OnFocusChangeListener{
+            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                if (hasFocus) {
+                    timer!!.cancel()
+                }
+            }
+        }
+        rhyme_edit_one.onFocusChangeListener = editTextOnFocus
+        rhyme_edit_two.onFocusChangeListener = editTextOnFocus
+        rhyme_edit_three.onFocusChangeListener = editTextOnFocus
+        rhyme_edit_four.onFocusChangeListener = editTextOnFocus
     }
 
     override fun onStop() {
@@ -137,6 +144,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         timer!!.cancel()
     }
     // 踏んだ韻をため込む処理
+
 
     // 問題を変更する処理
     fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
@@ -150,12 +158,15 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         val answerNum = arguments!!.getInt("RETURN")
         val answerArray = ArrayList<AnswerData>()
         var answerData:AnswerData
-
         return answerArray
     }
 
 
     fun editTextClear(){
-        val answerNum = arguments!!.getInt("RETURN")
+        var editTextNum = arguments!!.getInt("RETURN")
+        if (editTextNum >= 1){ rhyme_edit_one.editableText.clear() }
+        if (editTextNum >= 2){ rhyme_edit_two.editableText.clear() }
+        if (editTextNum >= 3){ rhyme_edit_three.editableText.clear() }
+        if (editTextNum >= 4){ rhyme_edit_four.editableText.clear() }
     }
 }
