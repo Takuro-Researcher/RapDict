@@ -56,7 +56,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val answerNum = arguments!!.getInt("RETURN")
         val timerNum = arguments!!.getInt("TIME")*1000.toLong()
         val questionNum = arguments!!.getInt("QUESTION")
         val words =ArrayList<Word>()
@@ -157,7 +156,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     private fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerArray = ArrayList<AnswerData>()
-        var answerData:AnswerData
         return answerArray
     }
 
