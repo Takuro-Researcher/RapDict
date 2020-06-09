@@ -103,7 +103,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         game_next_button.setOnClickListener {
             answerList.addAll(saveAnswer(words[finish_q].id!!, words[finish_q].word!!))
             finish_q++
-            System.out.println(answerList)
             if (finish_q >= questionNum){
                 timer!!.cancel()
                 bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
