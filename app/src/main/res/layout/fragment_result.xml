@@ -1,16 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".result.ResultFragment">
-
     <!-- TODO: Update blank fragment layout -->
-    <ListView
-        android:id="@+id/rhyme_list_view"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/result_header"
+        android:layout_marginTop="30sp"
+        android:textSize="30sp"
+        android:gravity="center_horizontal"
+        android:id="@+id/result_display_text_view"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/result_display_text_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/result_description"
+        android:layout_marginTop="30sp"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:id="@+id/result_description_text_vier"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="チェックした奴を保存"
+        android:layout_marginTop="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/result_description_text_vier"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <ListView
+        android:id="@+id/result_rhyme_list_view"
+        android:layout_marginTop="15sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/result_description_text_vier"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
