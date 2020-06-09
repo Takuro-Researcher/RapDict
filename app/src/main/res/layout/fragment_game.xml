@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="data" type="com.rapdict.takuro.rapdict.game.GamePlayViewModel" />
+        <variable name="fragment" type="com.rapdict.takuro.rapdict.game.GamePlayFragment" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
 
@@ -132,6 +133,7 @@
                 android:layout_margin="20sp"
                 android:layout_weight="@{data.editFourWeight}"
                 android:layout_height="wrap_content"
+
                 />
         </TableRow>
     </TableLayout>

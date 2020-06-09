@@ -43,7 +43,7 @@ open class GameActivity : AppCompatActivity() {
         bundle.putInt("QUESTION",questionNum)
 
         setContentView(R.layout.activity_game)
-
+        // 画面遷移
         game_start_button.setOnClickListener {
             game_start_button.visibility = View.INVISIBLE
             waiting_display.visibility = View.INVISIBLE
