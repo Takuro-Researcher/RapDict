@@ -103,6 +103,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         game_next_button.setOnClickListener {
             answerList.addAll(saveAnswer(words[finish_q].id!!, words[finish_q].word!!))
             finish_q++
+            System.out.println(answerList)
             if (finish_q >= questionNum){
                 timer!!.cancel()
                 bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
@@ -115,7 +116,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 game_main.setFocusable(true)
                 game_main.setFocusableInTouchMode(true)
                 game_main.requestFocus()
-
             }
         }
 
@@ -142,7 +142,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         finish_q = 100
         timer!!.cancel()
     }
-    // 踏んだ韻をため込む処理
 
 
     // 問題を変更する処理
@@ -155,7 +154,17 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     // answerList を一時保存
     private fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
         val answerNum = arguments!!.getInt("RETURN")
+        val answerTexts = mutableListOf<String>()
+        if (answerNum >= 1){ answerTexts.add(rhyme_edit_one.text.toString()) }
+        if (answerNum >= 2){ answerTexts.add(rhyme_edit_two.text.toString()) }
+        if (answerNum >= 3){ answerTexts.add(rhyme_edit_three.text.toString()) }
+        if (answerNum >= 4){ answerTexts.add(rhyme_edit_four.text.toString()) }
         val answerArray = ArrayList<AnswerData>()
+        for( answer in answerTexts){
+            if (answer.isNullOrBlank()){ continue }
+            var answerData = AnswerData(word_id, answer,word,0)
+            answerArray.add(answerData)
+        }
         return answerArray
     }
 
