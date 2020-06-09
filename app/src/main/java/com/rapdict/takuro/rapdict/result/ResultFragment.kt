@@ -14,15 +14,8 @@ import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import kotlinx.android.synthetic.main.fragment_result.*
 import sample.intent.AnswerData
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class ResultFragment : androidx.fragment.app.Fragment() {
     // TODO: Rename and change types of parameters
-
-    private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,31 +41,21 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         list?.forEach {
               answerView.answer_saveData(db, it)
         }
-
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        register_rhyme_button.setOnClickListener {
+            System.out.println("Helloooooo!!")
+        }
     }
 
 
 
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
 
-    companion object {
 
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                ResultFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
-    }
+
+
+
+
 }

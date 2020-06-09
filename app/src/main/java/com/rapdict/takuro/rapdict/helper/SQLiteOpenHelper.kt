@@ -36,7 +36,7 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
 
                 val data = line.split(",".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
                 var colno = 0
-                val word = Word()
+                val word = Word(1,"","",0)
                 for (column in arr) {
                     when (colno) {
                         0 -> word.furigana = data[colno]

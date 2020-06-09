@@ -25,17 +25,17 @@ class WordAccess {
         val result = ArrayList<Word>()
 
         while (cursor.moveToNext()) {
-            val word1 = Word()
+
             val furigana_id = cursor.getColumnIndex("furigana")
             val word_id = cursor.getColumnIndex("word")
             val word_id_id = cursor.getColumnIndex("word_id")
+
             val furigana = cursor.getString(furigana_id)
-            val word = cursor.getString(word_id)
+            val word_text = cursor.getString(word_id)
             val id = cursor.getInt(word_id_id)
-            word1.word = word
-            word1.furigana = furigana
-            word1.id = id
-            result.add(word1)
+
+            var word = Word(id,furigana,word_text,word_text.length)
+            result.add(word)
         }
         return result
     }
