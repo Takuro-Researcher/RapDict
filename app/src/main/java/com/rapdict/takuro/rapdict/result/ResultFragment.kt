@@ -1,6 +1,5 @@
 package com.rapdict.takuro.rapdict.result
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rapdict.takuro.rapdict.AnswerView
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.ResultListAdapter
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import kotlinx.android.synthetic.main.fragment_result.*
 import sample.intent.AnswerData
@@ -35,9 +33,9 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         val typeToken = object : TypeToken<Array<AnswerData>>() {}
         val list = Gson().fromJson<Array<AnswerData>>(answerList, typeToken.type)
 
-        val listView = result_rhyme_list_view
+
         val answerView = AnswerView()
-        listView.adapter = ResultListAdapter(context!!,list)
+        // 保存データ
         list?.forEach {
               answerView.answer_saveData(db, it)
         }
