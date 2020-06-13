@@ -25,7 +25,6 @@ open class ResultListAdapter(private val viewModel : ResultListViewModel, privat
         holder.binding.data = this.viewModel
         holder.binding.position = position
 
-        var checkbox =holder.binding.checkboxSave
         holder.binding.checkboxSave.setOnClickListener {
             if(viewModel.checkedList[position].value!!){
                 viewModel.checkedList[position].value = false
