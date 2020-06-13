@@ -24,6 +24,16 @@ open class ResultListAdapter(private val viewModel : ResultListViewModel, privat
     override fun onBindViewHolder(holder: ResultListViewHolder, position: Int) {
         holder.binding.data = this.viewModel
         holder.binding.position = position
+
+        var checkbox =holder.binding.checkboxSave
+        holder.binding.checkboxSave.setOnClickListener {
+            if(viewModel.checkedList[position].value!!){
+                viewModel.checkedList[position].value = false
+            }else{
+                viewModel.checkedList[position].value = true
+            }
+        }
+
         //ここでviewholderのlifecycleOwnerにセットする！
         holder.binding.lifecycleOwner = parentLifecycleOwner
     }

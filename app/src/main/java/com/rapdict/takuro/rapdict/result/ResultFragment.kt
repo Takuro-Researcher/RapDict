@@ -44,7 +44,19 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         adapter.notifyDataSetChanged()
         ResultRecyclerView.adapter = adapter
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+        save_button.setOnClickListener {
+            val bool_list = resultListViewModel.checkedList
+            var register_index  = ArrayList<Int>()
+            bool_list.forEachIndexed { index, data ->
+                if(data.value == true){ register_index.add(index) }
+            }
 
+            for (index in register_index){
+                var answer = list.get(index)
+                var answerView = AnswerView()
+                // 保存answerView.answer_saveData(db,answer)
+            }
+        }
 //        val answerView = AnswerView()
 //        // 保存データ
 //        list?.forEach {

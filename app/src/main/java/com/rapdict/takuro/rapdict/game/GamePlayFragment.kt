@@ -165,7 +165,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             answerArray.add(answerData)
         }
         // デバッグ用にシーズ
-        answerArray.add(AnswerData(1,"テストだよ"+finish_q.toString(),"縁遠かろう",0))
+        // answerArray.add(AnswerData(1,"テストだよ"+finish_q.toString(),"縁遠かろう",0))
         return answerArray
     }
 

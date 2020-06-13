@@ -49,11 +49,12 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="@{data.textList[position]}"/>
         <CheckBox
-            android:id="@+id/checkbox_1"
+            android:id="@+id/checkbox_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="12sp"
+            android:checked="@{data.checkedList[position]}"
             app:layout_constraintStart_toEndOf="@id/result_list_answer"
             app:layout_constraintTop_toTopOf="parent"/>
         </LinearLayout>

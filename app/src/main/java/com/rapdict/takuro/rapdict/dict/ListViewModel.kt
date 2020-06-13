@@ -55,7 +55,6 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         favoList.removeAt(position)
         favoriteProgressList.removeAt(position)
     }
-
     fun updateFavorite(position: Int,bool:Boolean){
         val answerView = AnswerView()
         db = SQLiteOpenHelper(getApplication()).writableDatabase
