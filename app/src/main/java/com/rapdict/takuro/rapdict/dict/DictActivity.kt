@@ -21,7 +21,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class DictActivity : AppCompatActivity() {
     private var helper: SQLiteOpenHelper? = null
     private var db: SQLiteDatabase? = null
-    lateinit var mItemListViewModel: ListViewModel
 
 
     @SuppressLint("NewApi", "Range")

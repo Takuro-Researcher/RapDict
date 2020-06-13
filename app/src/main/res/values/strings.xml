@@ -24,6 +24,7 @@
     <string name="gameStart">ゲーム開始ィ！</string>
     <string name="result_description">気に入ったライムを保存してみよう</string>
     <string name="result_header">どんくらい踏んだ？</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 
     <string name="unSetting">%sが設定されていません</string>
