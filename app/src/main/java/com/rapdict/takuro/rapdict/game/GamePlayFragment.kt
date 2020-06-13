@@ -61,15 +61,15 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         val words =ArrayList<Word>()
         val rhymes = JSONObject(arguments!!.getString("RHYMES")).get("rhymes") as JSONArray
         for(i in 0 until rhymes.length()){
-            val questionWord =Word()
-            val jsonQuestionWord = rhymes.getJSONObject(i)
-            questionWord.id = jsonQuestionWord.getInt("id")
-            questionWord.furigana = jsonQuestionWord.getString("furigana")
-            questionWord.word = jsonQuestionWord.getString("word")
-            questionWord.length = jsonQuestionWord.getInt("length")
+            val jsonWord = rhymes.getJSONObject(i)
+            val questionWord = Word(
+                    jsonWord.getInt("id"),
+                    jsonWord.getString("furigana"),
+                    jsonWord.getString("word"),
+                    jsonWord.getInt("length")
+            )
             words.add(questionWord)
         }
-
         val transaction2 = fragmentManager?.beginTransaction()
         val resultFragment = ResultFragment()
         val bundle = Bundle()
@@ -161,9 +161,11 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         val answerArray = ArrayList<AnswerData>()
         for( answer in answerTexts){
             if (answer.isNullOrBlank()){ continue }
-            var answerData = AnswerData(word_id, answer,word,0)
+            val answerData = AnswerData(word_id, answer,word,0)
             answerArray.add(answerData)
         }
+        // デバッグ用にシーズ
+        answerArray.add(AnswerData(1,"テストだよ"+finish_q.toString(),"縁遠かろう",0))
         return answerArray
     }
 

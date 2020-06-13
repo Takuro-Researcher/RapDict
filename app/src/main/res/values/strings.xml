@@ -22,6 +22,9 @@
     <string name="waitingDisp">サーバーと通信しています… \n 少しだけお待ちください</string>
     <string name="startingDisp">通信が完了しました！\n 下記ボタンからスタートできます</string>
     <string name="gameStart">ゲーム開始ィ！</string>
+    <string name="result_description">気に入ったライムを保存してみよう</string>
+    <string name="result_header">どんくらい踏んだ？</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 
     <string name="unSetting">%sが設定されていません</string>
