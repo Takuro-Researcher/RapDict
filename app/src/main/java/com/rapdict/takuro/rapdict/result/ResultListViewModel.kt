@@ -15,7 +15,7 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
     var questionIdList = mutableListOf<MutableLiveData<Int>>()
 
 
-    fun draw(answerList:ArrayList<AnswerData>) {
+    fun draw(answerList:Array<AnswerData>) {
         answerList.forEach { answer ->
             questionList.add(MutableLiveData<String>().apply { value = answer.question })
             textList.add(MutableLiveData<String>().apply { value = answer.answer })
