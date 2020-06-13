@@ -11,6 +11,7 @@ import com.rapdict.takuro.rapdict.AnswerView
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.dict.ListViewModel
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
+import kotlinx.android.synthetic.main.content_list.*
 import kotlinx.android.synthetic.main.fragment_result.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import sample.intent.AnswerData
@@ -41,6 +42,9 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
         resultListViewModel.draw(list)
         adapter.notifyDataSetChanged()
+        ResultRecyclerView.adapter = adapter
+        ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+
 //        val answerView = AnswerView()
 //        // 保存データ
 //        list?.forEach {
@@ -52,9 +56,7 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        register_rhyme_button.setOnClickListener {
-            System.out.println("Helloooooo!!")
-        }
+
     }
 
 
