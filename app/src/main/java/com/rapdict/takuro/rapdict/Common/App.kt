@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict.Common
 
 import android.app.Application
+import com.rapdict.takuro.rapdict.MakeQuestion.QuestionListViewModel
 import com.rapdict.takuro.rapdict.dict.ListViewModel
 import com.rapdict.takuro.rapdict.exp.UserExpViewModel
 import com.rapdict.takuro.rapdict.game.GamePlayViewModel
@@ -33,5 +34,6 @@ class App : Application() {
         viewModel { ListViewModel(get()) }
         viewModel { GamePlayViewModel(get()) }
         viewModel { ResultListViewModel(get())}
+        viewModel { QuestionListViewModel(get()) }
     }
 }
