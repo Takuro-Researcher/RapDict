@@ -74,10 +74,11 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
                 intent.putExtra("RETURN",returnSpinner.selectedItem as Int)
                 startActivity(intent)
             }else{
-                val dialog = AlertDialog.Builder(activity!!)
-                dialog.setCancelable(false)
-                dialog.setMessage("通信を行うため、インターネットと接続してください")
-                dialog.setPositiveButton("OK",null)
+                val dialog = AlertDialog.Builder(activity!!).apply{
+                    setCancelable(false)
+                    setMessage("通信を行うため、インターネットと接続してください")
+                    setPositiveButton("OK",null)
+                }
                 dialog.show()
             }
         }

@@ -6,6 +6,7 @@ import com.rapdict.takuro.rapdict.exp.UserExpViewModel
 import com.rapdict.takuro.rapdict.game.GamePlayViewModel
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel
 import com.rapdict.takuro.rapdict.result.ResultListViewModel
+import com.rapdict.takuro.rapdict.result.ResultViewModel
 import com.rapdict.takuro.rapdict.userSetting.UserSettingViewModel
 import org.koin.android.experimental.dsl.viewModel
 import org.koin.android.ext.koin.androidContext
@@ -25,6 +26,7 @@ class App : Application() {
 
     // Koinモジュール
     private val module: Module = module {
+        viewModel { ResultViewModel(get()) }
         viewModel { UserExpViewModel(get()) }
         viewModel { UserSettingViewModel(get()) }
         viewModel { GameSettingViewModel(get()) }
