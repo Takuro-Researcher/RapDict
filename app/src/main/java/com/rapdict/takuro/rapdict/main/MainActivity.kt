@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.rapdict.takuro.rapdict.makeQuestion.MakeQuestionFragment
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingFragment
 import com.rapdict.takuro.rapdict.dict.DictActivity
@@ -57,6 +58,12 @@ open class MainActivity : AppCompatActivity() {
             R.id.user_exp ->{
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentFrameLayout, UserExpFragment())
+                        .commit()
+                return true
+            }
+            R.id.question_make ->{
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentFrameLayout, MakeQuestionFragment())
                         .commit()
                 return true
             }

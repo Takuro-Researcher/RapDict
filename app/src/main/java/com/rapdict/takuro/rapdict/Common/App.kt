@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict.Common
 
 import android.app.Application
+import com.rapdict.takuro.rapdict.makeQuestion.QuestionListViewModel
 import com.rapdict.takuro.rapdict.dict.ListViewModel
 import com.rapdict.takuro.rapdict.exp.UserExpViewModel
 import com.rapdict.takuro.rapdict.game.GamePlayViewModel
@@ -8,7 +9,6 @@ import com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel
 import com.rapdict.takuro.rapdict.result.ResultListViewModel
 import com.rapdict.takuro.rapdict.result.ResultViewModel
 import com.rapdict.takuro.rapdict.userSetting.UserSettingViewModel
-import org.koin.android.experimental.dsl.viewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -33,5 +33,6 @@ class App : Application() {
         viewModel { ListViewModel(get()) }
         viewModel { GamePlayViewModel(get()) }
         viewModel { ResultListViewModel(get())}
+        viewModel { QuestionListViewModel(get()) }
     }
 }
