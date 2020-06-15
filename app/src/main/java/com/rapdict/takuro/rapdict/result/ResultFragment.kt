@@ -79,7 +79,6 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                 setMessage(register_index.size.toString()+"個、韻を保存します")
                 setPositiveButton("OK",{_, _ ->
                     var answerView = AnswerView()
-
                     for (index in register_index){
                         var answer = list.get(index)
                         System.out.println(answer)
