@@ -171,16 +171,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:entries="@{settingData.timeArray}"
                 android:dropDownWidth="match_parent" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_default= "percent"
-            app:layout_constraintHeight_percent= ".14"
-            android:id="@+id/start_button"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dict_text"
-            android:layout_margin="10sp"
-            android:text="保存する"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:id="@+id/start_button"
+                app:layout_constraintLeft_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dict_text"
+                android:layout_margin="15dp"
+                android:text="保存する"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
