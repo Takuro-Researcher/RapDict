@@ -29,7 +29,7 @@
                 android:layout_weight="0.5"
                 android:layout_margin="10sp"
                 android:gravity="center_vertical"
-                android:text="@{data.questionList[position]}"
+                android:hint="好きな言葉"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 />
@@ -39,10 +39,10 @@
                 android:layout_height="wrap_content"
                 android:textColor="#000"
                 android:padding="10sp"
+                android:hint="ふりがな"
                 android:layout_weight="0.5"
                 android:layout_margin="10sp"
                 android:gravity="center_vertical"
-                android:text="@{data.questionList[position]}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 />
