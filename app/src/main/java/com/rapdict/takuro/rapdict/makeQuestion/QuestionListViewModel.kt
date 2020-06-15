@@ -14,11 +14,13 @@ class QuestionListViewModel(application: Application) : AndroidViewModel(applica
     var furiganaList = mutableListOf<MutableLiveData<String>>()
 
     init {
-        questionList.add(MutableLiveData<String>().apply { value = "テスト１" })
+        questionList.add(MutableLiveData<String>().apply { value = "" })
+        furiganaList.add(MutableLiveData<String>().apply { value = "" })
     }
 
-    fun draw(answerList:Array<AnswerData>) {
-
+    fun addCard() {
+        questionList.add(MutableLiveData<String>().apply { value = "" })
+        furiganaList.add(MutableLiveData<String>().apply { value = "" })
     }
 
 }

@@ -65,6 +65,7 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         adapter.notifyDataSetChanged()
         ResultRecyclerView.adapter = adapter
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+        // 保存する
         save_button.setOnClickListener {
             val bool_list = resultListViewModel.checkedList
             var register_index  = ArrayList<Int>()
@@ -101,6 +102,7 @@ class ResultFragment : androidx.fragment.app.Fragment() {
             }
 
         }
+        // 保存せずメイン画面へ戻る
         back_button.setOnClickListener {
             val dialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)

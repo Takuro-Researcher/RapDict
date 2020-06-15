@@ -1,5 +1,7 @@
 package com.rapdict.takuro.rapdict.makeQuestion
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -25,10 +27,26 @@ open class QuestionListAdapter(private val viewModel : QuestionListViewModel, pr
         holder.binding.data = this.viewModel
         holder.binding.position = position
 
+        holder.binding.furiganaListDoc.addTextChangedListener(object: CustomTextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                viewModel.furiganaList[position].value = p0.toString()
+            }
+        })
+        holder.binding.questionListDoc.addTextChangedListener(object: CustomTextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                viewModel.questionList[position].value = p0.toString()
+            }
+        })
+
         //ここでviewholderのlifecycleOwnerにセットする！
         holder.binding.lifecycleOwner = parentLifecycleOwner
     }
     override fun getItemCount(): Int {
         return viewModel.questionList.size
     }
+}
+
+interface CustomTextWatcher: TextWatcher{
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 }

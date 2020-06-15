@@ -30,6 +30,7 @@
                 android:layout_margin="10sp"
                 android:gravity="center_vertical"
                 android:hint="好きな言葉"
+                android:text="@{data.questionList[position]}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 />
@@ -43,6 +44,7 @@
                 android:layout_weight="0.5"
                 android:layout_margin="10sp"
                 android:gravity="center_vertical"
+                android:text="@{data.furiganaList[position]}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 />

@@ -23,6 +23,7 @@
         android:layout_margin="20dp"
         app:srcCompat="@drawable/ic_baseline_add_24"
         app:backgroundTint="#00BCD4"
+        android:id="@+id/add_question_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -31,6 +32,7 @@
         android:layout_margin="20dp"
         app:srcCompat="@drawable/ic_baseline_save_alt_24"
         app:backgroundTint="#38b48b"
+        android:id="@+id/register_question_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
