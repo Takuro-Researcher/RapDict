@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.MakeQuestion
+package com.rapdict.takuro.rapdict.makeQuestion
 
 import com.rapdict.takuro.rapdict.databinding.QuestionListBinding
 

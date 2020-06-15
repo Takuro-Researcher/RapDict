@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.MakeQuestion
+package com.rapdict.takuro.rapdict.makeQuestion
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ open class QuestionListAdapter(private val viewModel : QuestionListViewModel, pr
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionListViewHolder {
         val binding = DataBindingUtil.inflate<QuestionListBinding>(
                 LayoutInflater.from(parent.context),
-                R.layout.result_list,
+                R.layout.question_list,
                 parent,
                 false
         )

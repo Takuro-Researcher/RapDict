@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.MakeQuestion
+package com.rapdict.takuro.rapdict.makeQuestion
 
 import android.app.Application
 
@@ -13,7 +13,9 @@ class QuestionListViewModel(application: Application) : AndroidViewModel(applica
     var questionList = mutableListOf<MutableLiveData<String>>()
     var furiganaList = mutableListOf<MutableLiveData<String>>()
 
-
+    init {
+        questionList.add(MutableLiveData<String>().apply { value = "テスト１" })
+    }
 
     fun draw(answerList:Array<AnswerData>) {
 
