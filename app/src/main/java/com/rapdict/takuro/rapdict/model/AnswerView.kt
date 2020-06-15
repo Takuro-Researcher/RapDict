@@ -9,25 +9,26 @@ class AnswerView {
     var answerview_id: Int = 0
     var answer: String? = null
     var question: String? = null
-    var question_len: Int = 0
+    var answer_len: Int = 0
     var favorite:Boolean ?=false
 
     fun setColumn(rec_answerview_id:Int,rec_question_id:Int,rec_answer:String,rec_question:String,rec_question_len:Int,rec_favorite:Boolean){
         answerview_id = rec_answerview_id
         answer = rec_answer
         question = rec_question
-        question_len = rec_question_len
+        answer_len = rec_question_len
         favorite = rec_favorite
     }
 
     fun answer_saveData(db: SQLiteDatabase, answer: AnswerData) {
         val values = ContentValues()
-        values.put("question_id", answer.question_id)
+        values.put("question", answer.question)
         values.put("answer", answer.answer)
         values.put("favorite",answer.favorite)
+        values.put("answer_len",answer.answer_len)
         db.insert("answertable", null, values)
+        System.out.println("挿入ったぁあああ")
     }
-
     fun answer_update_fav(db: SQLiteDatabase, answer_id:Int, favorite:Boolean){
         val values = ContentValues()
         val intFavorite:Int= if(favorite) 1 else 0

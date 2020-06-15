@@ -101,7 +101,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
-            answerList.addAll(saveAnswer(words[finish_q].id!!, words[finish_q].word!!))
+            answerList.addAll(saveAnswer(words[finish_q].word!!,words[finish_q].furigana.length ))
             finish_q++
             if (finish_q >= questionNum){
                 timer!!.cancel()
@@ -151,7 +151,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         timer!!.start()
     }
     // answerList を一時保存
-    private fun saveAnswer(word_id:Int, word:String):ArrayList<AnswerData>{
+    private fun saveAnswer(word:String,word_length:Int):ArrayList<AnswerData>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerTexts = mutableListOf<String>()
         if (answerNum >= 1){ answerTexts.add(rhyme_edit_one.text.toString()) }
@@ -161,7 +161,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         val answerArray = ArrayList<AnswerData>()
         for( answer in answerTexts){
             if (answer.isNullOrBlank()){ continue }
-            val answerData = AnswerData(word_id, answer,word,0)
+            val answerData = AnswerData(answer,word_length,word,0)
             answerArray.add(answerData)
         }
         // デバッグ用にシーズ

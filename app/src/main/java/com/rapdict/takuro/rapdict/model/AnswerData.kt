@@ -2,4 +2,4 @@ package sample.intent
 
 import java.io.Serializable
 
-data class AnswerData(var question_id: Int, var answer: String, var question:String, var favorite: Int)
+data class AnswerData(var answer: String,var answer_len: Int, var question:String, var favorite: Int)
