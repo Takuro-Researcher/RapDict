@@ -27,7 +27,6 @@ class AnswerView {
         values.put("favorite",answer.favorite)
         values.put("answer_len",answer.answer_len)
         db.insert("answertable", null, values)
-        System.out.println("挿入ったぁあああ")
     }
     fun answer_update_fav(db: SQLiteDatabase, answer_id:Int, favorite:Boolean){
         val values = ContentValues()
