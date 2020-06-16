@@ -32,12 +32,10 @@ class DictActivity : AppCompatActivity() {
         //DbAccess関連のインスタンス生成
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
+
         val answerView = AnswerView()
         //検索用のレンジプログレスバーの設定
         range_progress_seek_bar.setIndicatorTextDecimalFormat("0")
-        val lengthWords =answerView.getLengthMinMax(db!!)
-        var max = lengthWords.max()?.toFloat()
-        var min =lengthWords.min()?.toFloat()
         val recomIntent  = Intent(this, MainActivity::class.java)
 
         val recomdialog =AlertDialog.Builder(this)
@@ -46,14 +44,8 @@ class DictActivity : AppCompatActivity() {
         recomdialog.setPositiveButton("戻る"){
             _, _ -> startActivity(recomIntent)
         }
-
-        if (lengthWords.size==0 || lengthWords.size ==1) {
-            max = 10.toFloat()
-            min = 1.toFloat()
-            recomdialog.show()
-        }
         //韻呼び出し
-        range_progress_seek_bar.setRange(min!!, max!!,1.0f)
+        range_progress_seek_bar.setRange(0F, 20F,1.0f)
 
         // Adapter作成
         val itemListViewModel:ListViewModel by viewModel()
@@ -62,7 +54,6 @@ class DictActivity : AppCompatActivity() {
         // RecyclerViewにAdapterとLayoutManagerの設定
         RecyclerView.adapter =adapter
         RecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
-
 
         //検索
         search_button.setOnClickListener {
@@ -77,12 +68,13 @@ class DictActivity : AppCompatActivity() {
         //スワイプ時の削除処理
         val swipeHandler = object : SwipeToDeleteCallback() {
             override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {
+                // UIの更新
                 val swipePosition = viewHolder.adapterPosition
-                adapter.notifyItemRemoved(swipePosition)
-                val deleteId = itemListViewModel.idList.get(swipePosition)
+                val deleteId = itemListViewModel.idList.get(swipePosition).value
                 itemListViewModel.removeAnswer(swipePosition)
                 adapter.notifyItemRemoved(swipePosition)
-//                helper?.answer_delete(db!!,rhymeData.deleteId)
+                // テーブルから削除
+                deleteId?.let { answerView.answer_delete(db!!, it) }
             }
         }
 

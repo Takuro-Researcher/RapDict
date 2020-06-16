@@ -42,17 +42,6 @@ class AnswerView {
         db.delete("answertable",query,null)
     }
 
-    fun getLengthMinMax(database: SQLiteDatabase):ArrayList<Int>{
-        val sql = ("SELECT DISTINCT "+ COLUMN_NAME_ANSWER_LEN + " FROM " + ANSWER_TABLE_NAME)
-        val cursor = database.rawQuery(sql, null)
-        val result = ArrayList<Int>()
-        while(cursor.moveToNext()){
-            val word_len =cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_ANSWER_LEN))
-            result.add(word_len)
-        }
-        cursor.close()
-        return result
-    }
     fun getAnswers(database: SQLiteDatabase, min_word: Int, max_word: Int,favorite: Int): ArrayList<AnswerView> {
 
         var favoriteSql = if(favorite==1) " AND $ANSWER_TABLE_NAME.favorite=1" else " AND $ANSWER_TABLE_NAME.favorite=0"
@@ -80,6 +69,17 @@ class AnswerView {
             val intFavorite= cursor.getInt(favorite_id) > 0
             answerView.setColumn(answer_id, question_id, answer, question, word_len,intFavorite)
             result.add(answerView)
+        }
+        cursor.close()
+        return result
+    }
+    fun getLengthMinMax(database: SQLiteDatabase):ArrayList<Int>{
+        val sql = ("SELECT DISTINCT "+ COLUMN_NAME_ANSWER_LEN + " FROM " + ANSWER_TABLE_NAME)
+        val cursor = database.rawQuery(sql, null)
+        val result = ArrayList<Int>()
+        while(cursor.moveToNext()){
+            val word_len =cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_ANSWER_LEN))
+            result.add(word_len)
         }
         cursor.close()
         return result
