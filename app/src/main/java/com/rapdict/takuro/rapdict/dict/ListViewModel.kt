@@ -12,7 +12,7 @@ import java.text.FieldPosition
 class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     //監視対象のLiveData
-    var rawList   = mutableListOf<MutableLiveData<String>>()
+    var questionList   = mutableListOf<MutableLiveData<String>>()
     var rhymeList = mutableListOf<MutableLiveData<String>>()
     var idList = mutableListOf<MutableLiveData<Int>>()
     var favoList = mutableListOf<MutableLiveData<Boolean>>()
@@ -39,7 +39,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         clearAnswer()
         answerList.forEach { answer ->
             idList.add(MutableLiveData<Int>().apply { value = answer.answerview_id})
-            rawList.add(MutableLiveData<String>().apply { value = answer.question })
+            questionList.add(MutableLiveData<String>().apply { value = answer.question })
             rhymeList.add(MutableLiveData<String>().apply { value = answer.answer })
             colorList.add(MutableLiveData<Int>().apply { value = AnswerView.favo2background(answer.favorite!!) })
             favoList.add(MutableLiveData<Boolean>().apply { value = answer.favorite })
@@ -49,7 +49,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     // 削除処理時にLiveDataにも変更を加える
     fun removeAnswer(position: Int){
         idList.removeAt(position)
-        rawList.removeAt(position)
+        questionList.removeAt(position)
         rhymeList.removeAt(position)
         colorList.removeAt(position)
         favoList.removeAt(position)
@@ -63,7 +63,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun clearAnswer(){
         idList.clear()
-        rawList.clear()
+        questionList.clear()
         rhymeList.clear()
         colorList.clear()
         favoList.clear()

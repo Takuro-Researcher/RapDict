@@ -15,7 +15,6 @@ import com.rapdict.takuro.rapdict.dict.ListViewModel
 open class ListAdapter(private val viewModel : ListViewModel, private val parentLifecycleOwner: LifecycleOwner ) : androidx.recyclerview.widget.RecyclerView.Adapter<ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list,parent,false)
         val binding = DataBindingUtil.inflate<ItemListBinding>(
                 LayoutInflater.from(parent.context),
                 R.layout.item_list,
@@ -52,6 +51,6 @@ open class ListAdapter(private val viewModel : ListViewModel, private val parent
         holder.binding.lifecycleOwner = parentLifecycleOwner
     }
     override fun getItemCount(): Int {
-        return viewModel.rawList.size
+        return viewModel.questionList.size
     }
 }

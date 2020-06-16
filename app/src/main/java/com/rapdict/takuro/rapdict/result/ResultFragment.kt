@@ -81,6 +81,7 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                     var answerView = AnswerView()
                     for (index in register_index){
                         var answer = list.get(index)
+                        System.out.println(answer)
                         answerView.answer_saveData(db,answer)
                     }
                     startActivity(recomIntent)
