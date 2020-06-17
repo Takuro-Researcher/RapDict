@@ -1,27 +1,24 @@
 package com.rapdict.takuro.rapdict.result
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.rapdict.takuro.rapdict.AnswerView
+import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingBinding
 import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
-import com.rapdict.takuro.rapdict.dict.ListViewModel
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.model.Answer
-import kotlinx.android.synthetic.main.content_list.*
 import kotlinx.android.synthetic.main.fragment_result.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
-import sample.intent.AnswerData
 
 class ResultFragment : androidx.fragment.app.Fragment() {
     // TODO: Rename and change types of parameters
@@ -78,15 +75,21 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                 setCancelable(false)
                 setTitle("データ保存")
                 setMessage(register_index.size.toString()+"個、韻を保存します")
-                setPositiveButton("OK",{_, _ ->
+                setPositiveButton("OK") { _, _ ->
                     var registe_answer = ArrayList<Answer>()
                     for (index in register_index){
                         var answer = answerlist.get(index)
                         registe_answer.add(answer)
                     }
-
-                    startActivity(recomIntent)
-                })
+                    System.out.println("ここには入っている")
+                    // 保存
+                    GlobalScope.launch {
+                        val dao = App.db.answerDao()
+                        dao.insert(registe_answer.get(0))
+                        System.out.println("できたん？")
+                    }
+                    // startActivity(recomIntent)
+                }
                 setNegativeButton("NO",null)
             }
             val alertDialog = AlertDialog.Builder(activity!!).apply{

@@ -9,12 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import com.rapdict.takuro.rapdict.*
+import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
-import com.rapdict.takuro.rapdict.helper.WordAccess
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
-import kotlinx.android.synthetic.main.item_list.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -60,8 +61,8 @@ class DictActivity : AppCompatActivity() {
             val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
             val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
             val selectedId = radioGroup.checkedRadioButtonId
-            val searchWords =answerView.getAnswers(db!!,minVal,maxVal,AnswerView.getSearchFav(selectedId))
-            itemListViewModel.bindAnswer(searchWords)
+            //val searchWords =answerView.getAnswers(db!!,minVal,maxVal,AnswerView.getSearchFav(selectedId))
+            // itemListViewModel.bindAnswer(searchWords)
             adapter.notifyDataSetChanged()
         }
 

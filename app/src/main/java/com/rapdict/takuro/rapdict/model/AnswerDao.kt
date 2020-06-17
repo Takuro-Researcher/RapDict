@@ -8,16 +8,18 @@ import androidx.room.Query
 @Dao
 interface AnswerDao {
     @Query("SELECT * FROM answer")
-    fun getAll(): List<Answer>
+    fun findAll(): List<Answer>
 
     @Query("SELECT * FROM answer WHERE uid IN (:userIds)")
-    fun loadAllByIds(userIds: IntArray): List<Answer>
+    fun findByIds(vararg userIds: Int): List<Answer>
 
     @Query("SELECT * FROM answer WHERE answer_len BETWEEN :min AND :max AND favorite IN (:favorite)")
     fun findByLenght(max: Int, min: Int, favorite: List<Int>): List<Answer>
 
     @Insert
-    fun insertAll(vararg users: Answer)
+    fun insertAll(vararg answer: Answer)
+    @Insert
+    fun insert(answer: Answer)
 
     @Delete
     fun delete(answer: Answer)

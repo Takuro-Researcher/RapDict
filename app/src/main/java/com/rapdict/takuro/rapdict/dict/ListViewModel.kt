@@ -2,12 +2,16 @@ package com.rapdict.takuro.rapdict.dict
 
 import android.app.Application
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.AnswerView
+import com.rapdict.takuro.rapdict.Common.App
+import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
-import com.rapdict.takuro.rapdict.helper.WordAccess
-import java.text.FieldPosition
+import com.rapdict.takuro.rapdict.model.Answer
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -31,19 +35,24 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     private fun loadAnswerData(){
         helper = SQLiteOpenHelper(getApplication())
         db = helper!!.writableDatabase
-        val answerList:ArrayList<AnswerView> = answerView.getAnswers(db!!,0,30,2)
-        bindAnswer(answerList)
+        System.out.println("やばばばばｂ")
+        GlobalScope.async {
+            val dao = App.db.answerDao()
+            bindAnswer(dao.findAll())
+            System.out.println("入っていた！")
+        }
     }
 
-    fun bindAnswer(answerList:ArrayList<AnswerView>) {
+    fun bindAnswer(answerList: List<Answer>) {
         clearAnswer()
         answerList.forEach { answer ->
-            idList.add(MutableLiveData<Int>().apply { value = answer.answerview_id})
+            val answerBool = if (answer.favorite ==0) false else true
+            idList.add(MutableLiveData<Int>().apply { value = answer.uid})
             questionList.add(MutableLiveData<String>().apply { value = answer.question })
             rhymeList.add(MutableLiveData<String>().apply { value = answer.answer })
-            colorList.add(MutableLiveData<Int>().apply { value = AnswerView.favo2background(answer.favorite!!) })
-            favoList.add(MutableLiveData<Boolean>().apply { value = answer.favorite })
-            favoriteProgressList.add(MutableLiveData<Float>().apply { value = if(answer.favorite!!) 1f else 0f  })
+            colorList.add(MutableLiveData<Int>().apply { value = favo2background(answerBool) })
+            favoList.add(MutableLiveData<Boolean>().apply { value = answerBool })
+            favoriteProgressList.add(MutableLiveData<Float>().apply { value = if(answerBool) 1f else 0f  })
         }
     }
     // 削除処理時にLiveDataにも変更を加える
@@ -68,5 +77,21 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         colorList.clear()
         favoList.clear()
         favoriteProgressList.clear()
+    }
+
+    fun getSearchFav(id:Int):Int{
+        if (id == R.id.withoutFav){
+            return 0
+        }else if(id == R.id.onlyFav){
+            return 1
+        }
+        return 2
+    }
+    fun favo2background(favorite:Boolean):Int{
+        return if (favorite){
+            Color.YELLOW
+        }else{
+            Color.WHITE
+        }
     }
 }

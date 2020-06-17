@@ -20,8 +20,6 @@ class SQLiteOpenHelper internal constructor(private val mContext: Context) : and
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL(SQL_ANSWER_DELETE)
         onCreate(db)
-        System.out.println("DBを新しくするぞ＝！")
-
     }
 
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
