@@ -17,6 +17,7 @@ import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
 import com.rapdict.takuro.rapdict.dict.ListViewModel
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.main.MainActivity
+import com.rapdict.takuro.rapdict.model.Answer
 import kotlinx.android.synthetic.main.content_list.*
 import kotlinx.android.synthetic.main.fragment_result.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -51,17 +52,17 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         val db = helper.readableDatabase
         val recomIntent  = Intent(activity!!, MainActivity::class.java)
 
-        val answerList = arguments?.getString("ANSWER_LIST")
-        val typeToken = object : TypeToken<Array<AnswerData>>() {}
-        val list = Gson().fromJson<Array<AnswerData>>(answerList, typeToken.type)
+        val answerListJson = arguments?.getString("ANSWER_LIST")
+        val typeToken = object : TypeToken<Array<Answer>>() {}
+        val answerlist = Gson().fromJson<Array<Answer>>(answerListJson, typeToken.type)
 
         val resultViewModel: ResultViewModel by viewModel()
         binding?.data = resultViewModel
-        if(list.size == 0){
+        if(answerlist.size == 0){
             resultViewModel.draw(getString(R.string.result_no_header),getString(R.string.result_no_description))
         }
 
-        resultListViewModel.draw(list)
+        resultListViewModel.draw(answerlist)
         adapter.notifyDataSetChanged()
         ResultRecyclerView.adapter = adapter
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
@@ -78,11 +79,12 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                 setTitle("データ保存")
                 setMessage(register_index.size.toString()+"個、韻を保存します")
                 setPositiveButton("OK",{_, _ ->
-                    var answerView = AnswerView()
+                    var registe_answer = ArrayList<Answer>()
                     for (index in register_index){
-                        var answer = list.get(index)
-                        answerView.answer_saveData(db,answer)
+                        var answer = answerlist.get(index)
+                        registe_answer.add(answer)
                     }
+
                     startActivity(recomIntent)
                 })
                 setNegativeButton("NO",null)

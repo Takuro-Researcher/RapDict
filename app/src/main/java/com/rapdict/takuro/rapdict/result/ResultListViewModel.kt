@@ -4,6 +4,7 @@ import android.app.Application
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.rapdict.takuro.rapdict.model.Answer
 
 import sample.intent.AnswerData
 
@@ -15,7 +16,7 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
     var checkedList = mutableListOf<MutableLiveData<Boolean>>()
 
 
-    fun draw(answerList:Array<AnswerData>) {
+    fun draw(answerList:Array<Answer>) {
         answerList.forEach { answer ->
             questionList.add(MutableLiveData<String>().apply { value = answer.question })
             textList.add(MutableLiveData<String>().apply { value = answer.answer })

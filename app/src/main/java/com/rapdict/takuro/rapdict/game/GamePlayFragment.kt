@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
+import com.rapdict.takuro.rapdict.model.Answer
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import org.json.JSONArray
@@ -73,7 +74,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         val transaction2 = fragmentManager?.beginTransaction()
         val resultFragment = ResultFragment()
         val bundle = Bundle()
-        val answerList = ArrayList<AnswerData>()
+        val answerList = ArrayList<Answer>()
 
 
         game_question_num.text = questionNum.toString()
@@ -151,17 +152,17 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         timer!!.start()
     }
     // answerList を一時保存
-    private fun saveAnswer(word:String,word_length:Int):ArrayList<AnswerData>{
+    private fun saveAnswer(word:String,word_length:Int):ArrayList<Answer>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerTexts = mutableListOf<String>()
         if (answerNum >= 1){ answerTexts.add(rhyme_edit_one.text.toString()) }
         if (answerNum >= 2){ answerTexts.add(rhyme_edit_two.text.toString()) }
         if (answerNum >= 3){ answerTexts.add(rhyme_edit_three.text.toString()) }
         if (answerNum >= 4){ answerTexts.add(rhyme_edit_four.text.toString()) }
-        val answerArray = ArrayList<AnswerData>()
+        val answerArray = ArrayList<Answer>()
         for( answer in answerTexts){
             if (answer.isNullOrBlank()){ continue }
-            val answerData = AnswerData(answer,word_length,word,0)
+            val answerData = Answer(0,answer,word_length,word,0)
             answerArray.add(answerData)
         }
         // デバッグ用にシーズ

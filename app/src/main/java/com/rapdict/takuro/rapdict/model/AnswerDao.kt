@@ -14,7 +14,7 @@ interface AnswerDao {
     fun loadAllByIds(userIds: IntArray): List<Answer>
 
     @Query("SELECT * FROM answer WHERE answer_len BETWEEN :min AND :max AND favorite IN (:favorite)")
-    fun findByLenght(max: Int, min: Int, favorite: Int): List<Answer>
+    fun findByLenght(max: Int, min: Int, favorite: List<Int>): List<Answer>
 
     @Insert
     fun insertAll(vararg users: Answer)
