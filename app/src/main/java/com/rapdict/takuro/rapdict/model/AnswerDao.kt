@@ -13,8 +13,8 @@ interface AnswerDao {
     @Query("SELECT * FROM answer WHERE uid IN (:userIds)")
     suspend fun findByIds(vararg userIds: Int): List<Answer>
 
-    @Query("SELECT * FROM answer WHERE answer_len BETWEEN :min AND :max AND favorite IN (:favorite)")
-    suspend fun findByLenght(max: Int, min: Int, favorite: List<Int>): List<Answer>
+    @Query("SELECT * FROM answer WHERE answer_len BETWEEN :min AND :max ")
+    suspend fun findByLenght(min: Int, max: Int): List<Answer>
 
     @Insert
     suspend fun insertAll(vararg answer: Answer)

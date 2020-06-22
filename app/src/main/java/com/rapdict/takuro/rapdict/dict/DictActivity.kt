@@ -12,11 +12,14 @@ import com.rapdict.takuro.rapdict.*
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
+import com.rapdict.takuro.rapdict.model.AnswerDao
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.lang.reflect.Array
 
 
 class DictActivity : AppCompatActivity() {
@@ -61,9 +64,27 @@ class DictActivity : AppCompatActivity() {
             val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
             val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
             val selectedId = radioGroup.checkedRadioButtonId
-            //val searchWords =answerView.getAnswers(db!!,minVal,maxVal,AnswerView.getSearchFav(selectedId))
-            //itemListViewModel.bindAnswer(searchWords)
-            adapter.notifyDataSetChanged()
+            var search :List<Int> = listOf()
+            when(selectedId){
+                0->{ search =listOf(0) }
+                1->{ search =listOf(1) }
+                2->{ search =listOf(0,1) }
+            }
+            runBlocking {
+                val dao = App.db.answerDao()
+                System.out.println(minVal)
+                System.out.println(maxVal)
+                val searchWords = dao.findByLenght(minVal,maxVal)
+                System.out.println(searchWords)
+                itemListViewModel.bindAnswer(searchWords)
+                adapter.notifyDataSetChanged()
+            }
+
+
+
+
+
+
         }
 
         //スワイプ時の削除処理

@@ -36,10 +36,10 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         helper = SQLiteOpenHelper(getApplication())
         db = helper!!.writableDatabase
         var datas : List<Answer>
-        System.out.println("やばばばばｂ")
         runBlocking {
             val dao = App.db.answerDao()
             datas = dao.findAll()
+            System.out.println(datas)
             bindAnswer(datas)
         }
 
