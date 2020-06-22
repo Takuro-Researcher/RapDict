@@ -12,6 +12,7 @@ import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.model.Answer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -26,7 +27,6 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     private var db: SQLiteDatabase? = null
     private var helper: SQLiteOpenHelper? = null
-    private val answerView = AnswerView()
 
     //ViewModel初期化時にロード
     init {
@@ -35,12 +35,14 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     private fun loadAnswerData(){
         helper = SQLiteOpenHelper(getApplication())
         db = helper!!.writableDatabase
+        var datas : List<Answer>
         System.out.println("やばばばばｂ")
-        GlobalScope.async {
+        runBlocking {
             val dao = App.db.answerDao()
-            bindAnswer(dao.findAll())
-            System.out.println("入っていた！")
+            datas = dao.findAll()
+            bindAnswer(datas)
         }
+
     }
 
     fun bindAnswer(answerList: List<Answer>) {

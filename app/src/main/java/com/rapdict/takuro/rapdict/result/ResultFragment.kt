@@ -85,10 +85,12 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                     // 保存
                     GlobalScope.launch {
                         val dao = App.db.answerDao()
-                        dao.insert(registe_answer.get(0))
+                        registe_answer.forEach {
+                            dao.insert(it)
+                        }
                         System.out.println("できたん？")
                     }
-                    // startActivity(recomIntent)
+                    startActivity(recomIntent)
                 }
                 setNegativeButton("NO",null)
             }

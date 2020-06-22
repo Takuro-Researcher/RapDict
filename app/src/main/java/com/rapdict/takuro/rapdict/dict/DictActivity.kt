@@ -62,7 +62,7 @@ class DictActivity : AppCompatActivity() {
             val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
             val selectedId = radioGroup.checkedRadioButtonId
             //val searchWords =answerView.getAnswers(db!!,minVal,maxVal,AnswerView.getSearchFav(selectedId))
-            // itemListViewModel.bindAnswer(searchWords)
+            //itemListViewModel.bindAnswer(searchWords)
             adapter.notifyDataSetChanged()
         }
 
