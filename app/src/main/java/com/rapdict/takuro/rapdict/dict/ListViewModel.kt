@@ -39,7 +39,6 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         runBlocking {
             val dao = App.db.answerDao()
             datas = dao.findAll()
-            System.out.println(datas)
             bindAnswer(datas)
         }
 
