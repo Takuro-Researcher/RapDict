@@ -6,7 +6,6 @@ import android.preference.PreferenceManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Common.CommonTool
-import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 
 class UserSettingViewModel(application: Application) : AndroidViewModel(application) {
 

@@ -2,7 +2,6 @@ package com.rapdict.takuro.rapdict.dict
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -11,33 +10,18 @@ import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import com.rapdict.takuro.rapdict.*
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.main.MainActivity
-import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
-import com.rapdict.takuro.rapdict.model.Answer
-import com.rapdict.takuro.rapdict.model.AnswerDao
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.lang.reflect.Array
 
 
 class DictActivity : AppCompatActivity() {
-    private var helper: SQLiteOpenHelper? = null
-    private var db: SQLiteDatabase? = null
-
 
     @SuppressLint("NewApi", "Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dict)
-
-
-        //DbAccess関連のインスタンス生成
-        helper = SQLiteOpenHelper(applicationContext)
-        db = helper!!.writableDatabase
-
 
         //検索用のレンジプログレスバーの設定
         range_progress_seek_bar.setIndicatorTextDecimalFormat("0")

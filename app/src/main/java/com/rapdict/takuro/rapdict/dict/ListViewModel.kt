@@ -1,13 +1,11 @@
 package com.rapdict.takuro.rapdict.dict
 
 import android.app.Application
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.model.Answer
 import kotlinx.coroutines.runBlocking
 
@@ -22,16 +20,11 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     var favoriteProgressList = mutableListOf<MutableLiveData<Float>>()
 
 
-    private var db: SQLiteDatabase? = null
-    private var helper: SQLiteOpenHelper? = null
-
     //ViewModel初期化時にロード
     init {
         loadAnswerData()
     }
     private fun loadAnswerData(){
-        helper = SQLiteOpenHelper(getApplication())
-        db = helper!!.writableDatabase
         var datas : List<Answer>
         runBlocking {
             val dao = App.db.answerDao()

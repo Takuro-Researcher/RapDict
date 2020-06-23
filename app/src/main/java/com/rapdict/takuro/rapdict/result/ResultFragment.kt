@@ -11,12 +11,10 @@ import com.google.gson.reflect.TypeToken
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
-import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.model.Answer
 import kotlinx.android.synthetic.main.fragment_result.*
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -45,8 +43,6 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         val adapter = ResultListAdapter(resultListViewModel,this)
 
 
-        val helper = SQLiteOpenHelper(activity!!.applicationContext)
-        val db = helper.readableDatabase
         val recomIntent  = Intent(activity!!, MainActivity::class.java)
 
         val answerListJson = arguments?.getString("ANSWER_LIST")
