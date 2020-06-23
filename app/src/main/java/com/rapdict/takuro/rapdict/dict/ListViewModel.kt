@@ -5,13 +5,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.rapdict.takuro.rapdict.AnswerView
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
 import com.rapdict.takuro.rapdict.model.Answer
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
@@ -66,9 +63,12 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         favoriteProgressList.removeAt(position)
     }
     fun updateFavorite(position: Int,bool:Boolean){
-        val answerView = AnswerView()
-        db = SQLiteOpenHelper(getApplication()).writableDatabase
-        answerView.answer_update_fav(db!!,idList[position].value!!,bool)
+        val uid = idList.get(position).value
+        val bool_int = if (bool) 1 else 0
+        runBlocking {
+            val dao = App.db.answerDao()
+            dao.updateByIdsFavorite(uid!!,bool_int)
+        }
     }
 
     private fun clearAnswer(){

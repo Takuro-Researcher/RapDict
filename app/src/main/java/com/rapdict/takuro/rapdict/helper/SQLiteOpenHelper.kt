@@ -1,15 +1,7 @@
 package com.rapdict.takuro.rapdict.helper
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.rapdict.takuro.rapdict.AnswerView
-import com.rapdict.takuro.rapdict.Word
-import sample.intent.AnswerData
-
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.util.ArrayList
 
 class SQLiteOpenHelper internal constructor(private val mContext: Context) : android.database.sqlite.SQLiteOpenHelper(mContext, DATABASE_NAME, null, DATABASE_VERSION) {
 

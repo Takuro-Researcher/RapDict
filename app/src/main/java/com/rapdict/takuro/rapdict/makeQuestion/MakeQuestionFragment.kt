@@ -7,10 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import com.rapdict.takuro.rapdict.AnswerView
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
-import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.make_question_fragment.*
 import org.koin.android.viewmodel.ext.android.viewModel

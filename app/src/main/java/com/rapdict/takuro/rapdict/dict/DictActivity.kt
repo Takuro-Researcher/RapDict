@@ -38,7 +38,7 @@ class DictActivity : AppCompatActivity() {
         helper = SQLiteOpenHelper(applicationContext)
         db = helper!!.writableDatabase
 
-        val answerView = AnswerView()
+
         //検索用のレンジプログレスバーの設定
         range_progress_seek_bar.setIndicatorTextDecimalFormat("0")
         val recomIntent  = Intent(this, MainActivity::class.java)

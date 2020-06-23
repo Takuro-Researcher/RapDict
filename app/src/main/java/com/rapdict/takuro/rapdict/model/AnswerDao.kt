@@ -24,6 +24,10 @@ interface AnswerDao {
     @Query("DELETE FROM answer WHERE uid = :userIds")
     suspend fun deleteByIds(userIds: Int)
 
+    @Query("UPDATE answer SET favorite = :favorite WHERE uid = :userIds")
+    suspend fun updateByIdsFavorite(userIds: Int, favorite: Int)
+
+
     @Delete
     fun delete(answer: Answer)
 }
