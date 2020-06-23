@@ -2,38 +2,27 @@ package com.rapdict.takuro.rapdict.dict
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import apps.test.marketableskill.biz.recyclerview.ListAdapter
 import com.rapdict.takuro.rapdict.*
+import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.main.MainActivity
-import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
-import com.rapdict.takuro.rapdict.helper.WordAccess
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.content_list.*
-import kotlinx.android.synthetic.main.item_list.*
+import kotlinx.coroutines.runBlocking
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class DictActivity : AppCompatActivity() {
-    private var helper: SQLiteOpenHelper? = null
-    private var db: SQLiteDatabase? = null
-
 
     @SuppressLint("NewApi", "Range")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dict)
 
-
-        //DbAccess関連のインスタンス生成
-        helper = SQLiteOpenHelper(applicationContext)
-        db = helper!!.writableDatabase
-
-        val answerView = AnswerView()
         //検索用のレンジプログレスバーの設定
         range_progress_seek_bar.setIndicatorTextDecimalFormat("0")
         val recomIntent  = Intent(this, MainActivity::class.java)
@@ -60,9 +49,19 @@ class DictActivity : AppCompatActivity() {
             val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
             val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
             val selectedId = radioGroup.checkedRadioButtonId
-            val searchWords =answerView.getAnswers(db!!,minVal,maxVal,AnswerView.getSearchFav(selectedId))
-            itemListViewModel.bindAnswer(searchWords)
-            adapter.notifyDataSetChanged()
+            System.out.println(selectedId)
+            var search :List<Int> = listOf()
+            when(selectedId){
+                R.id.withoutFav ->{ search =listOf(0) }
+                R.id.onlyFav ->{ search =listOf(1) }
+                R.id.flatFav ->{ search =listOf(0,1) }
+            }
+            runBlocking {
+                val dao = App.db.answerDao()
+                val searchWords = dao.findByLenght(minVal,maxVal,search)
+                itemListViewModel.bindAnswer(searchWords)
+                adapter.notifyDataSetChanged()
+            }
         }
 
         //スワイプ時の削除処理
@@ -70,11 +69,15 @@ class DictActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {
                 // UIの更新
                 val swipePosition = viewHolder.adapterPosition
+
                 val deleteId = itemListViewModel.idList.get(swipePosition).value
                 itemListViewModel.removeAnswer(swipePosition)
                 adapter.notifyItemRemoved(swipePosition)
                 // テーブルから削除
-                deleteId?.let { answerView.answer_delete(db!!, it) }
+                runBlocking {
+                    val dao = App.db.answerDao()
+                    deleteId?.let { dao.deleteByIds(it) }
+                }
             }
         }
 

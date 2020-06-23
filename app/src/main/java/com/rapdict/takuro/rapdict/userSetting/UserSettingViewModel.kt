@@ -6,10 +6,6 @@ import android.preference.PreferenceManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Common.CommonTool
-import com.rapdict.takuro.rapdict.Common.SpfCommon
-import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.helper.SQLiteOpenHelper
-import com.rapdict.takuro.rapdict.helper.WordAccess
 
 class UserSettingViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -27,15 +23,9 @@ class UserSettingViewModel(application: Application) : AndroidViewModel(applicat
     }
     private fun loadUserData(){
         val numArrayList = common.makeNumArray(1,15)
-
-        val wordAccess= WordAccess()
-        //踏んだ韻を数える処理
-        val helper = SQLiteOpenHelper(getApplication())
-        val db = helper!!.writableDatabase
-
         userName.value = spf.getString("userName","")
         numberArray.value = numArrayList
-        rhymeCount.value = wordAccess.getCount(db!!).toString()
+        rhymeCount.value = 111.toString()
     }
 
 }

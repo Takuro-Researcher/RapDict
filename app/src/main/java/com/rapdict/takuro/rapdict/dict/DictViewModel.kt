@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.rapdict.takuro.rapdict.helper.WordAccess
 
 class DictViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -14,7 +13,6 @@ class DictViewModel(application: Application) : AndroidViewModel(application) {
 
     private var db: SQLiteDatabase? = null
     private var helper: SQLiteOpenHelper? = null
-    private val wordAccess = WordAccess()
 
     //ViewModel初期化時にロード
     init {
