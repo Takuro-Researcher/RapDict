@@ -10,9 +10,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.model.Answer
+import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_result.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -38,23 +40,21 @@ class ResultFragment : androidx.fragment.app.Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         val resultListViewModel: ResultListViewModel by viewModel()
         val adapter = ResultListAdapter(resultListViewModel,this)
 
-
         val recomIntent  = Intent(activity!!, MainActivity::class.java)
 
-        val answerListJson = arguments?.getString("ANSWER_LIST")
-        val typeToken = object : TypeToken<Array<Answer>>() {}
-        val answerlist = Gson().fromJson<Array<Answer>>(answerListJson, typeToken.type)
+        val answer2wordsJson = arguments?.getString("ANSWER_LIST")
+        val wordJson = arguments?.getString("WORD_LIST")
+        val maptypeToken = object : TypeToken<Array<Map<Int,String>>>() {}
+        val wordtypeToken = object : TypeToken<Array<Word>>() {}
+        val answer2wordlist = Gson().fromJson<Array<Map<Int,String>>>(answer2wordsJson, maptypeToken.type)
+        val wordList = Gson().fromJson<Array<Word>>(wordJson,wordtypeToken.type)
+        val answerlist = convert(wordList,answer2wordlist)
 
         val resultViewModel: ResultViewModel by viewModel()
         binding?.data = resultViewModel
-        if(answerlist.size == 0){
-            resultViewModel.draw(getString(R.string.result_no_header),getString(R.string.result_no_description))
-        }
-
         resultListViewModel.draw(answerlist)
         adapter.notifyDataSetChanged()
         ResultRecyclerView.adapter = adapter
@@ -77,14 +77,12 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                         var answer = answerlist.get(index)
                         registe_answer.add(answer)
                     }
-                    System.out.println("ここには入っている")
                     // 保存
                     GlobalScope.launch {
                         val dao = App.db.answerDao()
                         registe_answer.forEach {
                             dao.insert(it)
                         }
-                        System.out.println("できたん？")
                     }
                     startActivity(recomIntent)
                 }
@@ -118,6 +116,17 @@ class ResultFragment : androidx.fragment.app.Fragment() {
             }
             dialog.show()
         }
+    }
+    fun convert(wordlist: Array<Word>, answer2wordList: Array<Map<Int,String>>):ArrayList<Answer>{
+        val answerList = ArrayList<Answer>()
+        answer2wordList.forEachIndexed{  index, item ->
+            val word_index =item.keys.toList().get(0)
+            val word_value =item.values.toList().get(0)
+            val word:Word = wordlist.get(word_index)
+            val answer = Answer(0,word_value,word.length,word.word,0)
+            answerList.add(answer)
+        }
+        return answerList
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

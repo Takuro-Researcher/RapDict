@@ -30,7 +30,6 @@ class CommonTool {
             }
             if (measure ==4){
                 if (bgm){
-                    System.out.println("ここのはずやで")
                     return R.raw.beat_97_4var
                 }else{
                     return R.raw.beat_97_4vardr

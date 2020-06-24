@@ -16,7 +16,7 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
     var checkedList = mutableListOf<MutableLiveData<Boolean>>()
 
 
-    fun draw(answerList:Array<Answer>) {
+    fun draw(answerList:ArrayList<Answer>) {
         answerList.forEach { answer ->
             questionList.add(MutableLiveData<String>().apply { value = answer.question })
             textList.add(MutableLiveData<String>().apply { value = answer.answer })

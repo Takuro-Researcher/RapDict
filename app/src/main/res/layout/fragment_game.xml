@@ -116,7 +116,6 @@
                 android:layout_margin="20sp"
                 android:layout_weight="@{data.editFourWeight}"
                 android:layout_height="wrap_content"
-
                 />
         </TableRow>
     </TableLayout>

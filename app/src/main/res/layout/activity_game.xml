@@ -35,13 +35,25 @@
         android:padding="20sp"
         android:gravity="center"
         android:text="@string/waitingDisp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/attention_sound"
+        app:layout_constraintTop_toBottomOf="@id/waiting_display"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="21sp"
+        android:textColor="@color/colorAlert"
+        android:padding="20sp"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:text="@string/attentionSound"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40sp"
         android:id="@+id/game_start_button"
         android:text="@string/gameStart"
-        app:layout_constraintTop_toBottomOf="@+id/waiting_display"
+        app:layout_constraintTop_toBottomOf="@+id/attention_sound"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"/>

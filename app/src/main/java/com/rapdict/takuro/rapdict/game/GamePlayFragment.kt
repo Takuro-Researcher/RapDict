@@ -20,12 +20,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import kotlin.collections.ArrayList
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-
 class GamePlayFragment : androidx.fragment.app.Fragment() {
-    private var param1: String? = null
     private var binding: FragmentGameBinding? =null
     internal var finish_q =0
     var mediaPlayer : MediaPlayer? =null
@@ -33,10 +28,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
 
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -70,9 +62,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             words.add(questionWord)
         }
 
-        val resultFragment = ResultFragment()
-
-        val answerList = ArrayList<Answer>()
+        val answerList = ArrayList<Map<Int,String>>()
         game_question_num.text = questionNum.toString()
         game_question_text.text = words[finish_q].word
         game_furigana_text.text = words[finish_q].furigana
@@ -82,16 +72,11 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
 
         onStart()
+
         mediaPlayer?.setOnCompletionListener {
             if (finish_q >= questionNum-1){
                 it.pause()
-                val bundle = Bundle()
-                bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
-                resultFragment.arguments = bundle
-                //画面遷移
-                val transaction2 = fragmentManager?.beginTransaction()
-                transaction2?.replace(R.id.fragmentGame, resultFragment)
-                transaction2?.commit()
+                jumpedResult(answerList,words)
             }else{
                 finish_q++
                 changedQuestion(finish_q, words, questionNum)
@@ -99,22 +84,13 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             }
         }
 
-
-
-
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
-            answerList.addAll(saveAnswer(words[finish_q].word!!,words[finish_q].furigana.length ))
+            answerList.addAll(saveAnswer(finish_q))
+            System.out.println(answerList)
             finish_q++
             if (finish_q >= questionNum){
-                val bundle = Bundle()
-                bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
-                resultFragment.arguments = bundle
-                //画面遷移
-                val transaction2 = fragmentManager?.beginTransaction()
-                transaction2?.replace(R.id.fragmentGame, resultFragment)
-                transaction2?.commit()
-                mediaPlayer?.pause()
+               jumpedResult(answerList,words)
             }else{
                 changedQuestion(finish_q,words,questionNum)
                 editTextClear()
@@ -159,30 +135,40 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
 
     // 問題を変更する処理
-    fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
+    private fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
         game_question_num.text = (questionNum - finish_q).toString()
         game_furigana_text.text = words[finish_q].furigana
         game_question_text.text = words[finish_q].word
     }
+
+    private fun jumpedResult(answerList:ArrayList<Map<Int,String>>,wordsList:ArrayList<Word>){
+        val bundle = Bundle()
+        bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
+        bundle.putString("WORD_LIST",Gson().toJson(wordsList))
+        val resultFragment = ResultFragment()
+        resultFragment.arguments = bundle
+        //画面遷移
+        val transaction2 = fragmentManager?.beginTransaction()
+        transaction2?.replace(R.id.fragmentGame, resultFragment)
+        transaction2?.commit()
+        mediaPlayer?.pause()
+    }
     // answerList をアクティビティ内に保存する
-    private fun saveAnswer(word:String,word_length:Int):ArrayList<Answer>{
+    private fun saveAnswer(word_id:Int):ArrayList<Map<Int,String>>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerTexts = mutableListOf<String>()
         if (answerNum >= 1){ answerTexts.add(rhyme_edit_one.text.toString()) }
         if (answerNum >= 2){ answerTexts.add(rhyme_edit_two.text.toString()) }
         if (answerNum >= 3){ answerTexts.add(rhyme_edit_three.text.toString()) }
         if (answerNum >= 4){ answerTexts.add(rhyme_edit_four.text.toString()) }
-        val answerArray = ArrayList<Answer>()
-        for( answer in answerTexts){
-            if (answer.isNullOrBlank()){ continue }
-            val answerData = Answer(0,answer,word_length,word,0)
-            answerArray.add(answerData)
+        val answer2word = ArrayList<Map<Int,String>>()
+        answerTexts.forEach {
+            if(it.isNotEmpty() ){
+                answer2word.add(mapOf(word_id to it))
+            }
         }
-        // デバッグ用にシーズ
-        // answerArray.add(AnswerData(1,"テストだよ"+finish_q.toString(),"縁遠かろう",0))
-        return answerArray
+        return answer2word
     }
-
 
     fun editTextClear(){
         var editTextNum = arguments!!.getInt("RETURN")
@@ -190,5 +176,8 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         if (editTextNum >= 2){ rhyme_edit_two.editableText.clear() }
         if (editTextNum >= 3){ rhyme_edit_three.editableText.clear() }
         if (editTextNum >= 4){ rhyme_edit_four.editableText.clear() }
+    }
+    inner class answer_to_word{
+
     }
 }

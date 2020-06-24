@@ -31,12 +31,11 @@ open class GameActivity : AppCompatActivity() {
                 super.CallBack(result)
                 bundle.putString("RHYMES",result)
                 waiting_display.text =  application.getString(R.string.startingDisp)
+                attention_sound.visibility = View.VISIBLE
                 game_start_button.visibility = View.VISIBLE
                 loading.visibility = View.INVISIBLE
             }
         })
-
-        var commonTool:CommonTool
         val filepath:Int = CommonTool.setMusicRaw(measureNum,true)!!
 
         bundle.putInt("RETURN",answerNum)
@@ -48,6 +47,7 @@ open class GameActivity : AppCompatActivity() {
         game_start_button.setOnClickListener {
             game_start_button.visibility = View.INVISIBLE
             waiting_display.visibility = View.INVISIBLE
+            attention_sound.visibility = View.INVISIBLE
             val gameFragment = GamePlayFragment()
             gameFragment.arguments = bundle
             transaction.add(R.id.fragmentGame, gameFragment)
