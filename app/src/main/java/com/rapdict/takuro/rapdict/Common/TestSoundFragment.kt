@@ -36,8 +36,6 @@ class TestSoundFragment : androidx.fragment.app.Fragment() {
             }else{
                 onCompletion(it)
             }
-
-
         }
     }
 

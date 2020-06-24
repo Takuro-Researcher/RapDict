@@ -24,11 +24,11 @@
         android:icon="@drawable/dictionary"
         android:title="@string/dict"
         app:showAsAction="ifRoom" />
-<!--    <item-->
-<!--        android:id="@+id/test_sound"-->
-<!--        android:icon="@drawable/dictionary"-->
-<!--        android:title="サウンドじゃ！"-->
-<!--        app:showAsAction="ifRoom" />-->
+    <item
+        android:id="@+id/test_sound"
+        android:icon="@drawable/dictionary"
+        android:title="サウンドじゃ！"
+        app:showAsAction="ifRoom" />
 
 
 </menu>

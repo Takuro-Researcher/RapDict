@@ -1,5 +1,6 @@
 package com.rapdict.takuro.rapdict.game
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -28,9 +29,8 @@ private const val ARG_PARAM1 = "param1"
 class GamePlayFragment : androidx.fragment.app.Fragment() {
     private var param1: String? = null
     private var binding: FragmentGameBinding? =null
-    private val dataFormat = SimpleDateFormat("ss.SS", Locale.US)
     internal var finish_q =0
-    private var timer:CountDownTimer?= null
+    var mediaPlayer : MediaPlayer? =null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +57,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val timerNum = arguments!!.getInt("TIME")*1000.toLong()
         val questionNum = arguments!!.getInt("QUESTION")
         val words =ArrayList<Word>()
         val rhymes = JSONObject(arguments!!.getString("RHYMES")).get("rhymes") as JSONArray
@@ -71,32 +70,33 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             )
             words.add(questionWord)
         }
-        val transaction2 = fragmentManager?.beginTransaction()
+
         val resultFragment = ResultFragment()
-        val bundle = Bundle()
+
         val answerList = ArrayList<Answer>()
-
-
         game_question_num.text = questionNum.toString()
         game_question_text.text = words[finish_q].word
         game_furigana_text.text = words[finish_q].furigana
-        timer = object:CountDownTimer(timerNum,100.toLong()){
-            override fun onTick(millisUntilFinished: Long) {
-                game_sec_display.text = dataFormat.format(millisUntilFinished)
+
+        mediaPlayer = MediaPlayer.create(activity, R.raw.beat_97)
+        onCompletion(mediaPlayer!!)
+        
+        mediaPlayer?.setOnCompletionListener {
+            if (finish_q >= questionNum-1){
+                it.pause()
+                val bundle = Bundle()
+                bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
+                resultFragment.arguments = bundle
+                //画面遷移
+                val transaction2 = fragmentManager?.beginTransaction()
+                transaction2?.replace(R.id.fragmentGame, resultFragment)
+                transaction2?.commit()
+            }else{
+                finish_q++
+                changedQuestion(finish_q, words, questionNum)
+                onCompletion(it)
             }
-            override fun onFinish() {
-                if (finish_q >= questionNum-1){
-                    cancel()
-                    bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
-                    resultFragment.arguments = bundle
-                    transaction2?.replace(R.id.fragmentGame, resultFragment)
-                    transaction2?.commit()
-                }else{
-                    finish_q++
-                    changedQuestion(finish_q, words, questionNum)
-                }
-            }
-        }.start()
+        }
 
 
 
@@ -105,9 +105,11 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             answerList.addAll(saveAnswer(words[finish_q].word!!,words[finish_q].furigana.length ))
             finish_q++
             if (finish_q >= questionNum){
-                timer!!.cancel()
+                val bundle = Bundle()
                 bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
                 resultFragment.arguments = bundle
+                //画面遷移
+                val transaction2 = fragmentManager?.beginTransaction()
                 transaction2?.replace(R.id.fragmentGame, resultFragment)
                 transaction2?.commit()
             }else{
@@ -116,18 +118,25 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 game_main.setFocusable(true)
                 game_main.setFocusableInTouchMode(true)
                 game_main.requestFocus()
+                onCompletion(mediaPlayer!!)
             }
         }
 
     }
 
+    //media playerを最初から再生させる。
+    fun onCompletion(player: MediaPlayer){
+        player.seekTo(0)
+        player.start()
+    }
+
     override fun onStart() {
         super.onStart()
-        // 回答時にストップウォッチの停止処理を記述
+        // 回答時にビートを停止する
         var editTextOnFocus: View.OnFocusChangeListener = object :View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
                 if (hasFocus) {
-                    timer!!.cancel()
+
                 }
             }
         }
@@ -140,7 +149,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     override fun onStop() {
         super.onStop()
         finish_q = 100
-        timer!!.cancel()
     }
 
 
@@ -149,9 +157,9 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         game_question_num.text = (questionNum - finish_q).toString()
         game_furigana_text.text = words[finish_q].furigana
         game_question_text.text = words[finish_q].word
-        timer!!.start()
+        // WIPビートを再生する
     }
-    // answerList を一時保存
+    // answerList をアクティビティ内に保存する
     private fun saveAnswer(word:String,word_length:Int):ArrayList<Answer>{
         val answerNum = arguments!!.getInt("RETURN")
         val answerTexts = mutableListOf<String>()

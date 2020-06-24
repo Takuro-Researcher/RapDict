@@ -68,12 +68,12 @@ open class MainActivity : AppCompatActivity() {
                         .commit()
                 return true
             }
-//            R.id.test_sound ->{
-//                supportFragmentManager.beginTransaction()
-//                        .replace(R.id.fragmentFrameLayout, TestSoundFragment())
-//                        .commit()
-//                return true
-//            }
+            R.id.test_sound ->{
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentFrameLayout, TestSoundFragment())
+                        .commit()
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }

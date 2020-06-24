@@ -15,7 +15,7 @@ open class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         intent = intent
         val answerNum = intent.getIntExtra("RETURN",0)
-        val timeNum = intent.getIntExtra("TIME",0)
+        val measureNum = intent.getIntExtra("MEASURE",0)
         val questionNum =intent.getIntExtra("QUESTION",0)
         val minWordNum = intent.getIntExtra("MIN_WORD",0)
         val maxWordNum = intent.getIntExtra("MAX_WORD",0)
@@ -37,9 +37,8 @@ open class GameActivity : AppCompatActivity() {
         })
 
 
-
         bundle.putInt("RETURN",answerNum)
-        bundle.putInt("TIME",timeNum)
+        bundle.putInt("MEASURE",measureNum)
         bundle.putInt("QUESTION",questionNum)
 
         setContentView(R.layout.activity_game)
