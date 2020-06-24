@@ -48,7 +48,6 @@ class TestSoundFragment : androidx.fragment.app.Fragment() {
     fun onCompletion(player: MediaPlayer){
         player.seekTo(0)
         player.start()
-        System.out.println("あ")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

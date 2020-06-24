@@ -16,9 +16,7 @@ import kotlinx.android.synthetic.main.fragment_game.*
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.viewmodel.ext.android.viewModel
-import sample.intent.AnswerData
-import java.text.SimpleDateFormat
-import java.util.*
+
 import kotlin.collections.ArrayList
 
 
@@ -80,7 +78,9 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
         mediaPlayer = MediaPlayer.create(activity, R.raw.beat_97)
         onCompletion(mediaPlayer!!)
-        
+
+
+        onStart()
         mediaPlayer?.setOnCompletionListener {
             if (finish_q >= questionNum-1){
                 it.pause()
@@ -100,6 +100,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
 
 
+
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
             answerList.addAll(saveAnswer(words[finish_q].word!!,words[finish_q].furigana.length ))
@@ -112,6 +113,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 val transaction2 = fragmentManager?.beginTransaction()
                 transaction2?.replace(R.id.fragmentGame, resultFragment)
                 transaction2?.commit()
+                mediaPlayer?.pause()
             }else{
                 changedQuestion(finish_q,words,questionNum)
                 editTextClear()
@@ -136,7 +138,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         var editTextOnFocus: View.OnFocusChangeListener = object :View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
                 if (hasFocus) {
-
+                    mediaPlayer?.pause()
                 }
             }
         }
@@ -148,8 +150,11 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
     override fun onStop() {
         super.onStop()
-        finish_q = 100
+        mediaPlayer?.stop()
+        mediaPlayer?.reset();
+        mediaPlayer?.release();
     }
+
 
 
     // 問題を変更する処理
@@ -157,7 +162,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         game_question_num.text = (questionNum - finish_q).toString()
         game_furigana_text.text = words[finish_q].furigana
         game_question_text.text = words[finish_q].word
-        // WIPビートを再生する
     }
     // answerList をアクティビティ内に保存する
     private fun saveAnswer(word:String,word_length:Int):ArrayList<Answer>{
