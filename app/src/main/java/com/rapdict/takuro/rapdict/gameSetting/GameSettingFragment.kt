@@ -45,7 +45,7 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val gameSettingViewModel:GameSettingViewModel by viewModel()
         val questionSpinner = question_spinner as Spinner
-        val timeSpinner = time_spinner as Spinner
+        val measureSpinner = measure_spinner as Spinner
         val minSpinner = min_spinner as Spinner
         val maxSpinner = max_spinner as Spinner
         val returnSpinner = return_spinner as Spinner
@@ -67,7 +67,7 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
             if (isConnected ){
                 val intent = Intent(view.context, GameActivity::class.java)
                 intent.putExtra("QUESTION",questionSpinner.selectedItem as Int)
-                intent.putExtra("TIME",timeSpinner.selectedItem as Int)
+                intent.putExtra("MEASURE",measureSpinner.selectedItem as Int)
                 intent.putExtra("MIN_WORD",minSpinner.selectedItem as Int)
                 intent.putExtra("MAX_WORD",maxSpinner.selectedItem as Int)
                 intent.putExtra("RETURN",returnSpinner.selectedItem as Int)

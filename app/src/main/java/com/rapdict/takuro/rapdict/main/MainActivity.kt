@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.rapdict.takuro.rapdict.Common.TestSoundFragment
 import com.rapdict.takuro.rapdict.makeQuestion.MakeQuestionFragment
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingFragment
@@ -64,6 +65,12 @@ open class MainActivity : AppCompatActivity() {
             R.id.question_make ->{
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentFrameLayout, MakeQuestionFragment())
+                        .commit()
+                return true
+            }
+            R.id.test_sound ->{
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentFrameLayout, TestSoundFragment())
                         .commit()
                 return true
             }
