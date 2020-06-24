@@ -36,9 +36,11 @@ open class GameActivity : AppCompatActivity() {
             }
         })
 
+        var commonTool:CommonTool
+        val filepath:Int = CommonTool.setMusicRaw(measureNum,true)!!
 
         bundle.putInt("RETURN",answerNum)
-        bundle.putInt("MEASURE",measureNum)
+        bundle.putInt("MEASURE",filepath)
         bundle.putInt("QUESTION",questionNum)
 
         setContentView(R.layout.activity_game)

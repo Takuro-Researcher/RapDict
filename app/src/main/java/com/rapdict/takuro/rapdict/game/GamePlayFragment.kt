@@ -56,6 +56,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val questionNum = arguments!!.getInt("QUESTION")
+        var filepath = arguments!!.getInt("MEASURE")
         val words =ArrayList<Word>()
         val rhymes = JSONObject(arguments!!.getString("RHYMES")).get("rhymes") as JSONArray
         for(i in 0 until rhymes.length()){
@@ -76,7 +77,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         game_question_text.text = words[finish_q].word
         game_furigana_text.text = words[finish_q].furigana
 
-        mediaPlayer = MediaPlayer.create(activity, R.raw.beat_97)
+        mediaPlayer = MediaPlayer.create(activity, filepath)
         onCompletion(mediaPlayer!!)
 
 

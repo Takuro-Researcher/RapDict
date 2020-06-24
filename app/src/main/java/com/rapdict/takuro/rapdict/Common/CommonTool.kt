@@ -1,5 +1,6 @@
 package com.rapdict.takuro.rapdict.Common
 
+import com.rapdict.takuro.rapdict.R
 import java.net.URI
 
 class CommonTool {
@@ -18,6 +19,31 @@ class CommonTool {
             url += "max=$max&"
             url += "num=$num"
             return url
+        }
+        fun setMusicRaw(measure:Int,bgm:Boolean): Int? {
+            if (measure ==2){
+                if (bgm){
+                    return R.raw.beat_97
+                }else{
+                    return R.raw.beat_97_dronly
+                }
+            }
+            if (measure ==4){
+                if (bgm){
+                    System.out.println("ここのはずやで")
+                    return R.raw.beat_97_4var
+                }else{
+                    return R.raw.beat_97_4vardr
+                }
+            }
+            if (measure ==8){
+                if (bgm){
+                    return R.raw.beat_97_8var
+                }else{
+                    return R.raw.beat_97_8vardr
+                }
+            }
+            return null
         }
     }
 }
