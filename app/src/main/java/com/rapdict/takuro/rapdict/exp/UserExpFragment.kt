@@ -14,15 +14,8 @@ import kotlinx.android.synthetic.main.fragment_user_exp.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class UserExpFragment : androidx.fragment.app.Fragment() {
-    // TODO: Rename and change types of parameters
-
-    private var listener: OnFragmentInteractionListener? = null
     private var binding: FragmentUserExpBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,15 +38,5 @@ class UserExpFragment : androidx.fragment.app.Fragment() {
         super.onActivityCreated(savedInstanceState)
         val userExpviewModel:UserExpViewModel by viewModel()
         binding?.userData  = userExpviewModel
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
     }
 }
