@@ -55,7 +55,7 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
         val resultViewModel: ResultViewModel by viewModel()
         binding?.data = resultViewModel
-        resultListViewModel.draw(answerlist)
+        resultListViewModel.draw(answerlist,wordList)
         adapter.notifyDataSetChanged()
         ResultRecyclerView.adapter = adapter
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
