@@ -59,6 +59,11 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         adapter.notifyDataSetChanged()
         ResultRecyclerView.adapter = adapter
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+        add_answer_button.setOnClickListener {
+            resultListViewModel.addCard()
+            adapter.notifyDataSetChanged()
+        }
+
         // 保存する
         save_button.setOnClickListener {
             val bool_list = resultListViewModel.checkedList

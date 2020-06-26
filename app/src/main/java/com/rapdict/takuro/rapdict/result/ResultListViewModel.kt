@@ -18,7 +18,7 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
     var wordTextArray: MutableLiveData<ArrayList<String>> = MutableLiveData()
 
 
-    fun draw(answerList:ArrayList<Answer>,wordList:ArrayList<Word>) {
+    fun draw(answerList:ArrayList<Answer>,wordList:Array<Word>) {
         answerList.forEach { answer ->
             questionList.add(MutableLiveData<String>().apply { value = answer.question })
             textList.add(MutableLiveData<String>().apply { value = answer.answer })
@@ -29,6 +29,12 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
             arraytextList.add(it.word)
         }
         wordTextArray.value = arraytextList
+    }
+
+    fun addCard() {
+        questionList.add(MutableLiveData<String>().apply { value = "" })
+        textList.add(MutableLiveData<String>().apply { value = "" })
+        checkedList.add(MutableLiveData<Boolean>().apply { value = false })
     }
 
 }
