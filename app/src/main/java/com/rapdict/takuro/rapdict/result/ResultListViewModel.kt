@@ -16,6 +16,7 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
     var questionList = mutableListOf<MutableLiveData<String>>()
     var checkedList = mutableListOf<MutableLiveData<Boolean>>()
     var wordTextArray: MutableLiveData<ArrayList<String>> = MutableLiveData()
+    // 新規登録分かゲーム中に登録される奴か
     var isRegister = mutableListOf<MutableLiveData<Boolean>>()
 
 

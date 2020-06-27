@@ -65,10 +65,10 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
         // 保存する
         save_button.setOnClickListener {
-
             val bool_list = resultListViewModel.checkedList
-            val register_answer_list = resultListViewModel.returnRegisterCard(answerlist.size)
-            answerlist.addAll(register_answer_list)
+            //　新規追加データがあれば保存する
+            answerlist.addAll(resultListViewModel.returnRegisterCard(answerlist.size))
+            
             var register_index  = ArrayList<Int>()
             bool_list.forEachIndexed { index, data ->
                 if(data.value == true){ register_index.add(index) }

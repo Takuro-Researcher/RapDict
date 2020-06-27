@@ -31,7 +31,6 @@ open class ResultListAdapter(private val viewModel : ResultListViewModel, privat
     override fun onBindViewHolder(holder: ResultListViewHolder, position: Int) {
         var binding:ViewDataBinding
         if (viewModel.isRegister[position].value == false){
-            System.out.println("えー！！")
             binding = holder.binding as ResultListBinding
             binding.data = this.viewModel
             binding.position = position
@@ -44,7 +43,6 @@ open class ResultListAdapter(private val viewModel : ResultListViewModel, privat
             }
             binding.lifecycleOwner = parentLifecycleOwner
         }else {
-            System.out.println("おわー")
             binding = holder.binding as ResultWriteListBinding
             binding.data = this.viewModel
             binding.position = position
@@ -64,7 +62,6 @@ open class ResultListAdapter(private val viewModel : ResultListViewModel, privat
             }
             binding.resultListRegisterAnswer.addTextChangedListener(object: CustomTextWatcher {
                 override fun afterTextChanged(p0: Editable?) {
-                    System.out.println(p0.toString())
                     viewModel.textList[position].value = p0.toString()
                 }
             })
