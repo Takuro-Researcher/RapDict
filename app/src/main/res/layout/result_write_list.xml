@@ -20,24 +20,22 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:padding="10dp">
-        <TextView
-            android:id="@+id/result_list_row"
+
+        <Spinner
+            android:id="@+id/question_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000"
             android:padding="12sp"
-            android:gravity="center_vertical"
-            android:text="@{data.questionList[position]}" />
+            android:layout_height="match_parent"
+            android:entries="@{data.wordTextArray}"
+            android:dropDownWidth="match_parent" />
         <TextView
             android:id="@+id/result_list_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="12sp"
-            app:layout_constraintStart_toEndOf="@id/result_list_row"
-            app:layout_constraintTop_toTopOf="parent"
             android:text="➡"/>
-        <TextView
-            android:id="@+id/result_list_answer"
+        <EditText
+            android:id="@+id/result_list_register_answer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000"

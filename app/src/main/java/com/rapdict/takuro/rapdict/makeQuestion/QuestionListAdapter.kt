@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
+import com.rapdict.takuro.rapdict.Common.CustomTextWatcher
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.QuestionListBinding
-import com.rapdict.takuro.rapdict.databinding.ResultListBinding
 
 
 open class QuestionListAdapter(private val viewModel : QuestionListViewModel, private val parentLifecycleOwner: LifecycleOwner) : androidx.recyclerview.widget.RecyclerView.Adapter<QuestionListViewHolder>() {
@@ -37,16 +37,12 @@ open class QuestionListAdapter(private val viewModel : QuestionListViewModel, pr
                 viewModel.questionList[position].value = p0.toString()
             }
         })
-
         //ここでviewholderのlifecycleOwnerにセットする！
         holder.binding.lifecycleOwner = parentLifecycleOwner
     }
     override fun getItemCount(): Int {
         return viewModel.questionList.size
     }
+
 }
 
-interface CustomTextWatcher: TextWatcher{
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-}
