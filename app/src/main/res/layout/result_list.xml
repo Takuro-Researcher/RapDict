@@ -20,29 +20,14 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:padding="10dp">
-        <EditText
+        <TextView
             android:id="@+id/result_list_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000"
             android:padding="12sp"
             android:gravity="center_vertical"
-            android:text="@{data.questionList[position]}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            />
-<!--        <Spinner-->
-<!--            android:id="@+id/question_spinner"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="0dp"-->
-<!--            app:layout_constraintHeight_default= "percent"-->
-<!--            app:layout_constraintHeight_percent= "0.14"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/question_text"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-
-<!--            android:entries="@{data.questionList[position]}"-->
-<!--            android:dropDownWidth="match_parent" />-->
+            android:text="@{data.questionList[position]}" />
         <TextView
             android:id="@+id/result_list_start"
             android:layout_width="wrap_content"
@@ -51,7 +36,7 @@
             app:layout_constraintStart_toEndOf="@id/result_list_row"
             app:layout_constraintTop_toTopOf="parent"
             android:text="➡"/>
-        <EditText
+        <TextView
             android:id="@+id/result_list_answer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

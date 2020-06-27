@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
+import com.rapdict.takuro.rapdict.Common.CustomTextWatcher
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.QuestionListBinding
 
@@ -45,7 +46,3 @@ open class QuestionListAdapter(private val viewModel : QuestionListViewModel, pr
 
 }
 
-interface CustomTextWatcher: TextWatcher{
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-}

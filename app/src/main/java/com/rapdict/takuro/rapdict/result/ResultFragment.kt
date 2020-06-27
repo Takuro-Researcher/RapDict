@@ -52,7 +52,6 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         val answer2wordlist = Gson().fromJson<Array<Map<Int,String>>>(answer2wordsJson, maptypeToken.type)
         val wordList = Gson().fromJson<Array<Word>>(wordJson,wordtypeToken.type)
         val answerlist = convert(wordList,answer2wordlist)
-
         val resultViewModel: ResultViewModel by viewModel()
         binding?.data = resultViewModel
         resultListViewModel.draw(answerlist,wordList)
@@ -66,12 +65,14 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
         // 保存する
         save_button.setOnClickListener {
+
             val bool_list = resultListViewModel.checkedList
+            val register_answer_list = resultListViewModel.returnRegisterCard(answerlist.size)
+            answerlist.addAll(register_answer_list)
             var register_index  = ArrayList<Int>()
             bool_list.forEachIndexed { index, data ->
                 if(data.value == true){ register_index.add(index) }
             }
-
             val saveDialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)
                 setTitle("データ保存")

@@ -35,7 +35,7 @@
             android:padding="12sp"
             android:text="➡"/>
         <EditText
-            android:id="@+id/result_list_answer"
+            android:id="@+id/result_list_register_answer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000"
