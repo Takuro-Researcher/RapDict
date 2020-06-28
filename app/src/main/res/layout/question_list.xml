@@ -31,8 +31,6 @@
                 android:gravity="center_vertical"
                 android:hint="好きな言葉"
                 android:text="@{data.questionList[position]}"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 />
             <EditText
                 android:id="@+id/furigana_list_doc"
@@ -45,8 +43,6 @@
                 android:layout_margin="10sp"
                 android:gravity="center_vertical"
                 android:text="@{data.furiganaList[position]}"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
