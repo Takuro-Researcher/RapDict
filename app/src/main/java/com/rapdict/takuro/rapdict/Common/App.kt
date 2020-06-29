@@ -1,7 +1,7 @@
 package com.rapdict.takuro.rapdict.Common
 
 import android.app.Application
-import com.rapdict.takuro.rapdict.makeQuestion.QuestionListViewModel
+import com.rapdict.takuro.rapdict.myDict.QuestionListViewModel
 import com.rapdict.takuro.rapdict.dict.ListViewModel
 import com.rapdict.takuro.rapdict.exp.UserExpViewModel
 import com.rapdict.takuro.rapdict.game.GamePlayViewModel

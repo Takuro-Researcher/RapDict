@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.makeQuestion.QuestionListViewModel"/>
+        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.QuestionListViewModel"/>
         <variable name="position" type="Integer"/>
     </data>
     <androidx.cardview.widget.CardView

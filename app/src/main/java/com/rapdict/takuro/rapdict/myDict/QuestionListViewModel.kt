@@ -1,11 +1,9 @@
-package com.rapdict.takuro.rapdict.makeQuestion
+package com.rapdict.takuro.rapdict.myDict
 
 import android.app.Application
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-
-import sample.intent.AnswerData
 
 class QuestionListViewModel(application: Application) : AndroidViewModel(application) {
 
