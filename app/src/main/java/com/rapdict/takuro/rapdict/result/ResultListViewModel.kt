@@ -7,8 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.model.Answer
 
-import sample.intent.AnswerData
-
 class ResultListViewModel(application: Application) : AndroidViewModel(application) {
 
     //監視対象のLiveData

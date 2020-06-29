@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rapdict.takuro.rapdict.R
-import kotlinx.android.synthetic.main.fragment_mydict.*
+
 
 class MyDictMakeFragment : androidx.fragment.app.Fragment() {
 

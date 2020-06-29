@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Answer::class), version = 2)
+@Database(entities = arrayOf(Answer::class,Mydict::class), version = 3)
 abstract class RapDataBase : RoomDatabase() {
     abstract fun answerDao(): AnswerDao
+    abstract fun mydictDao(): MydictDao
 
     companion object {
         private const val dbName = "Rap.db"

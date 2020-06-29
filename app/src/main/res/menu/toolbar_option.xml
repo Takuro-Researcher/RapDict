@@ -12,10 +12,6 @@
         android:title="@string/rhyme"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/user_exp"
-        android:title="@string/user_home"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/question_make"
         android:title="@string/make_question"
         app:showAsAction="never" />
