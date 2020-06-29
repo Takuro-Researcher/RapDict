@@ -18,9 +18,6 @@
     tools:context=".game.GamePlayFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-
-
     <TextView
         android:id="@+id/game_question"
         android:layout_width="wrap_content"

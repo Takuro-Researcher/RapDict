@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
 import kotlinx.android.synthetic.main.fragment_mydict1.*
+import kotlinx.android.synthetic.main.fragment_mydict_make.*
 import kotlinx.coroutines.runBlocking
 
 
@@ -31,7 +32,6 @@ class MyDictFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val tabs_count:Int = MyDictTabAdapter(childFragmentManager).count
         var mydict_count:Int = 0
         runBlocking {
@@ -43,10 +43,10 @@ class MyDictFragment : androidx.fragment.app.Fragment() {
             adapterUnabled(tabs_count)
             mydict_pager.setPagingEnabled(false)
         }
-        adapterEnabled(tabs_count)
-
         mydict_pager.adapter = MyDictTabAdapter(childFragmentManager)
         mydict_tab_layout.setupWithViewPager(mydict_pager)
+
+
     }
 
     fun adapterUnabled(tabs_count:Int){
