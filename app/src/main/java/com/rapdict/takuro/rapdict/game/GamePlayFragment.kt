@@ -131,9 +131,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         mediaPlayer?.reset();
         mediaPlayer?.release();
     }
-
-
-
     // 問題を変更する処理
     private fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
         game_question_num.text = (questionNum - finish_q).toString()
@@ -176,8 +173,5 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         if (editTextNum >= 2){ rhyme_edit_two.editableText.clear() }
         if (editTextNum >= 3){ rhyme_edit_three.editableText.clear() }
         if (editTextNum >= 4){ rhyme_edit_four.editableText.clear() }
-    }
-    inner class answer_to_word{
-
     }
 }

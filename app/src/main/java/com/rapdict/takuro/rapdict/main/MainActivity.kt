@@ -7,12 +7,12 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.rapdict.takuro.rapdict.Common.TestSoundFragment
-import com.rapdict.takuro.rapdict.makeQuestion.MakeQuestionFragment
+import com.rapdict.takuro.rapdict.myDict.MyDictMakeQuestionFragment
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingFragment
 import com.rapdict.takuro.rapdict.dict.DictActivity
 import com.rapdict.takuro.rapdict.exp.UserExpFragment
+import com.rapdict.takuro.rapdict.myDict.MyDictFragment
 import com.rapdict.takuro.rapdict.userSetting.UserSettingFragment
 
 open class MainActivity : AppCompatActivity() {
@@ -64,16 +64,11 @@ open class MainActivity : AppCompatActivity() {
             }
             R.id.question_make ->{
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentFrameLayout, MakeQuestionFragment())
+                        .replace(R.id.fragmentFrameLayout, MyDictFragment())
                         .commit()
                 return true
             }
-            R.id.test_sound ->{
-                supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentFrameLayout, TestSoundFragment())
-                        .commit()
-                return true
-            }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }

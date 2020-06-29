@@ -1,7 +1,6 @@
-package com.rapdict.takuro.rapdict.makeQuestion
+package com.rapdict.takuro.rapdict.myDict
 
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil

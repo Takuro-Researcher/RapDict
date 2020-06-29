@@ -7,5 +7,6 @@
     <color name="colorGreen">#008000</color>
     <color name="colorFavorite">#FFD700</color>
     <color name="colorAlert">#FF4500</color>
+    <color name="whiteSmoke">#F5F5F5</color>
 
 </resources>

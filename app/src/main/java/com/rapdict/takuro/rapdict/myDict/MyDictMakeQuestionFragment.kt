@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.makeQuestion
+package com.rapdict.takuro.rapdict.myDict
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,14 +10,14 @@ import androidx.appcompat.app.AlertDialog
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.main.MainActivity
-import kotlinx.android.synthetic.main.make_question_fragment.*
+import kotlinx.android.synthetic.main.fragment_mydict_question_make.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MakeQuestionFragment : Fragment() {
+class MyDictMakeQuestionFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.make_question_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_mydict_question_make, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
