@@ -14,7 +14,7 @@ class MyDictMakeViewModel(application: Application) : AndroidViewModel(applicati
     var dictName: MutableLiveData<String> = MutableLiveData()
 
     fun isValid() =!dictName.value.isNullOrBlank()
-    // addSource 
+    // addSource に変更検知する。
     val canSubmit = MediatorLiveData<Boolean>().also { result ->
         result.addSource(dictName) { result.value = isValid() }
     }

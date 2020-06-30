@@ -7,6 +7,7 @@ import com.rapdict.takuro.rapdict.exp.UserExpViewModel
 import com.rapdict.takuro.rapdict.game.GamePlayViewModel
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel
 import com.rapdict.takuro.rapdict.model.RapDataBase
+import com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel
 import com.rapdict.takuro.rapdict.myDict.MyDictMakeViewModel
 import com.rapdict.takuro.rapdict.result.ResultListViewModel
 import com.rapdict.takuro.rapdict.result.ResultViewModel
@@ -42,5 +43,6 @@ class App : Application() {
         viewModel { ResultListViewModel(get())}
         viewModel { QuestionListViewModel(get()) }
         viewModel { MyDictMakeViewModel(get()) }
+        viewModel { MyDictChoiceViewModel(get()) }
     }
 }
