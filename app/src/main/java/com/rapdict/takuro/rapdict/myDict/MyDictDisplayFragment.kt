@@ -20,6 +20,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class MyDictDisplayFragment : androidx.fragment.app.Fragment() {
     private var binding: FragmentMydictChoiceBinding?= null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -33,13 +34,19 @@ class MyDictDisplayFragment : androidx.fragment.app.Fragment() {
         super.onActivityCreated(savedInstanceState)
         val displayListViewModel:DisplayListViewModel by viewModel()
         val adapter = DisplayListAdapter(displayListViewModel,this)
-
+        val myDictChoiceViewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
         DisplayRecyclerView.adapter = adapter
         DisplayRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+        val uid:Int = myDictChoiceViewModel.db_uid.value!!
+        displayListViewModel.clear()
+        displayListViewModel.mydict_bind(uid)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
 
     }
 }

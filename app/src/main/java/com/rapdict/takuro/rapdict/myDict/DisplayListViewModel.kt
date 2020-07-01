@@ -4,6 +4,9 @@ import android.app.Application
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.rapdict.takuro.rapdict.Common.App.Companion.db
+import com.rapdict.takuro.rapdict.Word
+import kotlinx.coroutines.runBlocking
 
 class DisplayListViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -12,13 +15,27 @@ class DisplayListViewModel(application: Application) : AndroidViewModel(applicat
     var furiganaList = mutableListOf<MutableLiveData<String>>()
 
     init {
-        questionList.add(MutableLiveData<String>().apply { value = "試験中" })
-        furiganaList.add(MutableLiveData<String>().apply { value = "しけんちゅう" })
+
     }
 
-    fun addCard() {
-        questionList.add(MutableLiveData<String>().apply { value = "" })
-        furiganaList.add(MutableLiveData<String>().apply { value = "" })
+    fun clear(){
+        questionList.clear()
+        furiganaList.clear()
     }
 
+    fun mydict_bind(uid:Int){
+        var data =  listOf<Word>()
+        runBlocking {
+            val dao = db.wordDao()
+            data = dao.findByDictIds(uid)
+        }
+        bind_word(data)
+    }
+
+    fun bind_word(list:List<Word>){
+        list.forEach {
+            questionList.add(MutableLiveData<String>().apply { value = it.word })
+            furiganaList.add(MutableLiveData<String>().apply { value = it.furigana })
+        }
+    }
 }

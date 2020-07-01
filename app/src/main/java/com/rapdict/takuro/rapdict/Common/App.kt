@@ -1,6 +1,5 @@
 package com.rapdict.takuro.rapdict.Common
 
-import MyDictDisplayViewModel
 import android.app.Application
 import com.rapdict.takuro.rapdict.myDict.QuestionListViewModel
 import com.rapdict.takuro.rapdict.dict.ListViewModel
@@ -46,7 +45,6 @@ class App : Application() {
         viewModel { QuestionListViewModel(get()) }
         viewModel { MyDictMakeViewModel(get()) }
         viewModel { MyDictChoiceViewModel(get()) }
-        viewModel { MyDictDisplayViewModel(get()) }
         viewModel { DisplayListViewModel(get()) }
 
     }
