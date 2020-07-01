@@ -27,7 +27,8 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
         }
         var arraytextList = ArrayList<String>()
         wordList.forEach {
-            arraytextList.add(it.word)
+            arraytextList.add(it.word!!
+            )
         }
         wordTextArray.value = arraytextList
     }
