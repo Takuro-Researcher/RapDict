@@ -35,7 +35,6 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
     fun returnRegisterCard(to_index:Int):ArrayList<Answer> {
         val answerList = ArrayList<Answer>()
         for (i in to_index..questionList.size-1){
-            System.out.println(i)
             val word_value = questionList.get(i).value
             val answer_text = textList.get(i).value
             val answer = Answer(0,answer_text , word_value?.length, word_value,0)

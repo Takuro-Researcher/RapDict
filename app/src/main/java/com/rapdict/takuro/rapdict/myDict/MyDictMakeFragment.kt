@@ -51,7 +51,6 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
                 setTitle("【"+mydict.answer+"】辞書保存")
                 setMessage("※画面遷移します")
                 setPositiveButton("OK",{_, _ ->
-                    System.out.println()
                     runBlocking {
                         val dao = db.mydictDao()
                         dao.insert(mydict)

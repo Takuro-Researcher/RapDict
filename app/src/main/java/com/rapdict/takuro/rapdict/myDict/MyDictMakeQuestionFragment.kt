@@ -49,11 +49,7 @@ class MyDictMakeQuestionFragment : Fragment() {
                 }
                 word_list.add(Word(0, furigana,question,furigana.length))
             }
-
-            System.out.println(word_list)
-
             val saveDialog = AlertDialog.Builder(activity!!).apply{
-                System.out.println(myDictChoiceViewModel.db_uid.value)
                 setCancelable(false)
                 setTitle("問題保存")
                 setMessage(word_list.size.toString()+"個、自分の問題として保存\nどちらか空白の場合保存できません")
