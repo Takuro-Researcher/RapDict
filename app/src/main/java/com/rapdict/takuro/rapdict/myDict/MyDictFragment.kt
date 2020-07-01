@@ -55,11 +55,4 @@ class MyDictFragment : androidx.fragment.app.Fragment() {
             (mydict_tab_layout.getChildAt(0) as LinearLayout).getChildAt(i).setBackgroundColor(resources.getColor(R.color.darkGray))
         }
     }
-    fun adapterEnabled(tabs_count:Int){
-        for(i in 0..tabs_count-1) {
-            (mydict_tab_layout.getChildAt(0) as LinearLayout).getChildAt(i).isEnabled = true
-            (mydict_tab_layout.getChildAt(0) as LinearLayout).getChildAt(i).setBackgroundColor(resources.getColor(R.color.colorWhite))
-        }
-        mydict_pager.setPagingEnabled(true)
-    }
 }

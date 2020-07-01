@@ -31,6 +31,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/four_tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
         </com.google.android.material.tabs.TabLayout>
 
     </com.rapdict.takuro.rapdict.myDict.CustomViewPager>

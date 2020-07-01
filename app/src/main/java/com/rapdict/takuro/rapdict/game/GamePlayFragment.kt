@@ -2,7 +2,6 @@ package com.rapdict.takuro.rapdict.game
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
-import com.rapdict.takuro.rapdict.model.Answer
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import org.json.JSONArray
@@ -57,7 +55,8 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                     jsonWord.getInt("id"),
                     jsonWord.getString("furigana"),
                     jsonWord.getString("word"),
-                    jsonWord.getInt("length")
+                    jsonWord.getInt("length"),
+                    -1
             )
             words.add(questionWord)
         }

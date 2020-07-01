@@ -5,7 +5,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Word
-import com.rapdict.takuro.rapdict.model.Answer
+import com.rapdict.takuro.rapdict.database.Answer
 
 class ResultListViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -27,7 +27,7 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
         }
         var arraytextList = ArrayList<String>()
         wordList.forEach {
-            arraytextList.add(it.word)
+            arraytextList.add(it.word!!)
         }
         wordTextArray.value = arraytextList
     }

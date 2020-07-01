@@ -2,20 +2,14 @@ package com.rapdict.takuro.rapdict.myDict
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
-import com.rapdict.takuro.rapdict.Common.CustomTextWatcher
-import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictMakeBinding
-import com.rapdict.takuro.rapdict.databinding.FragmentUserSettingBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
-import com.rapdict.takuro.rapdict.model.Mydict
-import com.rapdict.takuro.rapdict.userSetting.UserSettingViewModel
+import com.rapdict.takuro.rapdict.database.Mydict
 import kotlinx.android.synthetic.main.fragment_mydict_make.*
 import kotlinx.coroutines.runBlocking
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -49,7 +43,7 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
             val alertDialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)
                 setTitle("【"+mydict.answer+"】辞書保存")
-                setMessage("※画面遷移します")
+                setMessage("※画面移動します")
                 setPositiveButton("OK",{_, _ ->
                     runBlocking {
                         val dao = db.mydictDao()
@@ -61,7 +55,6 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
 
             }
             alertDialog.show()
-
         }
     }
 }

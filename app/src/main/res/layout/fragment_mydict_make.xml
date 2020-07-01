@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:text="新たに辞書を作成"
+            android:text="新たに単語帳を作成"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
         <LinearLayout

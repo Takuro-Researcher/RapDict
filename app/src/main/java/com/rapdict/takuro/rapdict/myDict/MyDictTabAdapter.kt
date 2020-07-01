@@ -13,19 +13,22 @@ class MyDictTabAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
         when(position){
             0 -> { return MyDictMakeFragment() }
             1 -> { return MyDictChoiceFragment() }
-            else ->  { return MyDictMakeQuestionFragment() }
+            2 -> { return MyDictMakeQuestionFragment() }
+            else -> { return MyDictDisplayFragment() }
+
 
         }
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
         when(position){
-            0 -> { return "辞書作成" }
-            1 -> { return "辞書を選択" }
-            else ->  { return "言葉を登録" }
+            0 -> { return "単語帳作成" }
+            1 -> { return "単語帳選択" }
+            2 -> { return "単語を登録" }
+            else ->  { return "単語表示" }
         }
     }
     override fun getCount(): Int {
-        return 3
+        return 4
     }
 }

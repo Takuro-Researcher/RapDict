@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.model.Answer
+import com.rapdict.takuro.rapdict.database.Answer
 import kotlinx.coroutines.runBlocking
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
@@ -31,7 +31,6 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
             datas = dao.findAll()
             bindAnswer(datas)
         }
-
     }
 
     fun bindAnswer(answerList: List<Answer>) {

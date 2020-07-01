@@ -9,12 +9,10 @@ import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rapdict.takuro.rapdict.Common.App
-import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
-import com.rapdict.takuro.rapdict.model.Answer
-import kotlinx.android.synthetic.main.activity_game.*
+import com.rapdict.takuro.rapdict.database.Answer
 import kotlinx.android.synthetic.main.fragment_result.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -60,7 +58,7 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         add_answer_button.setOnClickListener {
             resultListViewModel.addCard()
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemInserted(adapter.itemCount)
         }
 
         // 保存する
