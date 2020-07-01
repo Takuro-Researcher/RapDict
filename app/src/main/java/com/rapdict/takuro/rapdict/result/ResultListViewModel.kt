@@ -7,8 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.model.Answer
 
-import sample.intent.AnswerData
-
 class ResultListViewModel(application: Application) : AndroidViewModel(application) {
 
     //監視対象のLiveData
@@ -37,7 +35,6 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
     fun returnRegisterCard(to_index:Int):ArrayList<Answer> {
         val answerList = ArrayList<Answer>()
         for (i in to_index..questionList.size-1){
-            System.out.println(i)
             val word_value = questionList.get(i).value
             val answer_text = textList.get(i).value
             val answer = Answer(0,answer_text , word_value?.length, word_value,0)

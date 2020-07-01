@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.rapdict.takuro.rapdict.myDict.MyDictMakeQuestionFragment
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingFragment
 import com.rapdict.takuro.rapdict.dict.DictActivity
@@ -26,7 +25,7 @@ open class MainActivity : AppCompatActivity() {
         // コードからフラグメントを追加
         if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.add(R.id.fragmentFrameLayout, UserExpFragment())
+            transaction.add(R.id.fragmentFrameLayout, GameSettingFragment())
             transaction.commit()
         }
     }
@@ -56,19 +55,12 @@ open class MainActivity : AppCompatActivity() {
                         .commit()
                 return true
             }
-            R.id.user_exp ->{
-                supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentFrameLayout, UserExpFragment())
-                        .commit()
-                return true
-            }
             R.id.question_make ->{
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentFrameLayout, MyDictFragment())
                         .commit()
                 return true
             }
-
             else -> return super.onOptionsItemSelected(item)
         }
     }

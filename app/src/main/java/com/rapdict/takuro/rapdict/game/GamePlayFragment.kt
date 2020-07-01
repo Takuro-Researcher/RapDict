@@ -87,7 +87,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
             answerList.addAll(saveAnswer(finish_q))
-            System.out.println(answerList)
             finish_q++
             if (finish_q >= questionNum){
                jumpedResult(answerList,words)

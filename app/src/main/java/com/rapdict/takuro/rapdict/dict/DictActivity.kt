@@ -49,7 +49,6 @@ class DictActivity : AppCompatActivity() {
             val minVal =range_progress_seek_bar.leftSeekBar.progress.toInt()
             val maxVal =range_progress_seek_bar.rightSeekBar.progress.toInt()
             val selectedId = radioGroup.checkedRadioButtonId
-            System.out.println(selectedId)
             var search :List<Int> = listOf()
             when(selectedId){
                 R.id.withoutFav ->{ search =listOf(0) }

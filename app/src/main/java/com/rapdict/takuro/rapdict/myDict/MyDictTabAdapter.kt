@@ -14,6 +14,7 @@ class MyDictTabAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
             0 -> { return MyDictMakeFragment() }
             1 -> { return MyDictChoiceFragment() }
             else ->  { return MyDictMakeQuestionFragment() }
+
         }
     }
 

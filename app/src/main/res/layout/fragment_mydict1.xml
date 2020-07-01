@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <androidx.viewpager.widget.ViewPager
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.rapdict.takuro.rapdict.myDict.CustomViewPager
         android:id="@+id/mydict_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,22 +16,25 @@
             app:tabIndicatorColor="@color/colorAccent"
             app:tabTextColor="#000000"
             app:tabSelectedTextColor="@color/colorAccent">
-
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/one_tab"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
+                android:layout_height="wrap_content"
+                />
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/two_tab"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
+                android:layout_height="wrap_content"
+                />
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/three_tab"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-
+                android:layout_height="wrap_content"
+                />
         </com.google.android.material.tabs.TabLayout>
 
-    </androidx.viewpager.widget.ViewPager>
+    </com.rapdict.takuro.rapdict.myDict.CustomViewPager>
 
 </LinearLayout>
+
+
