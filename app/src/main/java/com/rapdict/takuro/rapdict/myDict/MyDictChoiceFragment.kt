@@ -52,7 +52,7 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
             val mydict_name = mydict_choice_spinner.selectedItem as String
             val dialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)
-                setTitle("辞書【"+mydict_name+"】を削除する")
+                setTitle("単語帳【"+mydict_name+"】を削除する")
                 setMessage("※作った言葉はすべて消えます")
                 setPositiveButton("OK",{_, _ ->
                     val id:Int = viewModel!!.db_uid.value!!

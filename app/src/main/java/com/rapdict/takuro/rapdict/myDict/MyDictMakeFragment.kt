@@ -43,7 +43,7 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
             val alertDialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)
                 setTitle("【"+mydict.answer+"】辞書保存")
-                setMessage("※画面遷移します")
+                setMessage("※画面移動します")
                 setPositiveButton("OK",{_, _ ->
                     runBlocking {
                         val dao = db.mydictDao()

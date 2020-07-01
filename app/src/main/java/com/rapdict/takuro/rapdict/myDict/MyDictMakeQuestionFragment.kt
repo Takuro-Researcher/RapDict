@@ -54,7 +54,7 @@ class MyDictMakeQuestionFragment : Fragment() {
             val saveDialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)
                 setTitle("問題保存")
-                setMessage(word_list.size.toString()+"個、自分の問題として保存\nどちらか空白の場合保存できません")
+                setMessage(word_list.size.toString()+"個、自分の問題として保存\nどちらか空白の場合保存できません\n※画面移動します")
                 setPositiveButton("OK",{_, _ ->
                     //TODO 保存動作を確認
                     runBlocking {
