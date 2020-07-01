@@ -1,12 +1,10 @@
 package com.rapdict.takuro.rapdict
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.rapdict.takuro.rapdict.database.Mydict
 
 @Entity(tableName = "word",
+        indices = arrayOf(Index(value = ["dictid"])),
         foreignKeys = arrayOf(ForeignKey(entity = Mydict::class,
                 parentColumns = arrayOf("uid"),
                 childColumns = arrayOf("dictid"),

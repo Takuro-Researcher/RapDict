@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Common.App
+import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.database.Mydict
+import com.rapdict.takuro.rapdict.database.WordDao
 import kotlinx.coroutines.runBlocking
 
 class MyDictChoiceViewModel (application: Application) : AndroidViewModel(application) {
@@ -24,7 +26,6 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
             data = dao.findAll()
         }
         loadDictName(data)
-        count.value = "5"
     }
     // 選択辞書変更時。
     fun changed_uid(position: Int){
@@ -38,6 +39,16 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
             uidList.add(MutableLiveData<Int>().apply { value =it.uid })
         }
         db_uid.value = array[0].uid
+        countChange()
         dictNameList.value = list.toList()
+    }
+
+    fun countChange(){
+        var count_data =0
+        runBlocking {
+            val dao = db.wordDao()
+            count_data = dao.countByDictIds(db_uid.value!!)
+        }
+        count.value = count_data.toString()
     }
 }

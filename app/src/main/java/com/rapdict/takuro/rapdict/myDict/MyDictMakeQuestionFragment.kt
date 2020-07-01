@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
+import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_mydict_question_make.*
+import kotlinx.coroutines.runBlocking
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MyDictMakeQuestionFragment : Fragment() {
@@ -41,8 +43,6 @@ class MyDictMakeQuestionFragment : Fragment() {
             val q_list = questionListViewModel.questionList
             val f_list = questionListViewModel.furiganaList
             val word_list = ArrayList<Word>()
-            System.out.println(myDictChoiceViewModel.db_uid.value)
-
             f_list.zip(q_list).forEach {
                 val furigana = it.first.value
                 val question = it.second.value
@@ -57,6 +57,10 @@ class MyDictMakeQuestionFragment : Fragment() {
                 setMessage(word_list.size.toString()+"個、自分の問題として保存\nどちらか空白の場合保存できません")
                 setPositiveButton("OK",{_, _ ->
                     //TODO 保存動作を確認
+                    runBlocking {
+                        var dao = db.wordDao()
+                        word_list.forEach { dao.insert(it) }
+                    }
                     startActivity(recomIntent)
                 })
                 setNegativeButton("NO",null)

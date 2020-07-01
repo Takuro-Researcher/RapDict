@@ -43,7 +43,9 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
             val dao = db.mydictDao()
             count = dao.count()
         }
-        if(count>0){ viewModel!!.init_load() }
+        if(count>0){
+            viewModel!!.init_load()
+        }
 
         mydict_delete_button.setOnClickListener {
             val backIntent = Intent(activity,MainActivity::class.java)
@@ -73,6 +75,7 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
         val mListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 viewModel!!.changed_uid(mydict_choice_spinner.selectedItemPosition)
+                viewModel!!.countChange()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
