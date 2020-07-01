@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.CustomTextWatcher
 import com.rapdict.takuro.rapdict.R
@@ -36,11 +37,11 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
         super.onActivityCreated(savedInstanceState)
         val myDictMakeViewModel: MyDictMakeViewModel by viewModel()
         binding?.data= myDictMakeViewModel
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val backIntent = Intent(activity,MainActivity::class.java)
         mydict_register_button.setOnClickListener {
             val text:String = mydict_name_edit.text.toString()
@@ -50,6 +51,7 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
                 setTitle("【"+mydict.answer+"】辞書保存")
                 setMessage("※画面遷移します")
                 setPositiveButton("OK",{_, _ ->
+                    System.out.println()
                     runBlocking {
                         val dao = db.mydictDao()
                         dao.insert(mydict)

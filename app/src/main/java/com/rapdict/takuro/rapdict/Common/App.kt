@@ -1,6 +1,8 @@
 package com.rapdict.takuro.rapdict.Common
 
 import android.app.Application
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import com.rapdict.takuro.rapdict.myDict.QuestionListViewModel
 import com.rapdict.takuro.rapdict.dict.ListViewModel
 import com.rapdict.takuro.rapdict.exp.UserExpViewModel

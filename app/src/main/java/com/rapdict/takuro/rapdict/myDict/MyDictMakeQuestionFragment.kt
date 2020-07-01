@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProviders
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.main.MainActivity
@@ -25,6 +26,7 @@ class MyDictMakeQuestionFragment : Fragment() {
         // TODO: Use the ViewModel
         val questionListViewModel:QuestionListViewModel by viewModel()
         val adapter = QuestionListAdapter(questionListViewModel,this)
+        val myDictChoiceViewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
         QuestionRecyclerView.adapter = adapter
         QuestionRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         val recomIntent  = Intent(activity!!, MainActivity::class.java)
@@ -51,6 +53,7 @@ class MyDictMakeQuestionFragment : Fragment() {
             System.out.println(word_list)
 
             val saveDialog = AlertDialog.Builder(activity!!).apply{
+                System.out.println(myDictChoiceViewModel.db_uid.value)
                 setCancelable(false)
                 setTitle("問題保存")
                 setMessage(word_list.size.toString()+"個、自分の問題として保存\nどちらか空白の場合保存できません")

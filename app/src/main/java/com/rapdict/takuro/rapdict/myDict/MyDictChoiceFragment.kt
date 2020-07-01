@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProviders
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingBinding
@@ -33,13 +34,13 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val myDictChoiceViewModel:MyDictChoiceViewModel by viewModel()
+        val myDictChoiceViewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
         binding?.data = myDictChoiceViewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val myDictChoiceViewModel : MyDictChoiceViewModel by viewModel()
+        val myDictChoiceViewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
         var count:Int =-1
         runBlocking {
             val dao = db.mydictDao()

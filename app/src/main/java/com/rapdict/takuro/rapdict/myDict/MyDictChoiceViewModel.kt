@@ -26,6 +26,7 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
             data = dao.findAll()
         }
         loadDictName(data)
+        count.value = "5"
     }
 
     fun changed_uid(position: Int){
