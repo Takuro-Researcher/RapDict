@@ -4,10 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Common.App
-import com.rapdict.takuro.rapdict.model.Mydict
+import com.rapdict.takuro.rapdict.database.Mydict
 import kotlinx.coroutines.runBlocking
-import org.koin.android.viewmodel.ext.android.viewModel
-import java.text.FieldPosition
 
 class MyDictChoiceViewModel (application: Application) : AndroidViewModel(application) {
     //監視対象のLiveData
@@ -28,7 +26,7 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
         loadDictName(data)
         count.value = "5"
     }
-
+    // 選択辞書変更時。
     fun changed_uid(position: Int){
         db_uid.value = uidList[position].value
     }

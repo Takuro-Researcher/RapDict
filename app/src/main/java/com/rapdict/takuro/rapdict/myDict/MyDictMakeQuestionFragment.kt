@@ -27,6 +27,7 @@ class MyDictMakeQuestionFragment : Fragment() {
         val questionListViewModel:QuestionListViewModel by viewModel()
         val adapter = QuestionListAdapter(questionListViewModel,this)
         val myDictChoiceViewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
+
         QuestionRecyclerView.adapter = adapter
         QuestionRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         val recomIntent  = Intent(activity!!, MainActivity::class.java)
@@ -40,6 +41,7 @@ class MyDictMakeQuestionFragment : Fragment() {
             val q_list = questionListViewModel.questionList
             val f_list = questionListViewModel.furiganaList
             val word_list = ArrayList<Word>()
+            System.out.println(myDictChoiceViewModel.db_uid.value)
 
             f_list.zip(q_list).forEach {
                 val furigana = it.first.value
@@ -47,7 +49,7 @@ class MyDictMakeQuestionFragment : Fragment() {
                 if(furigana!!.isEmpty() or question!!.isEmpty()){
                     return@forEach
                 }
-                word_list.add(Word(0, furigana,question,furigana.length))
+                word_list.add(Word(0, furigana,question,furigana.length,myDictChoiceViewModel.db_uid.value))
             }
             val saveDialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)

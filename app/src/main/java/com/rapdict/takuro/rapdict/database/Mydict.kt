@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.model
+package com.rapdict.takuro.rapdict.database
 
 
 import androidx.room.*

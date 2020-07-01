@@ -13,7 +13,9 @@ class MyDictTabAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
         when(position){
             0 -> { return MyDictMakeFragment() }
             1 -> { return MyDictChoiceFragment() }
-            else ->  { return MyDictMakeQuestionFragment() }
+            2 -> { return MyDictMakeQuestionFragment() }
+            else -> { return MyDictDisplayFragment() }
+
 
         }
     }
@@ -22,10 +24,11 @@ class MyDictTabAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
         when(position){
             0 -> { return "辞書作成" }
             1 -> { return "辞書を選択" }
-            else ->  { return "言葉を登録" }
+            2 -> { return "言葉を登録" }
+            else ->  { return "言葉を表示" }
         }
     }
     override fun getCount(): Int {
-        return 3
+        return 4
     }
 }

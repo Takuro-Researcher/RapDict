@@ -1,16 +1,16 @@
 package com.rapdict.takuro.rapdict.Common
 
+import MyDictDisplayViewModel
 import android.app.Application
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
 import com.rapdict.takuro.rapdict.myDict.QuestionListViewModel
 import com.rapdict.takuro.rapdict.dict.ListViewModel
 import com.rapdict.takuro.rapdict.exp.UserExpViewModel
 import com.rapdict.takuro.rapdict.game.GamePlayViewModel
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel
-import com.rapdict.takuro.rapdict.model.RapDataBase
+import com.rapdict.takuro.rapdict.database.RapDataBase
 import com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel
 import com.rapdict.takuro.rapdict.myDict.MyDictMakeViewModel
+import com.rapdict.takuro.rapdict.myDict.DisplayListViewModel
 import com.rapdict.takuro.rapdict.result.ResultListViewModel
 import com.rapdict.takuro.rapdict.result.ResultViewModel
 import com.rapdict.takuro.rapdict.userSetting.UserSettingViewModel
@@ -46,5 +46,8 @@ class App : Application() {
         viewModel { QuestionListViewModel(get()) }
         viewModel { MyDictMakeViewModel(get()) }
         viewModel { MyDictChoiceViewModel(get()) }
+        viewModel { MyDictDisplayViewModel(get()) }
+        viewModel { DisplayListViewModel(get()) }
+
     }
 }

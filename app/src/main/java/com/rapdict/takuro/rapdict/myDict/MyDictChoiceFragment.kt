@@ -6,21 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
-import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingBinding
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictChoiceBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
-import com.rapdict.takuro.rapdict.model.Answer
-import com.rapdict.takuro.rapdict.model.Mydict
 import kotlinx.android.synthetic.main.fragment_mydict_choice.*
 import kotlinx.coroutines.runBlocking
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
     private var binding: FragmentMydictChoiceBinding?= null
+    private var viewModel:MyDictChoiceViewModel? =null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -40,21 +37,13 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val myDictChoiceViewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
+        viewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
         var count:Int =-1
         runBlocking {
             val dao = db.mydictDao()
             count = dao.count()
         }
-        if(count>0){ myDictChoiceViewModel.init_load() }
-
-
-        mydict_choice_spinner.onItemSelectedListener= object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                myDictChoiceViewModel.changed_uid(mydict_choice_spinner.selectedItemPosition)
-            }
-            override fun onNothingSelected(adapterView: AdapterView<*>) {}
-        }
+        if(count>0){ viewModel!!.init_load() }
 
         mydict_delete_button.setOnClickListener {
             val backIntent = Intent(activity,MainActivity::class.java)
@@ -64,7 +53,7 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
                 setTitle("辞書【"+mydict_name+"】を削除する")
                 setMessage("※作った言葉はすべて消えます")
                 setPositiveButton("OK",{_, _ ->
-                    val id:Int = myDictChoiceViewModel.db_uid.value!!
+                    val id:Int = viewModel!!.db_uid.value!!
                     runBlocking {
                         val dao = db.mydictDao()
                         dao.deleteByIds(id)
@@ -76,4 +65,20 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
             dialog.show()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        // null値でonItemSelectedが起動しないように初回起動しないようにした。本来こっちのほうがいい？
+        val mListener = object : OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+                viewModel!!.changed_uid(mydict_choice_spinner.selectedItemPosition)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        mydict_choice_spinner.setSelection(0,false)
+        mydict_choice_spinner.onItemSelectedListener = mListener
+    }
+
+
 }
