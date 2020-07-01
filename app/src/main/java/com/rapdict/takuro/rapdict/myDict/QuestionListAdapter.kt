@@ -23,7 +23,7 @@ open class QuestionListAdapter(private val viewModel : QuestionListViewModel, pr
     }
 
     override fun onBindViewHolder(holder: QuestionListViewHolder, position: Int) {
-        holder.binding.data = this.viewModel
+        holder.binding.data = viewModel
         holder.binding.position = position
 
         holder.binding.furiganaListDoc.addTextChangedListener(object: CustomTextWatcher {

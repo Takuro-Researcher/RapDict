@@ -34,7 +34,7 @@ class MyDictMakeQuestionFragment : Fragment() {
 
         add_question_button.setOnClickListener {
             questionListViewModel.addCard()
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemInserted(adapter.itemCount)
         }
 
         register_question_button.setOnClickListener {

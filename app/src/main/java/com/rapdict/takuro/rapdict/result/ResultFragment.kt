@@ -58,7 +58,7 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         add_answer_button.setOnClickListener {
             resultListViewModel.addCard()
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemInserted(adapter.itemCount)
         }
 
         // 保存する
