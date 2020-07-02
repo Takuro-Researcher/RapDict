@@ -38,7 +38,7 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
         var mydict_count:Int = 0
         // 自分辞書が一件でも保存されていたら動く。
         game_setting_pager.adapter = GameSettingTabAdapter(childFragmentManager)
-        game_setting_tab_layout.setupWithViewPager(mydict_pager)
+        game_setting_tab_layout.setupWithViewPager(game_setting_pager)
     }
 
     fun adapterUnabled(tabs_count:Int){
