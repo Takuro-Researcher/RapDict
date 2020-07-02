@@ -7,15 +7,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.rapdict.takuro.rapdict.Common.CustomTextWatcher
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.databinding.QuestionListBinding
+import com.rapdict.takuro.rapdict.databinding.ListQuestionBinding
 
 
 open class QuestionListAdapter(private val viewModel : QuestionListViewModel, private val parentLifecycleOwner: LifecycleOwner) : androidx.recyclerview.widget.RecyclerView.Adapter<QuestionListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionListViewHolder {
-        val binding = DataBindingUtil.inflate<QuestionListBinding>(
+        val binding = DataBindingUtil.inflate<ListQuestionBinding>(
                 LayoutInflater.from(parent.context),
-                R.layout.question_list,
+                R.layout.list_question,
                 parent,
                 false
         )

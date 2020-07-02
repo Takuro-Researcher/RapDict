@@ -12,7 +12,7 @@ import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictChoiceBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
-import kotlinx.android.synthetic.main.display_list.*
+import kotlinx.android.synthetic.main.list_display.*
 import kotlinx.android.synthetic.main.fragment_mydict_choice.*
 import kotlinx.android.synthetic.main.fragment_mydict_display.*
 import kotlinx.android.synthetic.main.fragment_mydict_question_make.*

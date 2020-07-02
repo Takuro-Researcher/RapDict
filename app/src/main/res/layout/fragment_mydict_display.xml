@@ -15,6 +15,6 @@
         android:saveEnabled="false"
         app:layoutManager="LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/display_list" />
+        tools:listitem="@layout/list_display" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
