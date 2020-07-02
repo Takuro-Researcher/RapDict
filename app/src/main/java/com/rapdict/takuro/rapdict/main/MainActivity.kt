@@ -8,9 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.gameSetting.GameSettingFragment
 import com.rapdict.takuro.rapdict.dict.DictActivity
 import com.rapdict.takuro.rapdict.exp.UserExpFragment
+import com.rapdict.takuro.rapdict.myDict.GameSettingFragment
 import com.rapdict.takuro.rapdict.myDict.MyDictFragment
 import com.rapdict.takuro.rapdict.userSetting.UserSettingFragment
 

@@ -1,184 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-        <variable name="settingData" type="com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel" />
-    </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:tools="http://schemas.android.com/tools"
+    <com.rapdict.takuro.rapdict.myDict.CustomViewPager
+        android:id="@+id/game_setting_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusableInTouchMode="true"
-        android:background="#FFFFFF"
-        tools:context=".game.GamePlayFragment">
+        android:layout_height="match_parent">
 
-        <TextView
-                android:textSize="30sp"
-                android:id="@+id/question_text"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintWidth_default = "percent"
-                app:layout_constraintWidth_percent= "0.7"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/measure_spinner"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="問題数" />
-            <Spinner
-                android:id="@+id/question_spinner"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/game_setting_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/colorAccent"
+            app:tabTextColor="#000000"
+            app:tabSelectedTextColor="@color/colorAccent">
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/one_tab"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/question_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:entries="@{settingData.questionArray}"
-                android:dropDownWidth="match_parent" />
-            <TextView
-                android:textSize="30sp"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:id="@+id/time_text"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintWidth_default = "percent"
-                app:layout_constraintWidth_percent= "0.7"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/question_text"
-                app:layout_constraintEnd_toStartOf="@+id/measure_spinner"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="小節" />
-            <Spinner
-                android:id="@+id/measure_spinner"
+                android:layout_height="wrap_content"
+                />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/two_tab"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintTop_toTopOf="@id/time_text"
-                app:layout_constraintStart_toEndOf="@+id/time_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:entries="@{settingData.measureArray}"
-                android:dropDownWidth="match_parent" />
+                android:layout_height="wrap_content"
+                />
+        </com.google.android.material.tabs.TabLayout>
 
-            <TextView
-                android:textSize="30sp"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:id="@+id/min_text"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintWidth_default = "percent"
-                app:layout_constraintWidth_percent= "0.7"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/time_text"
-                app:layout_constraintEnd_toStartOf="@+id/min_spinner"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="最小文字" />
-            <Spinner
-                android:id="@+id/min_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintTop_toTopOf="@id/min_text"
-                app:layout_constraintStart_toEndOf="@+id/min_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:entries="@{settingData.minArray}"
-                android:dropDownWidth="match_parent" />
-            <TextView
-                android:textSize="30sp"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:id="@+id/max_text"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintWidth_default = "percent"
-                app:layout_constraintWidth_percent= "0.7"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/min_text"
-                app:layout_constraintEnd_toStartOf="@+id/max_spinner"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="最大文字" />
-            <Spinner
-                android:id="@+id/max_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintTop_toTopOf="@id/max_text"
-                app:layout_constraintStart_toEndOf="@+id/max_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:entries="@{settingData.maxArray}"
-                android:dropDownWidth="match_parent" />
-            <TextView
-                android:textSize="30sp"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:id="@+id/return_text"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintWidth_default = "percent"
-                app:layout_constraintWidth_percent= "0.7"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/max_text"
-                app:layout_constraintEnd_toStartOf="@+id/return_spinner"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="返す数" />
-            <Spinner
-                android:id="@+id/return_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintTop_toTopOf="@id/return_text"
-                app:layout_constraintStart_toEndOf="@+id/return_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:entries="@{settingData.returnArray}"
-                android:dropDownWidth="match_parent" />
-        <TextView
-                android:textSize="30sp"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:id="@+id/dict_text"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintWidth_default = "percent"
-                app:layout_constraintWidth_percent= "0.7"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/return_text"
-                app:layout_constraintEnd_toStartOf="@+id/dict_spinner"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="使う辞書" />
-            <Spinner
-                android:id="@+id/dict_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_default= "percent"
-                app:layout_constraintHeight_percent= "0.14"
-                app:layout_constraintTop_toTopOf="@id/dict_text"
-                app:layout_constraintStart_toEndOf="@+id/dict_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:entries="@{settingData.questionArray}"
-                android:dropDownWidth="match_parent" />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:id="@+id/start_button"
-                app:layout_constraintLeft_toRightOf="parent"
-                app:layout_constraintRight_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dict_text"
-                android:layout_margin="15dp"
-                android:text="保存する"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+    </com.rapdict.takuro.rapdict.myDict.CustomViewPager>
+
+</LinearLayout>
