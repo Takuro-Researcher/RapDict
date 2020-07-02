@@ -37,8 +37,7 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
         val viewModel = ViewModelProviders.of(parentFragment!!).get(GameSettingViewModel::class.java)
         val backIntent = Intent(activity,MainActivity::class.java)
         button_test.setOnClickListener {
-            viewModel.test_text.value ="人間成人" +
-                    ""
+            viewModel.test_text.value ="人間成人"
         }
     }
 }
