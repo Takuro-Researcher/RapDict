@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
+import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingBeatBinding
 import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingWordBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel
@@ -13,13 +14,13 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
-    private var binding: FragmentGameSettingWordBinding? = null
+    private var binding: FragmentGameSettingBeatBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentGameSettingWordBinding.inflate(inflater, container,false)
+        binding = FragmentGameSettingBeatBinding.inflate(inflater, container,false)
         binding!!.lifecycleOwner = this
         return binding!!.root
     }

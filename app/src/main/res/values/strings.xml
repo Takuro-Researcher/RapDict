@@ -6,14 +6,16 @@
     <string name="make_question">単語帳登録</string>
     <string name="tutorial">チュートリアル</string>
     <string name="user_home">ホーム</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="user_name">ユーザー名</string>
     <string name="question_num">問題数</string>>
     <string name="return_num">踏み返しの数</string>
-    <string name="limit_time">制限時間</string>
     <string name="min_length">最小文字</string>
     <string name="max_length">最大文字</string>
     <string name="length">文字数</string>>
+    <string name="var">小節</string>
+    <string name="beat_type">タイプ</string>
+    <string name="dict_type">使う辞書</string>
+    <string name="drum_only">ドラムのみ</string>
     <string name="search">この条件で検索</string>
     <string name="only_favorite">お気に入りのみ</string>
     <string name="without_favorite">お気に入りなし</string>
