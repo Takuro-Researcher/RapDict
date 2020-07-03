@@ -4,9 +4,11 @@ import android.app.Application
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.CommonTool
 import kotlinx.coroutines.runBlocking
+import java.text.FieldPosition
 
 class GameSettingViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -19,8 +21,8 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     var beatTypeArray:MutableLiveData<List<String>> = MutableLiveData()
     var drumOnly:MutableLiveData<Boolean> = MutableLiveData()
 
-    var dictUidArray : MutableLiveData<MutableList<Int>> = MutableLiveData()
-
+    var choiceDictUid :Int =-1
+    var dictUidArray= mutableListOf<Int>()
     //ViewModel初期化時にロード
     init {
         loadUserData()
@@ -44,10 +46,19 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
                 uidArray.add(it.uid)
             }
             dictNameArray.value = nameArray
-            dictUidArray.value = uidArray
         }
+        dictUidArray = uidArray
+    }
 
+    fun changeUseDict(position: Int):Int{
+        choiceDictUid = dictUidArray[position]
+        return choiceDictUid
+    }
 
+    fun changedUseDict(min:Int,max:Int){
+        // 今選んでいる辞書のIDを変更する
+        minArray.value = CommonTool.makeNumArray(min,max-1)
+        maxArray.value = CommonTool.makeNumArray(max-1,max)
     }
 //    fun updateMaxData(min:Int){
 //        maxArray.value = commonTool.makeNumArray(min+1,10)

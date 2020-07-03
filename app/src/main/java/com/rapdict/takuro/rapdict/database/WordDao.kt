@@ -17,6 +17,13 @@ interface WordDao {
     @Query("SELECT * FROM word WHERE dictid == (:dictIds)")
     suspend fun findByDictIds(vararg dictIds: Int): List<Word>
 
+    @Query("SELECT MAX(length) FROM word WHERE dictid == (:dictIds)")
+    suspend fun findByDictIdsMax(vararg dictIds: Int): Int
+
+    @Query("SELECT MIN(length) FROM word WHERE dictid == (:dictIds)")
+    suspend fun findByDictIdsMin(vararg dictIds: Int): Int
+
+
     @Query("SELECT COUNT(*) from word WHERE dictid ==(:dictIds) " )
     suspend fun countByDictIds(vararg dictIds: Int):Int
 
