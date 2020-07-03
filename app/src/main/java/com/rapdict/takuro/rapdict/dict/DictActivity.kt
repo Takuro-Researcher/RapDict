@@ -11,7 +11,7 @@ import com.rapdict.takuro.rapdict.*
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.activity_dict.*
-import kotlinx.android.synthetic.main.content_list.*
+import kotlinx.android.synthetic.main.list_content.*
 import kotlinx.coroutines.runBlocking
 import org.koin.android.viewmodel.ext.android.viewModel
 

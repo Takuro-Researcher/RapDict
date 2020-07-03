@@ -128,6 +128,6 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_list"/>
+    <include layout="@layout/list_content"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

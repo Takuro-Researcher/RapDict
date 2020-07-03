@@ -45,8 +45,6 @@ class MyDictFragment : androidx.fragment.app.Fragment() {
         }
         mydict_pager.adapter = MyDictTabAdapter(childFragmentManager)
         mydict_tab_layout.setupWithViewPager(mydict_pager)
-
-
     }
 
     fun adapterUnabled(tabs_count:Int){

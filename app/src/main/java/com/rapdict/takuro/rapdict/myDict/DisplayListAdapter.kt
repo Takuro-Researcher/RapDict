@@ -1,30 +1,22 @@
 package com.rapdict.takuro.rapdict.myDict
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.database.Answer
-import com.rapdict.takuro.rapdict.databinding.DisplayListBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.rapdict.takuro.rapdict.databinding.ListDisplayBinding
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.coroutineContext
 
 
 open class DisplayListAdapter(private val viewModel : DisplayListViewModel, private val parentLifecycleOwner: LifecycleOwner) : androidx.recyclerview.widget.RecyclerView.Adapter<DisplayListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DisplayListViewHolder {
-        val binding = DataBindingUtil.inflate<DisplayListBinding>(
+        val binding = DataBindingUtil.inflate<ListDisplayBinding>(
                 LayoutInflater.from(parent.context),
-                R.layout.display_list,
+                R.layout.list_display,
                 parent,
                 false
         )

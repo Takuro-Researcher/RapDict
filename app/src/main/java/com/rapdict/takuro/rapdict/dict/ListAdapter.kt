@@ -1,23 +1,21 @@
 package apps.test.marketableskill.biz.recyclerview
 
 
-import android.database.sqlite.SQLiteOpenHelper
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.rapdict.takuro.rapdict.*
-import com.rapdict.takuro.rapdict.databinding.ItemListBinding
+import com.rapdict.takuro.rapdict.databinding.ListItemBinding
 import com.rapdict.takuro.rapdict.dict.ListViewModel
 
 
 open class ListAdapter(private val viewModel : ListViewModel, private val parentLifecycleOwner: LifecycleOwner ) : androidx.recyclerview.widget.RecyclerView.Adapter<ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val binding = DataBindingUtil.inflate<ItemListBinding>(
+        val binding = DataBindingUtil.inflate<ListItemBinding>(
                 LayoutInflater.from(parent.context),
-                R.layout.item_list,
+                R.layout.list_item,
                 parent,
                 false
         )

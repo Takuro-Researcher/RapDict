@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import com.rapdict.takuro.rapdict.Common.CustomTextWatcher
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.databinding.ResultListBinding
-import com.rapdict.takuro.rapdict.databinding.ResultWriteListBinding
+import com.rapdict.takuro.rapdict.databinding.ListResultBinding
+import com.rapdict.takuro.rapdict.databinding.ListResultWriteBinding
 
 
 open class ResultListAdapter(private val viewModel : ResultListViewModel, private val parentLifecycleOwner: LifecycleOwner) : androidx.recyclerview.widget.RecyclerView.Adapter<ResultListViewHolder>() {
@@ -19,9 +18,9 @@ open class ResultListAdapter(private val viewModel : ResultListViewModel, privat
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultListViewHolder {
         var xml:Int
         if(viewType==1){
-            xml = R.layout.result_write_list
+            xml = R.layout.list_result_write
         }else{
-            xml = R.layout.result_list
+            xml = R.layout.list_result
         }
         val view = LayoutInflater.from(parent.context).inflate(xml,parent,false)
         return ResultListViewHolder(view)
@@ -31,7 +30,7 @@ open class ResultListAdapter(private val viewModel : ResultListViewModel, privat
     override fun onBindViewHolder(holder: ResultListViewHolder, position: Int) {
         var binding:ViewDataBinding
         if (viewModel.isRegister[position].value == false){
-            binding = holder.binding as ResultListBinding
+            binding = holder.binding as ListResultBinding
             binding.data = this.viewModel
             binding.position = position
             binding.checkboxSave.setOnClickListener {
@@ -43,7 +42,7 @@ open class ResultListAdapter(private val viewModel : ResultListViewModel, privat
             }
             binding.lifecycleOwner = parentLifecycleOwner
         }else {
-            binding = holder.binding as ResultWriteListBinding
+            binding = holder.binding as ListResultWriteBinding
             binding.data = this.viewModel
             binding.position = position
             binding.checkboxSave.setOnClickListener {
