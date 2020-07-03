@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.database.Mydict
-import com.rapdict.takuro.rapdict.database.WordDao
 import kotlinx.coroutines.runBlocking
 
 class MyDictChoiceViewModel (application: Application) : AndroidViewModel(application) {
@@ -35,7 +34,7 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
     fun loadDictName(array:List<Mydict>){
         val list = mutableListOf<String>()
         array.forEach {
-            list.add(it.answer!!)
+            list.add(it.name!!)
             uidList.add(MutableLiveData<Int>().apply { value =it.uid })
         }
         db_uid.value = array[0].uid

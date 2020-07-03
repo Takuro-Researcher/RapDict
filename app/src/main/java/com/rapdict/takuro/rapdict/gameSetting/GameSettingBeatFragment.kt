@@ -35,6 +35,5 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val viewModel = ViewModelProviders.of(parentFragment!!).get(GameSettingViewModel::class.java)
         val backIntent = Intent(activity,MainActivity::class.java)
-        viewModel.test_text.value ="死去"
     }
 }

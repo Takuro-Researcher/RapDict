@@ -25,7 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.1"/>
+                android:layout_weight="0.1"
+                android:entries="@{data.minArray}"/>
         </LinearLayout>
 
         <LinearLayout
@@ -45,7 +46,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.1"/>
+                android:layout_weight="0.1"
+                android:entries="@{data.maxArray}"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,7 +66,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.1"/>
+                android:layout_weight="0.1"
+                android:entries="@{data.questionArray}" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +86,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.1"/>
+                android:layout_weight="0.1"
+                android:entries="@{data.dictNameArray}" />
         </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
@@ -95,8 +99,5 @@
             android:id="@+id/start_game_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
