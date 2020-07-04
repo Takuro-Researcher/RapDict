@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict.myDict
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Common.App
@@ -14,6 +15,7 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
     var uidList = mutableListOf<MutableLiveData<Int>> ()
     var db_uid = MutableLiveData<Int>()
     var count = MutableLiveData<String>()
+    var text10overVisibility: MutableLiveData<Int> = MutableLiveData()
 
     init {
         count.value = "0"
@@ -49,5 +51,11 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
             count_data = dao.countByDictIds(db_uid.value!!)
         }
         count.value = count_data.toString()
+        if (count_data<10){
+            text10overVisibility.value= View.VISIBLE
+        }else{
+            text10overVisibility.value = View.GONE
+        }
+
     }
 }

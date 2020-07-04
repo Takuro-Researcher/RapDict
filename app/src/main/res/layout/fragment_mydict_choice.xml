@@ -39,6 +39,18 @@
             android:text="@{data.count}"
             app:layout_constraintTop_toTopOf="@id/mydict_register_num_text"
             app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:padding="30dp"
+            android:id="@+id/mydict_attention_10_over"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/colorAlert"
+            android:text="@string/mydict_attention_10Over"
+            app:layout_constraintTop_toBottomOf="@+id/mydict_register_num_text"
+            android:visibility="@{data.text10overVisibility}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <Button
             android:padding="15dp"
@@ -47,7 +59,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:text="単語帳を削除"
-            app:layout_constraintTop_toBottomOf="@id/mydict_register_num_text"
+            app:layout_constraintTop_toBottomOf="@id/mydict_attention_10_over"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
