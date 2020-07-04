@@ -40,14 +40,20 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
 
         runBlocking {
             var dictDao = db.mydictDao()
-            var dictData = dictDao.findAll()
+            val wordDao = db.wordDao()
+            var data =wordDao.countByDict()
+            var dictUids = mutableListOf<Int>()
+            data.forEach {
+                dictUids.add(it.dictid)
+            }
+            val dictData = dictDao.findByIds(dictUids)
             dictData.forEach {
                 nameArray.add(it.name!!)
                 uidArray.add(it.uid)
             }
-            dictNameArray.value = nameArray
         }
         dictUidArray = uidArray
+        dictNameArray.value = nameArray
     }
 
     fun changeUseDict(position: Int):Int{
@@ -57,8 +63,14 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
 
     fun changedUseDict(min:Int,max:Int){
         // 今選んでいる辞書のIDを変更する
-        minArray.value = CommonTool.makeNumArray(min,max-1)
-        maxArray.value = CommonTool.makeNumArray(max-1,max)
+        if (min == max){
+            minArray.value = listOf(min)
+            maxArray.value = listOf(max)
+        }else{
+            minArray.value = CommonTool.makeNumArray(min,max-1)
+            maxArray.value = CommonTool.makeNumArray(max-1,max)
+        }
+
     }
 //    fun updateMaxData(min:Int){
 //        maxArray.value = commonTool.makeNumArray(min+1,10)

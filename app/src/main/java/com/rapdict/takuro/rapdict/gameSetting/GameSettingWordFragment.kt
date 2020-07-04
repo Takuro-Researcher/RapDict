@@ -58,6 +58,8 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
                         val dao = db.wordDao()
                         min = dao.findByDictIdsMin(uid)
                         max = dao.findByDictIdsMax(uid)
+                        System.out.println(min)
+                        System.out.println(max)
                     }
                 }
 

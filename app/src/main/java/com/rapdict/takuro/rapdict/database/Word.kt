@@ -4,7 +4,7 @@ import androidx.room.*
 import com.rapdict.takuro.rapdict.database.Mydict
 
 @Entity(tableName = "word",
-        indices = arrayOf(Index(value = ["dictid"])),
+        indices = arrayOf(Index(value = ["dictid"]), Index(value = ["length"])),
         foreignKeys = arrayOf(ForeignKey(entity = Mydict::class,
                 parentColumns = arrayOf("uid"),
                 childColumns = arrayOf("dictid"),

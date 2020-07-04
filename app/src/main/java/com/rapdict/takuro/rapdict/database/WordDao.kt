@@ -27,6 +27,9 @@ interface WordDao {
     @Query("SELECT COUNT(*) from word WHERE dictid ==(:dictIds) " )
     suspend fun countByDictIds(vararg dictIds: Int):Int
 
+    @Query("SELECT dictid,COUNT(dictid) AS dict_count from word GROUP BY dictid HAVING 10<= dict_count" )
+    suspend fun countByDict():List<WordDictByCount>
+
     @Query("SELECT * FROM word WHERE length BETWEEN :min AND :max ")
     suspend fun findByLenght(min: Int, max: Int): List<Word>
 
