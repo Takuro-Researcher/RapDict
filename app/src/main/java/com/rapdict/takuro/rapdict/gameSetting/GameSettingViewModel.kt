@@ -24,6 +24,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     var src_data:MutableLiveData<Int> = MutableLiveData()
 
     var choiceDictUid :Int =-1
+    var choiceBeatType: String ="low"
     var dictUidArray= mutableListOf<Int>()
     //ViewModel初期化時にロード
     init {
@@ -63,6 +64,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         choiceDictUid = dictUidArray[position]
         return choiceDictUid
     }
+
 
     fun changedUseDict(min:Int,max:Int){
         // 今選んでいる辞書のIDを変更する

@@ -36,10 +36,9 @@ open class GameActivity : AppCompatActivity() {
                 loading.visibility = View.INVISIBLE
             }
         })
-        val filepath:Int = CommonTool.setMusicRaw(measureNum,true)!!
+
 
         bundle.putInt("RETURN",answerNum)
-        bundle.putInt("MEASURE",filepath)
         bundle.putInt("QUESTION",questionNum)
 
         setContentView(R.layout.activity_game)
