@@ -1,7 +1,6 @@
 package com.rapdict.takuro.rapdict.Common
 
 import com.rapdict.takuro.rapdict.R
-import java.net.URI
 
 class CommonTool {
     companion object{
@@ -19,29 +18,41 @@ class CommonTool {
             url += "num=$num"
             return url
         }
-        fun setMusicRaw(measure:Int,bgm:Boolean): Int? {
-            if (measure ==2){
-                if (bgm){
-                    return R.raw.beat_97
-                }else{
-                    return R.raw.beat_97_dronly
+        // typeごとに分ける
+        fun choiceMusic(drumonly:Boolean,type:String,bar:Int):Int{
+            val drumOnlyList: MutableList<Triple<Int,Int,Int>> = mutableListOf(
+                    Triple(R.raw.beat_97_dronly,R.raw.beat_97_4bardr,R.raw.beat_97_8bardr),
+                    Triple(R.raw.beat_110_2bardr,R.raw.beat_110_4bardr,R.raw.beat_110_8bardr),
+                    Triple(R.raw.beat_130_2bardr,R.raw.beat_130_4bardr,R.raw.beat_130_8bardr),
+                    Triple(R.raw.beat_130tri_2bardr,R.raw.beat_130tri_4bardr,R.raw.beat_130tri_8bardr)
+            )
+            val beatList: MutableList<Triple<Int,Int,Int>> = mutableListOf(
+                    Triple(R.raw.beat_97,R.raw.beat_97_4bar,R.raw.beat_97_8bar),
+                    Triple(R.raw.beat_110_2bar,R.raw.beat_110_4bar,R.raw.beat_110_8bar),
+                    Triple(R.raw.beat_130_2bar,R.raw.beat_130_4bar,R.raw.beat_130_8bar),
+                    Triple(R.raw.beat_130tri_2bar,R.raw.beat_130_4bar,R.raw.beat_130tri_8bar)
+            )
+            var index = 0
+            when(type){
+                "low" ->{ index = 0 }
+                "middle" ->{ index = 1 }
+                "high" ->{ index = 2 }
+                "tri" ->{ index = 3}
+            }
+            if(drumonly){
+                when(bar){
+                    2 -> { return drumOnlyList[index].first}
+                    4 -> { return drumOnlyList[index].second}
+                    8 -> { return drumOnlyList[index].third}
+                }
+            }else{
+                when(bar){
+                    2 -> { return beatList[index].first}
+                    4 -> { return beatList[index].second}
+                    8 -> { return beatList[index].third}
                 }
             }
-            if (measure ==4){
-                if (bgm){
-                    return R.raw.beat_97_4var
-                }else{
-                    return R.raw.beat_97_4vardr
-                }
-            }
-            if (measure ==8){
-                if (bgm){
-                    return R.raw.beat_97_8var
-                }else{
-                    return R.raw.beat_97_8vardr
-                }
-            }
-            return null
+            return beatList[0].first
         }
     }
 }
