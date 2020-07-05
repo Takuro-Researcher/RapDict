@@ -1,12 +1,12 @@
 package com.rapdict.takuro.rapdict.myDict
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.database.Mydict
-import com.rapdict.takuro.rapdict.database.WordDao
 import kotlinx.coroutines.runBlocking
 
 class MyDictChoiceViewModel (application: Application) : AndroidViewModel(application) {
@@ -15,6 +15,7 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
     var uidList = mutableListOf<MutableLiveData<Int>> ()
     var db_uid = MutableLiveData<Int>()
     var count = MutableLiveData<String>()
+    var text10overVisibility: MutableLiveData<Int> = MutableLiveData()
 
     init {
         count.value = "0"
@@ -35,7 +36,7 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
     fun loadDictName(array:List<Mydict>){
         val list = mutableListOf<String>()
         array.forEach {
-            list.add(it.answer!!)
+            list.add(it.name!!)
             uidList.add(MutableLiveData<Int>().apply { value =it.uid })
         }
         db_uid.value = array[0].uid
@@ -50,5 +51,11 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
             count_data = dao.countByDictIds(db_uid.value!!)
         }
         count.value = count_data.toString()
+        if (count_data<10){
+            text10overVisibility.value= View.VISIBLE
+        }else{
+            text10overVisibility.value = View.GONE
+        }
+
     }
 }

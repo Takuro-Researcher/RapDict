@@ -6,7 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.rapdict.takuro.rapdict.Word
 
-@Database(entities = arrayOf(Answer::class,Mydict::class,Word::class), version = 5)
+@Database(entities = arrayOf(Answer::class,Mydict::class,Word::class), version = 6
+)
 abstract class RapDataBase : RoomDatabase() {
     abstract fun answerDao(): AnswerDao
     abstract fun mydictDao(): MydictDao

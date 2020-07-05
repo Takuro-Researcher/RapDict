@@ -13,7 +13,7 @@ interface MydictDao {
     suspend fun findAll(): List<Mydict>
 
     @Query("SELECT * FROM mydict WHERE uid IN (:mydictIds)")
-    suspend fun findByIds(vararg mydictIds: Int): List<Mydict>
+    suspend fun findByIds(mydictIds: List<Int>): List<Mydict>
 
     @Insert
     suspend fun insert(mydict: Mydict)

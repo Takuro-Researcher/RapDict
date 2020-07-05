@@ -21,12 +21,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:textSize="30sp"
-                android:text="@string/var"/>
+                android:text="@string/var" />
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.1"/>
+                android:layout_weight="0.1"
+                android:entries="@{data.barArray}"/>
         </LinearLayout>
 
         <LinearLayout
@@ -46,10 +47,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.1"/>
+                android:layout_weight="0.1"
+                android:id="@+id/game_setting_beat_type_spinner"
+                android:entries="@{data.beatTypeArray}"/>
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/game_setting_music_button"
                 android:src="@drawable/ic_baseline_play_circle_filled_24"
                 android:layout_weight="0.1"/>
         </LinearLayout>
@@ -70,7 +74,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:checked="@{data.drumOnly}"/>
     </LinearLayout>
 
 
