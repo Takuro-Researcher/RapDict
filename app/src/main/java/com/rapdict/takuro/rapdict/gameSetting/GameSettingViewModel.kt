@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict.gameSetting
 
 import android.app.Application
+import androidx.databinding.Bindable
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -23,14 +24,19 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     var drumOnly:MutableLiveData<Boolean> = MutableLiveData()
     var src_data:MutableLiveData<Int> = MutableLiveData()
 
+    var choiceMin:Int =0
+    var choiceMax:Int =1
+    var choiceQuestion:Int =0
     var choiceDictUid :Int =-1
     var choiceBeatType: String ="low"
+    var choiceBar: Int = 2
+
     var dictUidArray= mutableListOf<Int>()
     //ViewModel初期化時にロード
     init {
         loadUserData()
-
     }
+
     private fun loadUserData(){
         barArray.value = listOf(2,4,8)
         minArray.value = CommonTool.makeNumArray(3,7)
@@ -58,6 +64,20 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         }
         dictUidArray = uidArray
         dictNameArray.value = nameArray
+
+    }
+
+    fun makeGameSettingData():GameSettingData{
+        val data: GameSettingData = GameSettingData(
+                choiceBar,
+                choiceBeatType,
+                drumOnly.value!!,
+                choiceMin,
+                choiceMax,
+                choiceQuestion,
+                choiceDictUid
+        )
+        return data
     }
 
     fun changeUseDict(position: Int):Int{
@@ -65,6 +85,14 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         return choiceDictUid
     }
 
+
+    fun changeDrumOnly(){
+        if (drumOnly.value ==true){
+            drumOnly.value = false
+        }else{
+            drumOnly.value = true
+        }
+    }
 
     fun changedUseDict(min:Int,max:Int){
         // 今選んでいる辞書のIDを変更する

@@ -46,17 +46,28 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val questionNum = arguments!!.getInt("QUESTION")
-        var filepath = arguments!!.getInt("MEASURE")
+        var filepath = arguments!!.getInt("BAR")
+        System.out.println(arguments!!.getString("RHYMES"))
+
         val words =ArrayList<Word>()
         val rhymes = JSONObject(arguments!!.getString("RHYMES")).get("rhymes") as JSONArray
+        var idName =""
+        var dictId = -1
+        if (arguments!!.getBoolean("ISMYDICT")){
+            idName = "uid"
+            dictId = rhymes.getJSONObject(0).getInt("uid")
+        }else{
+            idName = "id"
+        }
+
         for(i in 0 until rhymes.length()){
             val jsonWord = rhymes.getJSONObject(i)
             val questionWord = Word(
-                    jsonWord.getInt("id"),
+                    jsonWord.getInt(idName),
                     jsonWord.getString("furigana"),
                     jsonWord.getString("word"),
                     jsonWord.getInt("length"),
-                    -1
+                    dictId
             )
             words.add(questionWord)
         }
@@ -68,7 +79,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
         mediaPlayer = MediaPlayer.create(activity, filepath)
         onCompletion(mediaPlayer!!)
-
 
         onStart()
 
@@ -98,7 +108,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 onCompletion(mediaPlayer!!)
             }
         }
-
     }
 
     //media playerを最初から再生させる。
