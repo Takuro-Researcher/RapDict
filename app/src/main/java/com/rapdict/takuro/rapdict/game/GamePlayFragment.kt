@@ -69,7 +69,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         mediaPlayer = MediaPlayer.create(activity, filepath)
         onCompletion(mediaPlayer!!)
 
-
         onStart()
 
         mediaPlayer?.setOnCompletionListener {
@@ -98,7 +97,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 onCompletion(mediaPlayer!!)
             }
         }
-
     }
 
     //media playerを最初から再生させる。

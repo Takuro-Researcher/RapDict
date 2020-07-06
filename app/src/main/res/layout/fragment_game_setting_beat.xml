@@ -25,6 +25,7 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/game_setting_bar_spinner"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
                 android:entries="@{data.barArray}"/>
@@ -49,7 +50,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
                 android:id="@+id/game_setting_beat_type_spinner"
-                android:entries="@{data.beatTypeArray}"/>
+                android:entries="@{data.beatTypeArray}" />
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -75,7 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:layout_gravity="center"
-            android:checked="@{data.drumOnly}"/>
+            android:checked="@{data.drumOnly}"
+            android:onClick="@{() -> data.changeDrumOnly()}"
+            />
     </LinearLayout>
 
 

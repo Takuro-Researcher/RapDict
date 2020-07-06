@@ -54,6 +54,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation 'androidx.room:room-ktx:2.2.1'
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.+"
+
+
+
 
 }
 repositories {

@@ -55,14 +55,26 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
         super.onResume()
         val viewModel = ViewModelProviders.of(parentFragment!!).get(GameSettingViewModel::class.java)
         // null値でonItemSelectedが起動しないように初回起動しないようにした。本来こっちのほうがいい？
-        val mListener = object : AdapterView.OnItemSelectedListener {
+        val beatTypeListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 viewModel.choiceBeatType = viewModel.beatTypeArray.value?.get(position).toString()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
         game_setting_beat_type_spinner.setSelection(0,false)
-        game_setting_beat_type_spinner.onItemSelectedListener = mListener
+        game_setting_beat_type_spinner.onItemSelectedListener = beatTypeListener
+
+        val barListner = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+                viewModel.choiceBar = viewModel.barArray.value?.get(position)!!
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        game_setting_bar_spinner.setSelection(0,false)
+        game_setting_bar_spinner.onItemSelectedListener = barListner
+
+
+
     }
 
     override fun onDetach() {
