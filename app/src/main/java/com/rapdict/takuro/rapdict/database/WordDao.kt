@@ -30,8 +30,8 @@ interface WordDao {
     @Query("SELECT dictid,COUNT(dictid) AS dict_count from word GROUP BY dictid HAVING 10<= dict_count" )
     suspend fun countByDict():List<WordDictByCount>
 
-    @Query("SELECT * FROM word WHERE length BETWEEN :min AND :max ")
-    suspend fun findByLenght(min: Int, max: Int): List<Word>
+    @Query("SELECT * FROM word WHERE dictid =:dictId AND length BETWEEN :min AND :max ORDER BY RANDOM() LIMIT :num")
+    suspend fun findByLenght(min: Int, max: Int,dictId: Int,num:Int): List<Word>
 
     @Insert
     suspend fun insertAll(vararg word: Word)

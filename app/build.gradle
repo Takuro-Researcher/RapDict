@@ -55,6 +55,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation 'androidx.room:room-ktx:2.2.1'
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.+"
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
 
 
 
