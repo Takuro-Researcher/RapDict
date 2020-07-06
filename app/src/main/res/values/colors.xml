@@ -10,5 +10,6 @@
     <color name="colorBlack">#000000</color>
     <color name="whiteSmoke">#F5F5F5</color>
     <color name="darkGray">#A1A1A1</color>
+    <color name="colorSplash">#ff77bb</color>
 
 </resources>
