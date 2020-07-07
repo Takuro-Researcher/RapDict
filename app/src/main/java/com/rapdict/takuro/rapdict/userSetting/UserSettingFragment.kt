@@ -41,9 +41,9 @@ class UserSettingFragment : androidx.fragment.app.Fragment() {
         rename_button.setOnClickListener{
             val reName = edit_user_name.text.toString()
             val reTarget = target_spinner.selectedItem as Int
-            spfCommon.userSave(reName,reTarget)
             // 画面遷移
-            val fm=fragmentManager
+            val fm
+                    =fragmentManager
             fm?.beginTransaction()?.
                     replace(R.id.fragmentFrameLayout, UserExpFragment())?.
                     commit()
