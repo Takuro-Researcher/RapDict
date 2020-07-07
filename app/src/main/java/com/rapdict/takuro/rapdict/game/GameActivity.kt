@@ -41,6 +41,7 @@ open class GameActivity : AppCompatActivity() {
             override fun CallBack(result: String) {
                 super.CallBack(result)
                 bundle.putString("RHYMES",result)
+                bundle.putInt("RETURN",1)
                 bundle.putInt("QUESTION",data.question)
                 bundle.putBoolean("ISMYDICT",false)
                 changedTexts()

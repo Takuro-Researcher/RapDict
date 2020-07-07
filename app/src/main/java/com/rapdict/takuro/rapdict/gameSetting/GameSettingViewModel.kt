@@ -52,7 +52,6 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         System.out.println(settingData)
         // Spfで既に遊んだ記録があったら
         if(settingData != null) {
-            System.out.println("入ってるんだわ")
             // 一番最初に選ばれるようにする
             initbarArray.add(settingData.bar)
             initQuestionArray.add(settingData.question)

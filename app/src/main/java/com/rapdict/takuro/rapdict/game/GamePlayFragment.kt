@@ -45,10 +45,9 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // bundleからJsonをPerseする
         val questionNum = arguments!!.getInt("QUESTION")
         var filepath = arguments!!.getInt("BAR")
-        System.out.println(arguments!!.getString("RHYMES"))
-
         val words =ArrayList<Word>()
         val rhymes = JSONObject(arguments!!.getString("RHYMES")).get("rhymes") as JSONArray
         var idName =""
@@ -71,7 +70,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             )
             words.add(questionWord)
         }
-
+        // 答えリストを作るための処理
         val answerList = ArrayList<Map<Int,String>>()
         game_question_num.text = questionNum.toString()
         game_question_text.text = words[finish_q].word
@@ -96,6 +95,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
             answerList.addAll(saveAnswer(finish_q))
+            System.out.println(answerList)
             finish_q++
             if (finish_q >= questionNum){
                jumpedResult(answerList,words)
@@ -160,17 +160,20 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     // answerList をアクティビティ内に保存する
     private fun saveAnswer(word_id:Int):ArrayList<Map<Int,String>>{
         val answerNum = arguments!!.getInt("RETURN")
+        System.out.println(answerNum)
         val answerTexts = mutableListOf<String>()
         if (answerNum >= 1){ answerTexts.add(rhyme_edit_one.text.toString()) }
         if (answerNum >= 2){ answerTexts.add(rhyme_edit_two.text.toString()) }
         if (answerNum >= 3){ answerTexts.add(rhyme_edit_three.text.toString()) }
         if (answerNum >= 4){ answerTexts.add(rhyme_edit_four.text.toString()) }
         val answer2word = ArrayList<Map<Int,String>>()
+        System.out.println(answerTexts)
         answerTexts.forEach {
             if(it.isNotEmpty() ){
                 answer2word.add(mapOf(word_id to it))
             }
         }
+        System.out.println("入っている？")
         return answer2word
     }
 
