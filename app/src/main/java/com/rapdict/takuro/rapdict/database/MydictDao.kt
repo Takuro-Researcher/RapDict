@@ -15,6 +15,9 @@ interface MydictDao {
     @Query("SELECT * FROM mydict WHERE uid IN (:mydictIds)")
     suspend fun findByIds(mydictIds: List<Int>): List<Mydict>
 
+    @Query("SELECT * FROM mydict WHERE uid == :mydictId")
+    suspend fun findOneByIds(mydictId :Int):Mydict
+
     @Insert
     suspend fun insert(mydict: Mydict)
 

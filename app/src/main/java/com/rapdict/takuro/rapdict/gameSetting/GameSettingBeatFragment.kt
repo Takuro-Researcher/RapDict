@@ -43,7 +43,7 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
         val backIntent = Intent(activity,MainActivity::class.java)
         game_setting_music_button.setOnClickListener {
             viewModel.beatTypeArray
-            var src = CommonTool.choiceMusic(false,viewModel.choiceBeatType,2)
+            var src = CommonTool.choiceMusic(false,viewModel.settingData.type,2)
             mediaPlayer?.pause()
             mediaPlayer = MediaPlayer.create(activity, src)
             mediaPlayer?.start()
@@ -57,7 +57,7 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
         // null値でonItemSelectedが起動しないように初回起動しないようにした。本来こっちのほうがいい？
         val beatTypeListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                viewModel.choiceBeatType = viewModel.beatTypeArray.value?.get(position).toString()
+                viewModel.settingData.type = viewModel.beatTypeArray.value?.get(position).toString()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -66,7 +66,7 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
 
         val barListner = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                viewModel.choiceBar = viewModel.barArray.value?.get(position)!!
+                viewModel.settingData.bar = viewModel.barArray.value?.get(position)!!
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }

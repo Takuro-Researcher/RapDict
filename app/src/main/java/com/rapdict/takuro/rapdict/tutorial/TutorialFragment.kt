@@ -6,11 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.database.Mydict
 import com.rapdict.takuro.rapdict.dict.DictActivity
 import com.rapdict.takuro.rapdict.myDict.GameSettingFragment
 import com.rapdict.takuro.rapdict.myDict.MyDictFragment
 import kotlinx.android.synthetic.main.fragment_tutorial.*
+import kotlinx.coroutines.runBlocking
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

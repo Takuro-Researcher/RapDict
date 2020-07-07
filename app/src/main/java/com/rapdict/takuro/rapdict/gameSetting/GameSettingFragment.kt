@@ -33,18 +33,8 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val tabs_count:Int = GameSettingTabAdapter(childFragmentManager).count
-        var mydict_count:Int = 0
-        // 自分辞書が一件でも保存されていたら動く。
         game_setting_pager.adapter = GameSettingTabAdapter(childFragmentManager)
         game_setting_tab_layout.setupWithViewPager(game_setting_pager)
-    }
 
-    fun adapterUnabled(tabs_count:Int){
-        for(i in 1..tabs_count-1) {
-            (mydict_tab_layout.getChildAt(0) as LinearLayout).getChildAt(i).isEnabled = false
-            (mydict_tab_layout.getChildAt(0) as LinearLayout).getChildAt(i).setBackgroundColor(resources.getColor(R.color.darkGray))
-        }
     }
 }

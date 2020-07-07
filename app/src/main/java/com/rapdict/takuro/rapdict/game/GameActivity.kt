@@ -1,7 +1,9 @@
 package com.rapdict.takuro.rapdict.game
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -11,6 +13,7 @@ import com.rapdict.takuro.rapdict.Common.getHttp
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingData
+import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -52,6 +55,16 @@ open class GameActivity : AppCompatActivity() {
             runBlocking {
                 val dao = db.wordDao()
                 wordData = dao.findByLenght(data.min,data.max,data.dictUid,data.question)
+            }
+            val backIntent  = Intent(this, MainActivity::class.java)
+            val recomdialog = AlertDialog.Builder(this)
+            recomdialog.setCancelable(false)
+            recomdialog.setMessage("韻が一つも取得できませんでした\n最小文字＆最大文字を変えて試してください")
+            recomdialog.setPositiveButton("戻る"){
+                _, _ -> startActivity(backIntent)
+            }
+            if(wordData.size ==0){
+                recomdialog.show()
             }
             val mapData =  mutableMapOf("rhymes" to wordData)
 
