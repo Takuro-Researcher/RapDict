@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RapDict</string>
+    <string name="app_name">ひとりRap</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="game">ゲーム</string>
     <string name="dict">韻辞書</string>
@@ -29,7 +29,7 @@
     <string name="result_header">どんくらい踏んだ？</string>
     <string name="result_description">思い返して気に入ったものを保存してみよう</string>
     <string name="result_no_header">韻がなかった...</string>
-    <string name="result_no_description">もっかいチャレンジせえへん？</string>
+    <string name="result_no_description">もっかいチャレンジしませんか？</string>
     <string name="mydict_attention_10Over">※単語が10を超えないと使用できません</string>
     <string name="gameDescription">ランダムに表示される単語に対し、\n音に乗りながら韻を踏むゲームです。\n素敵なビートも用意しました</string>
     <string name="dictDescription">自分の踏んだ韻を確認できます。\nお気に入り機能や文字数による検索もできます\n引き出しを増やす時に確認してください</string>
