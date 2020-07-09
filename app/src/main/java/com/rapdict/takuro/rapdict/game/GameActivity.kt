@@ -30,9 +30,12 @@ open class GameActivity : AppCompatActivity() {
         val data:GameSettingData = mapper.readValue(jsonData)
         // 音源キーを取得
         val src:Int = CommonTool.choiceMusic(data.drumOnly,data.type,data.bar)
-        val bundle =Bundle()
+        val bundle =Bundle().apply {
+            this.putInt("RETURN",1)
+            this.putInt("BAR",src)
+        }
 
-        bundle.putInt("BAR",src)
+
 
         // 言葉を取得
         val req = getHttp(CommonTool.makeApiUrl(data.min,data.max,data.question))
@@ -41,7 +44,6 @@ open class GameActivity : AppCompatActivity() {
             override fun CallBack(result: String) {
                 super.CallBack(result)
                 bundle.putString("RHYMES",result)
-                bundle.putInt("RETURN",1)
                 bundle.putInt("QUESTION",data.question)
                 bundle.putBoolean("ISMYDICT",false)
                 changedTexts()
@@ -68,11 +70,10 @@ open class GameActivity : AppCompatActivity() {
                 recomdialog.show()
             }
             val mapData =  mutableMapOf("rhymes" to wordData)
-
-            bundle.putInt("QUESTION",wordData.size)
             val result= mapper.writeValueAsString(mapData)
             bundle.putString("RHYMES",result)
             bundle.putBoolean("ISMYDICT",true)
+            bundle.putInt("QUESTION",wordData.size)
             changedTexts()
         }
 

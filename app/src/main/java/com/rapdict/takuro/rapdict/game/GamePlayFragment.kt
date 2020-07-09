@@ -2,6 +2,7 @@ package com.rapdict.takuro.rapdict.game
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,11 @@ import kotlinx.android.synthetic.main.fragment_game.*
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
+import java.util.concurrent.ThreadLocalRandom
 
 import kotlin.collections.ArrayList
+import kotlin.random.Random.Default.nextInt
 
 
 class GamePlayFragment : androidx.fragment.app.Fragment() {
@@ -88,15 +92,9 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         mInterstitialAd = InterstitialAd(activity).apply {
             adUnitId = "ca-app-pub-3940256099942544/1033173712"
             adListener = (object : AdListener() {
-                override fun onAdLoaded() {
-                    Toast.makeText(activity, "onAdLoaded()", Toast.LENGTH_SHORT).show()
-                }
+                override fun onAdLoaded() {}
 
-                override fun onAdFailedToLoad(errorCode: Int) {
-                    Toast.makeText(activity,
-                            "onAdFailedToLoad() with error code: $errorCode",
-                            Toast.LENGTH_SHORT).show()
-                }
+                override fun onAdFailedToLoad(errorCode: Int) {}
 
                 override fun onAdClosed() {
                     jumpedResult(answerList,words)
@@ -129,11 +127,19 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             finish_q++
             if (finish_q >= questionNum){
                 mediaPlayer!!.pause()
-                if(mInterstitialAd.isLoaded){
-                    mInterstitialAd.show()
+                val randomInteger = (0..4).shuffled().first()
+                if(randomInteger%2 == 0){
+                    Log.d("TAg","広告ktkr")
+                    if(mInterstitialAd.isLoaded){
+                        mInterstitialAd.show()
+                    }else{
+                        jumpedResult(answerList,words)
+                    }
                 }else{
+                    Log.d("TAg","広告knkt")
                     jumpedResult(answerList,words)
                 }
+
             }else{
                 changedQuestion(finish_q,words,questionNum)
                 editTextClear()
@@ -195,20 +201,17 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     // answerList をアクティビティ内に保存する
     private fun saveAnswer(word_id:Int):ArrayList<Map<Int,String>>{
         val answerNum = arguments!!.getInt("RETURN")
-        System.out.println(answerNum)
         val answerTexts = mutableListOf<String>()
         if (answerNum >= 1){ answerTexts.add(rhyme_edit_one.text.toString()) }
         if (answerNum >= 2){ answerTexts.add(rhyme_edit_two.text.toString()) }
         if (answerNum >= 3){ answerTexts.add(rhyme_edit_three.text.toString()) }
         if (answerNum >= 4){ answerTexts.add(rhyme_edit_four.text.toString()) }
         val answer2word = ArrayList<Map<Int,String>>()
-        System.out.println(answerTexts)
         answerTexts.forEach {
             if(it.isNotEmpty() ){
                 answer2word.add(mapOf(word_id to it))
             }
         }
-        System.out.println("入っている？")
         return answer2word
     }
 
