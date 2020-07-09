@@ -1,4 +1,43 @@
 <resources>
-    <string name="app_name">RapDict</string>
+    <string name="app_name">ひとりRap</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="game">ゲーム</string>
+    <string name="dict">韻辞書</string>
+    <string name="make_question">単語帳登録</string>
+    <string name="tutorial">チュートリアル</string>
+    <string name="user_home">ホーム</string>
+    <string name="user_name">ユーザー名</string>
+    <string name="question_num">問題数</string>>
+    <string name="return_num">踏み返しの数</string>
+    <string name="min_length">最小文字</string>
+    <string name="max_length">最大文字</string>
+    <string name="length">文字数</string>>
+    <string name="var">小節</string>
+    <string name="beat_type">タイプ</string>
+    <string name="dict_type">使う辞書</string>
+    <string name="drum_only">ドラムのみ</string>
+    <string name="search">この条件で検索</string>
+    <string name="only_favorite">お気に入りのみ</string>
+    <string name="without_favorite">お気に入りなし</string>
+    <string name="none_favorite">指定なし</string>
+    <string name="target">目標の韻</string>
+    <string name="todaysTarget">今日の目標の数は%sです</string>
+    <string name="waitingDisp">サーバーと通信しています… \n 少しだけお待ちください</string>
+    <string name="attentionSound">ここから先は音声が流れます</string>
+    <string name="startingDisp">通信が完了しました！\n 下記ボタンからスタートできます</string>
+    <string name="gameStart">ゲーム開始ィ！</string>
+    <string name="result_header">どんくらい踏んだ？</string>
+    <string name="result_description">思い返して気に入ったものを保存してみよう</string>
+    <string name="result_no_header">韻がなかった...</string>
+    <string name="result_no_description">もっかいチャレンジしませんか？</string>
+    <string name="mydict_attention_10Over">※単語が10を超えないと使用できません</string>
+    <string name="gameDescription">ランダムに表示される単語に対し、\n音に乗りながら韻を踏むゲームです。\n素敵なビートも用意しました</string>
+    <string name="dictDescription">自分の踏んだ韻を確認できます。\nお気に入り機能や文字数による検索もできます\n引き出しを増やす時に確認してください</string>
+    <string name="myDictDescription">自分用の言葉を登録し\nゲームに使用することができます\nより韻を踏みたい言葉があるとき重宝するはずです</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="unSetting">%sが設定されていません</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

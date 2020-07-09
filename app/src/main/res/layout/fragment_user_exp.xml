@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+       <variable name="userData" type="com.rapdict.takuro.rapdict.exp.UserExpViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".exp.UserExpFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:padding="20dp"
+            android:id="@+id/hello_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="ようこそ！！"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            android:padding="20dp"
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text ="@{userData.userName}"
+            android:textColor = "@{userData.userNameColor}"
+            app:layout_constraintTop_toBottomOf="@id/hello_message"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:padding="20dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/next_exp_disp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@{userData.target}"
+            android:textColor="@{userData.targetColor}"
+            app:layout_constraintTop_toBottomOf="@id/user_name"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:layout_width="260dp"
+            app:layout_constraintTop_toBottomOf="@+id/next_exp_disp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:indeterminate="false"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

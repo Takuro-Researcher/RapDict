@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="data" type="com.rapdict.takuro.rapdict.game.GamePlayViewModel" />
+        <variable name="fragment" type="com.rapdict.takuro.rapdict.game.GamePlayFragment" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusableInTouchMode="true"
+    android:id="@+id/game_main"
+    android:background="#000000"
+    tools:context=".game.GamePlayFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/game_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="残り問題数  :  "
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="25sp"
+        android:padding="20sp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/game_question_num"
+        android:text="100"
+        android:textSize="25sp"
+        android:textColor="#FFFFFF"
+        android:paddingLeft="40sp"
+        android:paddingTop="20sp"
+        android:paddingBottom="20sp"
+        app:layout_constraintStart_toEndOf="@+id/game_question"
+        app:layout_constraintTop_toTopOf="@+id/game_question"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/game_question_text"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:padding="20sp"
+        android:textSize="30sp"
+        android:textColor="#FFFFFF"
+        android:text="テストでいこうぜどこまで"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/game_question_num"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/game_furigana_text"
+        android:text="テスト"
+        android:layout_marginTop="10sp"
+        android:textAlignment="center"
+        android:padding="18sp"
+        android:textSize="25sp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/game_question_text"/>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_table"
+        app:layout_constraintTop_toBottomOf="@id/game_furigana_text">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{data.oneRowVisibility}">
+
+            <EditText
+                android:id="@+id/rhyme_edit_one"
+                android:background="@color/colorWhite"
+                android:layout_width="0dp"
+                android:layout_margin="20sp"
+                android:layout_weight="@{data.editOneWeight}"
+                android:layout_height="wrap_content"
+                />
+            <EditText
+                android:id="@+id/rhyme_edit_two"
+                android:layout_width="0dp"
+                android:background="@color/colorWhite"
+                android:layout_margin="20sp"
+                android:layout_weight="@{data.editTwoWeight}"
+                android:layout_height="wrap_content"
+                android:visibility="@{data.editTwoVisibility}"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{data.twoRowVisibility}">
+            <EditText
+                android:id="@+id/rhyme_edit_three"
+                android:layout_width="0dp"
+                android:background="@color/colorWhite"
+                android:layout_margin="20sp"
+                android:layout_weight="@{data.editThreeWeight}"
+                android:layout_height="wrap_content"
+                />
+            <EditText
+                android:id="@+id/rhyme_edit_four"
+                android:background="@color/colorWhite"
+                android:layout_width="0dp"
+                android:layout_margin="20sp"
+                android:layout_weight="@{data.editFourWeight}"
+                android:layout_height="wrap_content"
+                />
+        </TableRow>
+    </TableLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/game_next_button"
+        android:text="次の問題へ！！"
+        app:layout_constraintTop_toBottomOf="@+id/edit_table"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

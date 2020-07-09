@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <data>
+        <variable name="data" type="com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/var_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="20dp"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:textSize="30sp"
+                android:text="@string/var" />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/game_setting_bar_spinner"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.1"
+                android:entries="@{data.barArray}"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/beat_type_layout"
+            app:layout_constraintTop_toBottomOf="@+id/var_layout"
+            android:layout_margin="20dp"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:textSize="30sp"
+                android:text="@string/beat_type"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.1"
+                android:id="@+id/game_setting_beat_type_spinner"
+                android:entries="@{data.beatTypeArray}" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/game_setting_music_button"
+                android:src="@drawable/ic_baseline_play_circle_filled_24"
+                android:layout_weight="0.1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/drum_layout"
+            app:layout_constraintTop_toBottomOf="@+id/beat_type_layout"
+            android:layout_margin="20dp"
+            android:padding="10sp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:textSize="30sp"
+            android:text="@string/drum_only"/>
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:layout_gravity="center"
+            android:checked="@{data.drumOnly}"
+            android:onClick="@{() -> data.changeDrumOnly()}"
+            />
+    </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

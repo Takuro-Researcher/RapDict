@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <data>
+        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <Spinner
+            android:id="@+id/mydict_choice_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:layout_margin="20sp"
+            android:entries="@{data.dictNameList}"
+            app:layout_constraintBottom_toTopOf="@id/mydict_register_num_text"
+            android:dropDownWidth="match_parent" />
+        <TextView
+            android:padding="30dp"
+            android:layout_margin="25dp"
+            android:id="@+id/mydict_register_num_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="登録数"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            android:layout_marginRight="25dp"
+            android:padding="30dp"
+            android:id="@+id/mydict_register_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@{data.count}"
+            app:layout_constraintTop_toTopOf="@id/mydict_register_num_text"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:padding="30dp"
+            android:id="@+id/mydict_attention_10_over"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/colorAlert"
+            android:text="@string/mydict_attention_10Over"
+            app:layout_constraintTop_toBottomOf="@+id/mydict_register_num_text"
+            android:visibility="@{data.text10overVisibility}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:padding="15dp"
+            android:id="@+id/mydict_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="単語帳を削除"
+            app:layout_constraintTop_toBottomOf="@id/mydict_attention_10_over"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

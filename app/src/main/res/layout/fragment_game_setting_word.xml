@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="data" type="com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/min_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="20dp"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:textSize="30sp"
+                android:text="@string/min_length"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/game_setting_min_spinner"
+                android:layout_weight="0.1"
+                android:entries="@{data.minArray}"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/max_layout"
+            app:layout_constraintTop_toBottomOf="@+id/min_layout"
+            android:layout_margin="20dp"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:textSize="30sp"
+                android:text="@string/max_length"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.1"
+                android:id="@+id/game_setting_max_spinner"
+                android:entries="@{data.maxArray}"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/question_layout"
+            app:layout_constraintTop_toBottomOf="@+id/max_layout"
+            android:layout_margin="20dp"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:textSize="30sp"
+                android:text = "@string/question_num"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/game_setting_question_spinner"
+                android:layout_weight="0.1"
+                android:entries="@{data.questionArray}" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dict_layout"
+            app:layout_constraintTop_toBottomOf="@+id/question_layout"
+            android:layout_margin="20dp"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:textSize="30sp"
+                android:text = "@string/dict_type"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/game_setting_use_dict_spinner"
+                android:layout_weight="0.1"
+                android:entries="@{data.dictNameArray}" />
+        </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:elevation="3dp"
+            app:srcCompat="@drawable/ic_baseline_send_24"
+            app:backgroundTint="#00BCD4"
+            android:id="@+id/start_game_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
