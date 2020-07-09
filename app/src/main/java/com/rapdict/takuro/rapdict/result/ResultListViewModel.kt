@@ -31,7 +31,7 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
         }
         wordTextArray.value = arraytextList
     }
-
+    // 新たに追加されたカード類のインデックスを返す
     fun returnRegisterCard(to_index:Int):ArrayList<Answer> {
         val answerList = ArrayList<Answer>()
         for (i in to_index..questionList.size-1){

@@ -5,6 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
@@ -22,10 +27,12 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     private var binding: FragmentGameBinding? =null
     internal var finish_q =0
     var mediaPlayer : MediaPlayer? =null
+    private lateinit var mInterstitialAd: InterstitialAd
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MobileAds.initialize(activity) {}
 
     }
 
@@ -38,6 +45,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         return binding!!.root
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
+
         super.onActivityCreated(savedInstanceState)
         val gameViewModel: GamePlayViewModel by viewModel()
         gameViewModel.draw(arguments!!.getInt("RETURN"))
@@ -45,9 +53,10 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         // bundleからJsonをPerseする
         val questionNum = arguments!!.getInt("QUESTION")
-        var filepath = arguments!!.getInt("BAR")
+        val filepath = arguments!!.getInt("BAR")
         val words =ArrayList<Word>()
         val rhymes = JSONObject(arguments!!.getString("RHYMES")).get("rhymes") as JSONArray
         var idName =""
@@ -75,6 +84,28 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         game_question_num.text = questionNum.toString()
         game_question_text.text = words[finish_q].word
         game_furigana_text.text = words[finish_q].furigana
+        // 広告を設定
+        mInterstitialAd = InterstitialAd(activity).apply {
+            adUnitId = "ca-app-pub-3940256099942544/1033173712"
+            adListener = (object : AdListener() {
+                override fun onAdLoaded() {
+                    Toast.makeText(activity, "onAdLoaded()", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onAdFailedToLoad(errorCode: Int) {
+                    Toast.makeText(activity,
+                            "onAdFailedToLoad() with error code: $errorCode",
+                            Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onAdClosed() {
+                    jumpedResult(answerList,words)
+                }
+            })
+        }
+
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
 
         mediaPlayer = MediaPlayer.create(activity, filepath)
         onCompletion(mediaPlayer!!)
@@ -84,7 +115,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         mediaPlayer?.setOnCompletionListener {
             if (finish_q >= questionNum-1){
                 it.pause()
-                jumpedResult(answerList,words)
+                mInterstitialAd.show()
             }else{
                 finish_q++
                 changedQuestion(finish_q, words, questionNum)
@@ -95,10 +126,14 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
             answerList.addAll(saveAnswer(finish_q))
-            System.out.println(answerList)
             finish_q++
             if (finish_q >= questionNum){
-               jumpedResult(answerList,words)
+                mediaPlayer!!.pause()
+                if(mInterstitialAd.isLoaded){
+                    mInterstitialAd.show()
+                }else{
+                    jumpedResult(answerList,words)
+                }
             }else{
                 changedQuestion(finish_q,words,questionNum)
                 editTextClear()

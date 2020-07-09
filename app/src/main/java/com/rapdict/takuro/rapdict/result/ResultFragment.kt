@@ -2,10 +2,14 @@ package com.rapdict.takuro.rapdict.result
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rapdict.takuro.rapdict.Common.App
@@ -22,9 +26,11 @@ class ResultFragment : androidx.fragment.app.Fragment() {
     // TODO: Rename and change types of parameters
 
     private var binding:FragmentResultBinding? =null
+    private lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MobileAds.initialize(activity) {}
 
     }
 
@@ -37,23 +43,28 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         val resultListViewModel: ResultListViewModel by viewModel()
         val adapter = ResultListAdapter(resultListViewModel,this)
 
         val recomIntent  = Intent(activity!!, MainActivity::class.java)
 
-        val answer2wordsJson = arguments?.getString("ANSWER_LIST")
-        val wordJson = arguments?.getString("WORD_LIST")
-        val maptypeToken = object : TypeToken<Array<Map<Int,String>>>() {}
-        val wordtypeToken = object : TypeToken<Array<Word>>() {}
-        val answer2wordlist = Gson().fromJson<Array<Map<Int,String>>>(answer2wordsJson, maptypeToken.type)
-        val wordList = Gson().fromJson<Array<Word>>(wordJson,wordtypeToken.type)
-        val answerlist = convert(wordList,answer2wordlist)
+        val wordList:Array<Word> = arguments?.getString("WORD_LIST").let {
+            val wordtypeToken = object : TypeToken<Array<Word>>() {}
+            Gson().fromJson<Array<Word>>(it,wordtypeToken.type)
+        }
+        val answerList:ArrayList<Answer> =  arguments?.getString("ANSWER_LIST").let {
+            val maptypeToken = object : TypeToken<Array<Map<Int,String>>>() {}
+            val indexAnswer = Gson().fromJson<Array<Map<Int,String>>>(it, maptypeToken.type)
+            convert(wordList,indexAnswer)
+        }
+
+
         val resultViewModel: ResultViewModel by viewModel()
         binding?.data = resultViewModel
-        resultListViewModel.draw(answerlist,wordList)
+        resultListViewModel.draw(answerList,wordList)
         adapter.notifyDataSetChanged()
+
+
         ResultRecyclerView.adapter = adapter
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         add_answer_button.setOnClickListener {
@@ -63,28 +74,26 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
         // 保存する
         save_button.setOnClickListener {
-            val bool_list = resultListViewModel.checkedList
+
             //　新規追加データがあれば保存する
-            answerlist.addAll(resultListViewModel.returnRegisterCard(answerlist.size))
-            
-            var register_index  = ArrayList<Int>()
-            bool_list.forEachIndexed { index, data ->
-                if(data.value == true){ register_index.add(index) }
+            answerList.addAll(resultListViewModel.returnRegisterCard(answerList.size))
+            // 実際に登録するアンサーを検出する
+            val register_answer = resultListViewModel.checkedList.let {
+                val array:ArrayList<Answer> = ArrayList()
+                it.forEachIndexed{ index,data ->
+                    if(data.value == true){ array.add(answerList.get(index)) }
+                }
+                array
             }
+
             val saveDialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)
                 setTitle("データ保存")
-                setMessage(register_index.size.toString()+"個、韻を保存します")
+                setMessage(register_answer.size.toString()+"個、韻を保存します")
                 setPositiveButton("OK") { _, _ ->
-                    var registe_answer = ArrayList<Answer>()
-                    for (index in register_index){
-                        var answer = answerlist.get(index)
-                        registe_answer.add(answer)
-                    }
-                    // 保存
                     GlobalScope.launch {
                         val dao = App.db.answerDao()
-                        registe_answer.forEach {
+                        register_answer.forEach {
                             dao.insert(it)
                         }
                     }
@@ -100,7 +109,7 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
                 })
             }
-            if (register_index.size ==0){
+            if (register_answer.size ==0){
                 alertDialog.show()
             }else{
                 saveDialog.show()
@@ -135,15 +144,5 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
-
-
-
-
-
-
-
-
-
 }
