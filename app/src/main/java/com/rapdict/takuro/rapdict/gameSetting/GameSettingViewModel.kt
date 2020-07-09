@@ -49,7 +49,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         val initMaxArray= mutableListOf<Int>()
         var initUidArray = mutableListOf<Int>()
         drumOnly.value = false
-        System.out.println(settingData)
+
         // Spfで既に遊んだ記録があったら
         if(settingData != null) {
             // 一番最初に選ばれるようにする

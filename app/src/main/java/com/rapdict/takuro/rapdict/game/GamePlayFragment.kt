@@ -201,20 +201,17 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     // answerList をアクティビティ内に保存する
     private fun saveAnswer(word_id:Int):ArrayList<Map<Int,String>>{
         val answerNum = arguments!!.getInt("RETURN")
-        System.out.println(answerNum)
         val answerTexts = mutableListOf<String>()
         if (answerNum >= 1){ answerTexts.add(rhyme_edit_one.text.toString()) }
         if (answerNum >= 2){ answerTexts.add(rhyme_edit_two.text.toString()) }
         if (answerNum >= 3){ answerTexts.add(rhyme_edit_three.text.toString()) }
         if (answerNum >= 4){ answerTexts.add(rhyme_edit_four.text.toString()) }
         val answer2word = ArrayList<Map<Int,String>>()
-        System.out.println(answerTexts)
         answerTexts.forEach {
             if(it.isNotEmpty() ){
                 answer2word.add(mapOf(word_id to it))
             }
         }
-        System.out.println("入っている？")
         return answer2word
     }
 
