@@ -13,6 +13,8 @@ import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_mydict_question_make.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -40,25 +42,41 @@ class MyDictMakeQuestionFragment : Fragment() {
         }
 
         register_question_button.setOnClickListener {
+            var db_name =""
+            runBlocking {
+                val dao = db.mydictDao()
+                val data =dao.findOneByIds(myDictChoiceViewModel.db_uid.value!!)
+                db_name =data.name!!
+            }
+
             val q_list = questionListViewModel.questionList
             val f_list = questionListViewModel.furiganaList
             val word_list = ArrayList<Word>()
+            var furiganaAttention = false
+            var furiganaMsg =""
             f_list.zip(q_list).forEach {
-                val furigana = it.first.value
-                val question = it.second.value
-                if(furigana!!.isEmpty() or question!!.isEmpty()){
+                var furigana = it.first.value
+                var question = it.second.value
+                if(question!!.isEmpty()){
                     return@forEach
+                }
+                if(furigana!!.isEmpty()){
+                    furiganaAttention = true
+                    furigana = question
                 }
                 word_list.add(Word(0, furigana,question,furigana.length,myDictChoiceViewModel.db_uid.value))
             }
+
+
+            if(furiganaAttention){ furiganaMsg ="読み方が空のものがあります。空の場合、好きな言葉を読み方に適用します"}
+
             val saveDialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)
-                setTitle("問題保存")
-                setMessage(word_list.size.toString()+"個、自分の問題として保存\nどちらか空白の場合保存できません\n※画面移動します")
+                setTitle("問題保存【"+db_name+"】")
+                setMessage(word_list.size.toString()+"個、自分の問題として保存\n好きな言葉が空のものは保存されません\n"+furiganaMsg+"\n※画面移動します")
                 setPositiveButton("OK",{_, _ ->
-                    //TODO 保存動作を確認
-                    runBlocking {
-                        var dao = db.wordDao()
+                    GlobalScope.launch {
+                        val dao = db.wordDao()
                         word_list.forEach { dao.insert(it) }
                     }
                     startActivity(recomIntent)

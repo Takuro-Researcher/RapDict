@@ -38,14 +38,6 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
-        var count:Int =-1
-        runBlocking {
-            val dao = db.mydictDao()
-            count = dao.count()
-        }
-        if(count>0){
-            viewModel!!.init_load()
-        }
 
         mydict_delete_button.setOnClickListener {
             val backIntent = Intent(activity,MainActivity::class.java)
@@ -75,11 +67,11 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
         val mListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 viewModel!!.changed_uid(mydict_choice_spinner.selectedItemPosition)
-                viewModel!!.countChange()
+                viewModel!!.countChange(position)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        mydict_choice_spinner.setSelection(0,false)
+        mydict_choice_spinner.setSelection(viewModel!!.choiceDictNamePosition,false)
         mydict_choice_spinner.onItemSelectedListener = mListener
     }
 

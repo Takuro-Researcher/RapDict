@@ -16,9 +16,17 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
     var db_uid = MutableLiveData<Int>()
     var count = MutableLiveData<String>()
     var text10overVisibility: MutableLiveData<Int> = MutableLiveData()
+    var choiceDictNamePosition = 0
 
     init {
-        count.value = "0"
+        var count:Int =-1
+        runBlocking {
+            val dao = db.mydictDao()
+            count = dao.count()
+        }
+        if(count>0){
+            init_load()
+        }
     }
     fun init_load(){
         var data = listOf<Mydict>()
@@ -40,11 +48,11 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
             uidList.add(MutableLiveData<Int>().apply { value =it.uid })
         }
         db_uid.value = array[0].uid
-        countChange()
+        countChange(0)
         dictNameList.value = list.toList()
     }
 
-    fun countChange(){
+    fun countChange(position: Int){
         var count_data =0
         runBlocking {
             val dao = db.wordDao()
@@ -56,6 +64,7 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
         }else{
             text10overVisibility.value = View.GONE
         }
+        choiceDictNamePosition = position
 
     }
 }
