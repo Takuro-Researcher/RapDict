@@ -27,7 +27,11 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".game.GameActivity"
             android:screenOrientation="portrait"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9599597100424961~5608615053"/>
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

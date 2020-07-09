@@ -77,29 +77,23 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
             //　新規追加データがあれば保存する
             answerList.addAll(resultListViewModel.returnRegisterCard(answerList.size))
-            // 登録フラグがついている言葉のインデックスを抽出する
-            val register_index = resultListViewModel.checkedList.let {
-                val array:ArrayList<Int> = ArrayList()
+            // 実際に登録するアンサーを検出する
+            val register_answer = resultListViewModel.checkedList.let {
+                val array:ArrayList<Answer> = ArrayList()
                 it.forEachIndexed{ index,data ->
-                    if(data.value == true){ array.add(index) }
+                    if(data.value == true){ array.add(answerList.get(index)) }
                 }
-                array
-            }
-            // インデックスから実際に保存するアンサー型に変更
-            val registe_answer = register_index.let {
-                val array =ArrayList<Answer>()
-                for(index in it){ array.add(answerList.get(index)) }
                 array
             }
 
             val saveDialog = AlertDialog.Builder(activity!!).apply{
                 setCancelable(false)
                 setTitle("データ保存")
-                setMessage(register_index.size.toString()+"個、韻を保存します")
+                setMessage(register_answer.size.toString()+"個、韻を保存します")
                 setPositiveButton("OK") { _, _ ->
                     GlobalScope.launch {
                         val dao = App.db.answerDao()
-                        registe_answer.forEach {
+                        register_answer.forEach {
                             dao.insert(it)
                         }
                     }
@@ -115,7 +109,7 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
                 })
             }
-            if (register_index.size ==0){
+            if (register_answer.size ==0){
                 alertDialog.show()
             }else{
                 saveDialog.show()
@@ -136,7 +130,6 @@ class ResultFragment : androidx.fragment.app.Fragment() {
             dialog.show()
         }
     }
-    
     fun convert(wordlist: Array<Word>, answer2wordList: Array<Map<Int,String>>):ArrayList<Answer>{
         val answerList = ArrayList<Answer>()
         answer2wordList.forEachIndexed{  index, item ->
