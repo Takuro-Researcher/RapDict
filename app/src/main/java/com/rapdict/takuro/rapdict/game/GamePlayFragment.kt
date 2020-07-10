@@ -17,6 +17,8 @@ import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -58,7 +60,9 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // bundleからJsonをPerseする
+
+
+        // bundleからデータを取得する
         val questionNum = arguments!!.getInt("QUESTION")
         val filepath = arguments!!.getInt("BAR")
         val words:ArrayList<Word> = arguments!!.getSerializable("WORDS") as ArrayList<Word>
@@ -73,9 +77,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             adUnitId = "ca-app-pub-3940256099942544/1033173712"
             adListener = (object : AdListener() {
                 override fun onAdLoaded() {}
-
                 override fun onAdFailedToLoad(errorCode: Int) {}
-
                 override fun onAdClosed() {
                     jumpedResult(answerList,words)
                 }
@@ -93,6 +95,11 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         mediaPlayer?.setOnCompletionListener {
             if (finish_q >= questionNum-1){
                 it.pause()
+                if (it.isPlaying){
+                    it.stop()
+                }
+                it.reset()
+                it.release()
                 mInterstitialAd.show()
             }else{
                 finish_q++
@@ -107,6 +114,11 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             finish_q++
             if (finish_q >= questionNum){
                 mediaPlayer!!.pause()
+                if (mediaPlayer!!.isPlaying){
+                    mediaPlayer?.stop()
+                }
+                mediaPlayer?.reset()
+                mediaPlayer?.release()
                 // 広告を見せる
                 if(mInterstitialAd.isLoaded){
                     mInterstitialAd.show()
@@ -133,7 +145,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     override fun onStart() {
         super.onStart()
         // 回答時にビートを停止する
-        var editTextOnFocus: View.OnFocusChangeListener = object :View.OnFocusChangeListener{
+        val editTextOnFocus: View.OnFocusChangeListener = object :View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
                 if (hasFocus) {
                     mediaPlayer?.pause()
@@ -141,16 +153,14 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             }
         }
         rhyme_edit_one.onFocusChangeListener = editTextOnFocus
-        rhyme_edit_two.onFocusChangeListener = editTextOnFocus
-        rhyme_edit_three.onFocusChangeListener = editTextOnFocus
-        rhyme_edit_four.onFocusChangeListener = editTextOnFocus
+//
+//        rhyme_edit_two.onFocusChangeListener = editTextOnFocus
+//        rhyme_edit_three.onFocusChangeListener = editTextOnFocus
+//        rhyme_edit_four.onFocusChangeListener = editTextOnFocus
     }
 
     override fun onStop() {
         super.onStop()
-        mediaPlayer?.stop()
-        mediaPlayer?.reset();
-        mediaPlayer?.release();
     }
     // 問題を変更する処理
     private fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
@@ -190,9 +200,10 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
     fun editTextClear(){
         var editTextNum = arguments!!.getInt("RETURN")
-        if (editTextNum >= 1){ rhyme_edit_one.editableText.clear() }
-        if (editTextNum >= 2){ rhyme_edit_two.editableText.clear() }
-        if (editTextNum >= 3){ rhyme_edit_three.editableText.clear() }
-        if (editTextNum >= 4){ rhyme_edit_four.editableText.clear() }
+        rhyme_edit_one.editableText.clear()
+//        if (editTextNum >= 1){ rhyme_edit_one.editableText.clear() }
+//        if (editTextNum >= 2){ rhyme_edit_two.editableText.clear() }
+//        if (editTextNum >= 3){ rhyme_edit_three.editableText.clear() }
+//        if (editTextNum >= 4){ rhyme_edit_four.editableText.clear() }
     }
 }

@@ -14,6 +14,8 @@ import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Common.SpfCommon
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.database.Mydict
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.text.FieldPosition
 import kotlin.math.min
@@ -28,8 +30,6 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     var dictNameArray: MutableLiveData<List<String>> = MutableLiveData()
     var beatTypeArray:MutableLiveData<List<String>> = MutableLiveData()
     var drumOnly:MutableLiveData<Boolean> = MutableLiveData()
-    var src_data:MutableLiveData<Int> = MutableLiveData()
-
     var settingData :GameSettingData = GameSettingData(2,"low",false,0,1,0,-1)
 
     var dictUidArray= listOf<Int>()
@@ -41,13 +41,13 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     private fun loadUserData(){
         val spfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication()))
         val settingData = spfCommon.settingRead()
-        var initbarArray= mutableListOf<Int>()
-        var initQuestionArray = mutableListOf<Int>()
-        var initBeatTypeArray = mutableListOf<String>()
-        var initNameArray = mutableListOf<String>()
+        val initbarArray= mutableListOf<Int>()
+        val initQuestionArray = mutableListOf<Int>()
+        val initBeatTypeArray = mutableListOf<String>()
+        val initNameArray = mutableListOf<String>()
         val initMinArray= mutableListOf<Int>()
         val initMaxArray= mutableListOf<Int>()
-        var initUidArray = mutableListOf<Int>()
+        val initUidArray = mutableListOf<Int>()
         drumOnly.value = false
 
         // Spfで既に遊んだ記録があったら
@@ -59,31 +59,13 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             initMinArray.add(settingData.min)
             initMaxArray.add(settingData.max)
             drumOnly.value = settingData.drumOnly
-
-            //　自分で作成した辞書を使っていた場合。
-            if(settingData.dictUid != -1) {
-                var choicedDict: Mydict? = null
-                runBlocking {
-                    val dictdao = db.mydictDao()
-                    choicedDict = dictdao.findOneByIds(settingData.dictUid)
+            if(settingData.dictUid != -1){
+                GlobalScope.launch {
+                    val dao = db.mydictDao()
+                    val data = dao.findOneByIds(settingData.dictUid)
+                    initNameArray.add(data.name!!)
                 }
-                // 辞書が削除されていないとき
-                if (choicedDict != null) {
-                    initNameArray.add(choicedDict!!.name!!)
-                    initUidArray.add(choicedDict!!.uid)
-                    var minMax = getMinMaxMyDict(settingData.dictUid)
-                    initMinArray.addAll(CommonTool.makeNumArray(minMax.first,minMax.second,1))
-                    initMaxArray.addAll(CommonTool.makeNumArray(minMax.first,minMax.second,1))
-                }
-            //日本語辞書を使っていた場合
-            }else{
-                initMinArray.addAll(CommonTool.makeNumArray(3,11,1))
-                initMaxArray.addAll(CommonTool.makeNumArray(3,11,1))
             }
-        // まだ一度もゲームをしていなかった場合
-        }else{
-            initMinArray.addAll(CommonTool.makeNumArray(3,11,1))
-            initMaxArray.addAll(CommonTool.makeNumArray(3,11,1))
         }
         //日本語辞書を追加
         initNameArray.add("日本語辞書")
@@ -92,21 +74,16 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         barArray.value = initbarArray.plus(listOf(2,4,8)).distinct()
         questionArray.value = initQuestionArray.plus(CommonTool.makeNumArray(10,30,10)).distinct()
         beatTypeArray.value = initBeatTypeArray.plus(listOf("low","middle","high","tri")).distinct()
-        minArray.value = initMinArray.distinct()
-        maxArray.value = initMaxArray.distinct()
+        minArray.value = initMinArray.plus(CommonTool.makeNumArray(3,15,1)).distinct()
+        maxArray.value = initMaxArray.plus(CommonTool.makeNumArray(3,15,1)).distinct()
 
         runBlocking {
             val dictDao = db.mydictDao()
             val wordDao = db.wordDao()
             val data =wordDao.countByDict()
-            val dictUids = mutableListOf<Int>()
             data.forEach {
-                dictUids.add(it.dictid)
-            }
-            val dictData = dictDao.findByIds(dictUids)
-            dictData.forEach {
-                initNameArray.add(it.name!!)
-                initUidArray.add(it.uid)
+                initUidArray.add(it.dictid)
+                initNameArray.add(dictDao.findOneByIds(it.dictid).name!!)
             }
         }
         dictUidArray = initUidArray.distinct()

@@ -2,6 +2,7 @@ package com.rapdict.takuro.rapdict.myDict
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,12 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
+import com.rapdict.takuro.rapdict.Common.SpfCommon
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictChoiceBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_mydict_choice.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
@@ -48,10 +52,21 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
                 setMessage("※作った言葉はすべて消えます")
                 setPositiveButton("OK",{_, _ ->
                     val id:Int = viewModel!!.db_uid.value!!
-                    runBlocking {
+                    GlobalScope.launch {
                         val dao = db.mydictDao()
                         dao.deleteByIds(id)
+                        val spfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(activity))
+                        val settingData = spfCommon.settingRead()
+                        // 設定データがもし削除したDBなら参照しないようにする。
+                        if(settingData != null){
+                            if(settingData.dictUid ==id){
+                                settingData.dictUid = -1
+                                spfCommon.settingSave(settingData)
+                            }
+                        }
                     }
+
+
                     startActivity(backIntent)
                 })
                 setNegativeButton("NO",null)
