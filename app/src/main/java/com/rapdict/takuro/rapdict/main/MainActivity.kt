@@ -77,4 +77,9 @@ open class MainActivity : AppCompatActivity() {
             else -> return super.onOptionsItemSelected(item)
         }
     }
+    override fun onBackPressed() {
+        // バックキーの無効化
+        moveTaskToBack (true)
+    }
+
 }

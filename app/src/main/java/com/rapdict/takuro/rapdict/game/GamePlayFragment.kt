@@ -26,6 +26,7 @@ import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
 import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
 import kotlin.random.Random.Default.nextInt
 
 
@@ -54,15 +55,12 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
         super.onActivityCreated(savedInstanceState)
         val gameViewModel: GamePlayViewModel by viewModel()
-        gameViewModel.draw(arguments!!.getInt("RETURN"))
         binding?.data = gameViewModel
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
         // bundleからデータを取得する
+        val viewModel:GamePlayViewModel by viewModel()
         val questionNum = arguments!!.getInt("QUESTION")
         val filepath = arguments!!.getInt("BAR")
         val words:ArrayList<Word> = arguments!!.getSerializable("WORDS") as ArrayList<Word>
@@ -83,15 +81,13 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 }
             })
         }
-
         mInterstitialAd.loadAd(AdRequest.Builder().build())
-
 
         mediaPlayer = MediaPlayer.create(activity, filepath)
         onCompletion(mediaPlayer!!)
-
         onStart()
 
+        // 音楽終了時の設定
         mediaPlayer?.setOnCompletionListener {
             if (finish_q >= questionNum-1){
                 it.pause()
@@ -105,7 +101,16 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 finish_q++
                 changedQuestion(finish_q, words, questionNum)
                 onCompletion(it)
+                //　ボタン連打対策
+                viewModel.buttonEnabled.value = false
+                GlobalScope.launch {
+                    onButtonEnabled(true)
+                }
             }
+        }
+        //　ボタン連打対策。1秒だけ待たせる
+        GlobalScope.launch {
+            onButtonEnabled(true)
         }
 
         //問題変更ボタン処理
@@ -113,6 +118,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             answerList.addAll(saveAnswer(finish_q))
             finish_q++
             if (finish_q >= questionNum){
+                // Playerをすべてリセットする
                 mediaPlayer!!.pause()
                 if (mediaPlayer!!.isPlaying){
                     mediaPlayer?.stop()
@@ -132,8 +138,20 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 game_main.setFocusableInTouchMode(true)
                 game_main.requestFocus()
                 onCompletion(mediaPlayer!!)
+                // ボタン連打対策
+                viewModel.buttonEnabled.value = false
+                GlobalScope.launch {
+                    onButtonEnabled(true)
+                }
+
             }
         }
+    }
+
+    fun onButtonEnabled(bool:Boolean){
+        val viewModel:GamePlayViewModel by viewModel()
+        Thread.sleep(1250)
+        viewModel.buttonEnabled.postValue(bool)
     }
 
     //media playerを最初から再生させる。
@@ -153,10 +171,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             }
         }
         rhyme_edit_one.onFocusChangeListener = editTextOnFocus
-//
-//        rhyme_edit_two.onFocusChangeListener = editTextOnFocus
-//        rhyme_edit_three.onFocusChangeListener = editTextOnFocus
-//        rhyme_edit_four.onFocusChangeListener = editTextOnFocus
     }
 
     override fun onStop() {

@@ -16,7 +16,6 @@ import com.rapdict.takuro.rapdict.gameSetting.GameSettingData
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.coroutines.runBlocking
-import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -105,6 +104,7 @@ open class GameActivity : AppCompatActivity() {
         attention_sound.visibility = View.VISIBLE
         game_start_button.visibility = View.VISIBLE
         loading.visibility = View.INVISIBLE
-
     }
+
+    override fun onBackPressed() {}
 }

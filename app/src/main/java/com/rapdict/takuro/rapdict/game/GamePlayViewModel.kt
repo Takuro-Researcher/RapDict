@@ -17,6 +17,8 @@ class GamePlayViewModel(application: Application) : AndroidViewModel(application
     var editThreeWeight: MutableLiveData<Float> = MutableLiveData()
     var editFourWeight: MutableLiveData<Float> = MutableLiveData()
     var editTwoVisibility : MutableLiveData<Int>  = MutableLiveData()
+    var buttonEnabled :MutableLiveData<Boolean> = MutableLiveData()
+
 
     //ViewModel初期化時にロード
     init {
@@ -27,6 +29,7 @@ class GamePlayViewModel(application: Application) : AndroidViewModel(application
         editThreeWeight.value = 0f
         editFourWeight.value = 0f
         editTwoVisibility.value = View.GONE
+        buttonEnabled.value = false
     }
 
     fun draw(answer:Int){
