@@ -1,5 +1,6 @@
 package com.rapdict.takuro.rapdict.game
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,8 @@ import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -24,6 +27,7 @@ import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
 import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
 import kotlin.random.Random.Default.nextInt
 
 
@@ -52,37 +56,16 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
         super.onActivityCreated(savedInstanceState)
         val gameViewModel: GamePlayViewModel by viewModel()
-        gameViewModel.draw(arguments!!.getInt("RETURN"))
         binding?.data = gameViewModel
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // bundleからJsonをPerseする
+        // bundleからデータを取得する
+        val viewModel:GamePlayViewModel by viewModel()
         val questionNum = arguments!!.getInt("QUESTION")
         val filepath = arguments!!.getInt("BAR")
-        val words =ArrayList<Word>()
-        val rhymes = JSONObject(arguments!!.getString("RHYMES")).get("rhymes") as JSONArray
-        var idName =""
-        var dictId = -1
-        if (arguments!!.getBoolean("ISMYDICT")){
-            idName = "uid"
-            dictId = rhymes.getJSONObject(0).getInt("uid")
-        }else{
-            idName = "id"
-        }
+        val words:ArrayList<Word> = arguments!!.getSerializable("WORDS") as ArrayList<Word>
 
-        for(i in 0 until rhymes.length()){
-            val jsonWord = rhymes.getJSONObject(i)
-            val questionWord = Word(
-                    jsonWord.getInt(idName),
-                    jsonWord.getString("furigana"),
-                    jsonWord.getString("word"),
-                    jsonWord.getInt("length"),
-                    dictId
-            )
-            words.add(questionWord)
-        }
         // 答えリストを作るための処理
         val answerList = ArrayList<Map<Int,String>>()
         game_question_num.text = questionNum.toString()
@@ -93,32 +76,37 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             adUnitId = "ca-app-pub-3940256099942544/1033173712"
             adListener = (object : AdListener() {
                 override fun onAdLoaded() {}
-
                 override fun onAdFailedToLoad(errorCode: Int) {}
-
                 override fun onAdClosed() {
                     jumpedResult(answerList,words)
                 }
             })
         }
-
         mInterstitialAd.loadAd(AdRequest.Builder().build())
-
 
         mediaPlayer = MediaPlayer.create(activity, filepath)
         onCompletion(mediaPlayer!!)
-
         onStart()
 
+        // 音楽終了時の設定
         mediaPlayer?.setOnCompletionListener {
             if (finish_q >= questionNum-1){
-                it.pause()
+                mediaPlayer?.pause()
                 mInterstitialAd.show()
             }else{
                 finish_q++
                 changedQuestion(finish_q, words, questionNum)
                 onCompletion(it)
+                //　ボタン連打対策
+                viewModel.buttonEnabled.value = false
+                GlobalScope.launch {
+                    onButtonEnabled(true)
+                }
             }
+        }
+        //　ボタン連打対策。1秒だけ待たせる
+        GlobalScope.launch {
+            onButtonEnabled(true)
         }
 
         //問題変更ボタン処理
@@ -126,20 +114,14 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             answerList.addAll(saveAnswer(finish_q))
             finish_q++
             if (finish_q >= questionNum){
+                // Playerをすべてリセットする
                 mediaPlayer!!.pause()
-                val randomInteger = (0..4).shuffled().first()
-                if(randomInteger%2 == 0){
-                    Log.d("TAg","広告ktkr")
-                    if(mInterstitialAd.isLoaded){
-                        mInterstitialAd.show()
-                    }else{
-                        jumpedResult(answerList,words)
-                    }
+                // 広告を見せる
+                if(mInterstitialAd.isLoaded){
+                    mInterstitialAd.show()
                 }else{
-                    Log.d("TAg","広告knkt")
                     jumpedResult(answerList,words)
                 }
-
             }else{
                 changedQuestion(finish_q,words,questionNum)
                 editTextClear()
@@ -147,8 +129,25 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 game_main.setFocusableInTouchMode(true)
                 game_main.requestFocus()
                 onCompletion(mediaPlayer!!)
+                // ボタン連打対策
+                viewModel.buttonEnabled.value = false
+                GlobalScope.launch {
+                    onButtonEnabled(true)
+                }
+
             }
         }
+
+        // 戻るボタン
+        game_back_button.setOnClickListener {
+            activity!!.finish()
+        }
+    }
+
+    fun onButtonEnabled(bool:Boolean){
+        val viewModel:GamePlayViewModel by viewModel()
+        Thread.sleep(1250)
+        viewModel.buttonEnabled.postValue(bool)
     }
 
     //media playerを最初から再生させる。
@@ -160,7 +159,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     override fun onStart() {
         super.onStart()
         // 回答時にビートを停止する
-        var editTextOnFocus: View.OnFocusChangeListener = object :View.OnFocusChangeListener{
+        val editTextOnFocus: View.OnFocusChangeListener = object :View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
                 if (hasFocus) {
                     mediaPlayer?.pause()
@@ -168,16 +167,13 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             }
         }
         rhyme_edit_one.onFocusChangeListener = editTextOnFocus
-        rhyme_edit_two.onFocusChangeListener = editTextOnFocus
-        rhyme_edit_three.onFocusChangeListener = editTextOnFocus
-        rhyme_edit_four.onFocusChangeListener = editTextOnFocus
     }
 
     override fun onStop() {
         super.onStop()
         mediaPlayer?.stop()
-        mediaPlayer?.reset();
-        mediaPlayer?.release();
+        mediaPlayer?.reset()
+        mediaPlayer?.release()
     }
     // 問題を変更する処理
     private fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
@@ -217,9 +213,10 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
     fun editTextClear(){
         var editTextNum = arguments!!.getInt("RETURN")
-        if (editTextNum >= 1){ rhyme_edit_one.editableText.clear() }
-        if (editTextNum >= 2){ rhyme_edit_two.editableText.clear() }
-        if (editTextNum >= 3){ rhyme_edit_three.editableText.clear() }
-        if (editTextNum >= 4){ rhyme_edit_four.editableText.clear() }
+        rhyme_edit_one.editableText.clear()
+//        if (editTextNum >= 1){ rhyme_edit_one.editableText.clear() }
+//        if (editTextNum >= 2){ rhyme_edit_two.editableText.clear() }
+//        if (editTextNum >= 3){ rhyme_edit_three.editableText.clear() }
+//        if (editTextNum >= 4){ rhyme_edit_four.editableText.clear() }
     }
 }

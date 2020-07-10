@@ -25,7 +25,7 @@
     <string name="waitingDisp">サーバーと通信しています… \n 少しだけお待ちください</string>
     <string name="attentionSound">ここから先は音声が流れます</string>
     <string name="startingDisp">通信が完了しました！\n 下記ボタンからスタートできます</string>
-    <string name="gameStart">ゲーム開始ィ！</string>
+    <string name="gameStart">ゲーム開始！</string>
     <string name="result_header">どんくらい踏んだ？</string>
     <string name="result_description">思い返して気に入ったものを保存してみよう</string>
     <string name="result_no_header">韻がなかった...</string>
