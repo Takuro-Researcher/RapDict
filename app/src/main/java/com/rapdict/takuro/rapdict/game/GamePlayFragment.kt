@@ -61,28 +61,8 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         // bundleからJsonをPerseする
         val questionNum = arguments!!.getInt("QUESTION")
         val filepath = arguments!!.getInt("BAR")
-        val words =ArrayList<Word>()
-        val rhymes = JSONObject(arguments!!.getString("RHYMES")).get("rhymes") as JSONArray
-        var idName =""
-        var dictId = -1
-        if (arguments!!.getBoolean("ISMYDICT")){
-            idName = "uid"
-            dictId = rhymes.getJSONObject(0).getInt("uid")
-        }else{
-            idName = "id"
-        }
+        val words:ArrayList<Word> = arguments!!.getSerializable("WORDS") as ArrayList<Word>
 
-        for(i in 0 until rhymes.length()){
-            val jsonWord = rhymes.getJSONObject(i)
-            val questionWord = Word(
-                    jsonWord.getInt(idName),
-                    jsonWord.getString("furigana"),
-                    jsonWord.getString("word"),
-                    jsonWord.getInt("length"),
-                    dictId
-            )
-            words.add(questionWord)
-        }
         // 答えリストを作るための処理
         val answerList = ArrayList<Map<Int,String>>()
         game_question_num.text = questionNum.toString()
@@ -127,19 +107,12 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             finish_q++
             if (finish_q >= questionNum){
                 mediaPlayer!!.pause()
-                val randomInteger = (0..4).shuffled().first()
-                if(randomInteger%2 == 0){
-                    Log.d("TAg","広告ktkr")
-                    if(mInterstitialAd.isLoaded){
-                        mInterstitialAd.show()
-                    }else{
-                        jumpedResult(answerList,words)
-                    }
+                // 広告を見せる
+                if(mInterstitialAd.isLoaded){
+                    mInterstitialAd.show()
                 }else{
-                    Log.d("TAg","広告knkt")
                     jumpedResult(answerList,words)
                 }
-
             }else{
                 changedQuestion(finish_q,words,questionNum)
                 editTextClear()
