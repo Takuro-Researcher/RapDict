@@ -60,10 +60,12 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             initMaxArray.add(settingData.max)
             drumOnly.value = settingData.drumOnly
             if(settingData.dictUid != -1){
-                GlobalScope.launch {
+                runBlocking {
+                    System.out.println("他の辞書使ってるってはわかってるのよ")
                     val dao = db.mydictDao()
                     val data = dao.findOneByIds(settingData.dictUid)
                     initNameArray.add(data.name!!)
+                    initUidArray.add(data.uid)
                 }
             }
         }
@@ -129,7 +131,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
 
     fun getMinMaxMyDict(uid:Int):Pair<Int,Int>{
         var min = 3
-        var max = 11
+        var max = 15
         if (uid != -1){
             runBlocking {
                 val dao = db.wordDao()

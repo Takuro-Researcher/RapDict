@@ -91,6 +91,7 @@ open class GameActivity : AppCompatActivity() {
             game_start_button.visibility = View.INVISIBLE
             waiting_display.visibility = View.INVISIBLE
             attention_sound.visibility = View.INVISIBLE
+            game_back_button.visibility = View.INVISIBLE
             val gameFragment = GamePlayFragment()
             gameFragment.arguments = bundle
             transaction.add(R.id.fragmentGame, gameFragment)
