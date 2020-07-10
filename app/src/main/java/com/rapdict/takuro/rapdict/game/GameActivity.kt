@@ -96,6 +96,9 @@ open class GameActivity : AppCompatActivity() {
             transaction.add(R.id.fragmentGame, gameFragment)
             transaction.commit()
         }
+        game_back_button.setOnClickListener {
+            finish()
+        }
 
     }
 

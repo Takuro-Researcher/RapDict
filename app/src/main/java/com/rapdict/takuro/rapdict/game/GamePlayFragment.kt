@@ -1,5 +1,6 @@
 package com.rapdict.takuro.rapdict.game
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
@@ -90,12 +91,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         // 音楽終了時の設定
         mediaPlayer?.setOnCompletionListener {
             if (finish_q >= questionNum-1){
-                it.pause()
-                if (it.isPlaying){
-                    it.stop()
-                }
-                it.reset()
-                it.release()
+                mediaPlayer?.pause()
                 mInterstitialAd.show()
             }else{
                 finish_q++
@@ -120,11 +116,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             if (finish_q >= questionNum){
                 // Playerをすべてリセットする
                 mediaPlayer!!.pause()
-                if (mediaPlayer!!.isPlaying){
-                    mediaPlayer?.stop()
-                }
-                mediaPlayer?.reset()
-                mediaPlayer?.release()
                 // 広告を見せる
                 if(mInterstitialAd.isLoaded){
                     mInterstitialAd.show()
@@ -145,6 +136,11 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 }
 
             }
+        }
+
+        // 戻るボタン
+        game_back_button.setOnClickListener {
+            activity!!.finish()
         }
     }
 
@@ -175,6 +171,9 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
     override fun onStop() {
         super.onStop()
+        mediaPlayer?.stop()
+        mediaPlayer?.reset()
+        mediaPlayer?.release()
     }
     // 問題を変更する処理
     private fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
