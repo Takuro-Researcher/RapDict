@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
@@ -63,6 +65,18 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         binding?.data = resultViewModel
         resultListViewModel.draw(answerList,wordList)
         adapter.notifyDataSetChanged()
+        // 広告を設定
+        mInterstitialAd = InterstitialAd(activity).apply {
+            adUnitId = "ca-app-pub-3940256099942544/1033173712"
+            adListener = (object : AdListener() {
+                override fun onAdLoaded() { }
+                override fun onAdFailedToLoad(errorCode: Int) {}
+                override fun onAdClosed() {
+                    startActivity(recomIntent)
+                }
+            })
+        }
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
 
 
         ResultRecyclerView.adapter = adapter
@@ -97,7 +111,11 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                             dao.insert(it)
                         }
                     }
-                    startActivity(recomIntent)
+                    if(mInterstitialAd.isLoaded){
+                        mInterstitialAd.show()
+                    }else{
+                        startActivity(recomIntent)
+                    }
                 }
                 setNegativeButton("NO",null)
             }
@@ -123,7 +141,11 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                 setTitle("ゲーム設定画面へ戻る")
                 setMessage("(保存は一切行われません)")
                 setPositiveButton("OK",{_, _ ->
-                    startActivity(recomIntent)
+                    if(mInterstitialAd.isLoaded){
+                        mInterstitialAd.show()
+                    }else{
+                        startActivity(recomIntent)
+                    }
                 })
                 setNegativeButton("NO",null)
             }
