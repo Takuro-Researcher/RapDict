@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
@@ -25,7 +26,7 @@ open class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         intent = intent
-        val jsonData:String = intent.getStringExtra("DATA")
+        val jsonData:String = intent.getStringExtra("DATA")!!
         val mapper = jacksonObjectMapper()
         val transaction = supportFragmentManager.beginTransaction()
         val data:GameSettingData = mapper.readValue(jsonData)
@@ -91,16 +92,11 @@ open class GameActivity : AppCompatActivity() {
             game_start_button.visibility = View.INVISIBLE
             waiting_display.visibility = View.INVISIBLE
             attention_sound.visibility = View.INVISIBLE
-            game_back_button.visibility = View.INVISIBLE
             val gameFragment = GamePlayFragment()
             gameFragment.arguments = bundle
             transaction.add(R.id.fragmentGame, gameFragment)
             transaction.commit()
         }
-        game_back_button.setOnClickListener {
-            finish()
-        }
-
     }
 
     fun changedTexts(){
@@ -110,5 +106,17 @@ open class GameActivity : AppCompatActivity() {
         loading.visibility = View.INVISIBLE
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressed() {
+        val fragment: Fragment? = supportFragmentManager.findFragmentByTag("handlingBackPressed")
+        if (fragment is OnBackKeyPressedListener) {
+            (fragment as OnBackKeyPressedListener?)!!.onBackPressed()
+        }else{
+            super.onBackPressed()
+        }
+
+    }
+
+    interface OnBackKeyPressedListener {
+        fun onBackPressed()
+    }
 }
