@@ -3,6 +3,7 @@ package com.rapdict.takuro.rapdict.game
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -114,6 +115,11 @@ open class GameActivity : AppCompatActivity() {
             super.onBackPressed()
         }
 
+    }
+
+    override fun onUserLeaveHint() {
+        //ホームボタンが押された時や、他のアプリが起動した時に呼ばれる
+        finish()
     }
 
     interface OnBackKeyPressedListener {

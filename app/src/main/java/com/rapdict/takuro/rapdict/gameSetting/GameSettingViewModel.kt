@@ -76,8 +76,8 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         barArray.value = initbarArray.plus(listOf(2,4,8)).distinct()
         questionArray.value = initQuestionArray.plus(CommonTool.makeNumArray(10,30,10)).distinct()
         beatTypeArray.value = initBeatTypeArray.plus(listOf("low","middle","high","tri")).distinct()
-        minArray.value = initMinArray.plus(CommonTool.makeNumArray(3,15,1)).distinct()
-        maxArray.value = initMaxArray.plus(CommonTool.makeNumArray(3,15,1)).distinct()
+        minArray.value = initMinArray.plus(CommonTool.makeNumArray(3,12,1)).distinct()
+        maxArray.value = initMaxArray.plus(CommonTool.makeNumArray(3,12,1)).distinct()
 
         runBlocking {
             val dictDao = db.mydictDao()
@@ -131,7 +131,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
 
     fun getMinMaxMyDict(uid:Int):Pair<Int,Int>{
         var min = 3
-        var max = 15
+        var max = 12
         if (uid != -1){
             runBlocking {
                 val dao = db.wordDao()
