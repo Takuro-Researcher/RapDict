@@ -1,5 +1,8 @@
 package com.rapdict.takuro.rapdict.Common
 
+import android.content.Context
+import android.view.View
+import android.view.animation.AnimationUtils
 import com.rapdict.takuro.rapdict.R
 
 class CommonTool {
@@ -53,6 +56,12 @@ class CommonTool {
                 }
             }
             return beatList[0].first
+        }
+
+        // fun
+        fun fadeIn(view: View,context: Context){
+            var animation = AnimationUtils.loadAnimation(context,R.anim.alpha_fadein)
+            view.startAnimation(animation)
         }
     }
 }

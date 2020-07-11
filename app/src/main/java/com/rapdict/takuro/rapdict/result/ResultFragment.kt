@@ -15,11 +15,13 @@ import com.google.android.gms.ads.MobileAds
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rapdict.takuro.rapdict.Common.App
+import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.database.Answer
 import kotlinx.android.synthetic.main.fragment_result.*
+import kotlinx.android.synthetic.main.rhyme_return.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -45,6 +47,10 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        CommonTool.fadeIn(result_form,activity!!)
+
+
         val resultListViewModel: ResultListViewModel by viewModel()
         val adapter = ResultListAdapter(resultListViewModel,this)
 
