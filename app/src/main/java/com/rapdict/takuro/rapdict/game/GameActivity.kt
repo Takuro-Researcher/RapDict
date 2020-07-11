@@ -16,7 +16,8 @@ import com.rapdict.takuro.rapdict.gameSetting.GameSettingData
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.coroutines.runBlocking
-import okhttp3.OkHttpClient
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 open class GameActivity : AppCompatActivity() {
@@ -43,9 +44,21 @@ open class GameActivity : AppCompatActivity() {
         req.setOnCallBack(object : getHttp.CallBackTask(){
             override fun CallBack(result: String) {
                 super.CallBack(result)
-                bundle.putString("RHYMES",result)
+                val rhymes = JSONObject(result).get("rhymes") as JSONArray
+                val words = ArrayList<Word>()
+                for(i in 0 until rhymes.length()){
+                    val jsonWord = rhymes.getJSONObject(i)
+                    val questionWord = Word(
+                            jsonWord.getInt("id"),
+                            jsonWord.getString("furigana"),
+                            jsonWord.getString("word"),
+                            jsonWord.getInt("length"),
+                            -1
+                    )
+                    words.add(questionWord)
+                }
+                bundle.putSerializable("WORDS",words)
                 bundle.putInt("QUESTION",data.question)
-                bundle.putBoolean("ISMYDICT",false)
                 changedTexts()
             }
         })
@@ -69,10 +82,7 @@ open class GameActivity : AppCompatActivity() {
             if(wordData.size ==0){
                 recomdialog.show()
             }
-            val mapData =  mutableMapOf("rhymes" to wordData)
-            val result= mapper.writeValueAsString(mapData)
-            bundle.putString("RHYMES",result)
-            bundle.putBoolean("ISMYDICT",true)
+            bundle.putSerializable("WORDS",wordData as ArrayList<Word>)
             bundle.putInt("QUESTION",wordData.size)
             changedTexts()
         }
@@ -81,10 +91,14 @@ open class GameActivity : AppCompatActivity() {
             game_start_button.visibility = View.INVISIBLE
             waiting_display.visibility = View.INVISIBLE
             attention_sound.visibility = View.INVISIBLE
+            game_back_button.visibility = View.INVISIBLE
             val gameFragment = GamePlayFragment()
             gameFragment.arguments = bundle
             transaction.add(R.id.fragmentGame, gameFragment)
             transaction.commit()
+        }
+        game_back_button.setOnClickListener {
+            finish()
         }
 
     }
@@ -94,6 +108,7 @@ open class GameActivity : AppCompatActivity() {
         attention_sound.visibility = View.VISIBLE
         game_start_button.visibility = View.VISIBLE
         loading.visibility = View.INVISIBLE
-
     }
+
+    override fun onBackPressed() {}
 }
