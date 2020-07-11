@@ -35,9 +35,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     private var binding: FragmentGameBinding? =null
     internal var finish_q =0
     var mediaPlayer : MediaPlayer? =null
-    private lateinit var mInterstitialAd: InterstitialAd
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(activity) {}
@@ -71,18 +68,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         game_question_num.text = questionNum.toString()
         game_question_text.text = words[finish_q].word
         game_furigana_text.text = words[finish_q].furigana
-        // 広告を設定
-        mInterstitialAd = InterstitialAd(activity).apply {
-            adUnitId = "ca-app-pub-3940256099942544/1033173712"
-            adListener = (object : AdListener() {
-                override fun onAdLoaded() {}
-                override fun onAdFailedToLoad(errorCode: Int) {}
-                override fun onAdClosed() {
-                    jumpedResult(answerList,words)
-                }
-            })
-        }
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
 
         mediaPlayer = MediaPlayer.create(activity, filepath)
         onCompletion(mediaPlayer!!)
@@ -92,7 +78,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         mediaPlayer?.setOnCompletionListener {
             if (finish_q >= questionNum-1){
                 mediaPlayer?.pause()
-                mInterstitialAd.show()
+                jumpedResult(answerList,words)
             }else{
                 finish_q++
                 changedQuestion(finish_q, words, questionNum)
@@ -116,12 +102,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             if (finish_q >= questionNum){
                 // Playerをすべてリセットする
                 mediaPlayer!!.pause()
-                // 広告を見せる
-                if(mInterstitialAd.isLoaded){
-                    mInterstitialAd.show()
-                }else{
-                    jumpedResult(answerList,words)
-                }
+                jumpedResult(answerList,words)
             }else{
                 changedQuestion(finish_q,words,questionNum)
                 editTextClear()

@@ -34,27 +34,29 @@
                 app:expandedTitleMarginEnd="6dp"
                 >
                 <RelativeLayout
+                    android:id="@+id/result_form"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <TextView
-                        android:layout_marginTop="30dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:id="@+id/doUpush"
-                        android:textSize="26sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:text="@{data.mainMessage}"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/text_description"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@+id/doUpush"
-                        android:layout_marginTop="20sp"
-                        android:textSize="17sp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:text="@{data.subMessage}" />
+                        <TextView
+                            android:layout_marginTop="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/doUpush"
+                            android:textSize="26sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:text="@{data.mainMessage}"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/text_description"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/doUpush"
+                            android:layout_marginTop="20sp"
+                            android:textSize="17sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:text="@{data.subMessage}" />
+                    
                     <RelativeLayout
                         android:layout_width="300sp"
                         android:layout_height="wrap_content"

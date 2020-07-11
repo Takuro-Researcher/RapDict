@@ -6,18 +6,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rapdict.takuro.rapdict.Common.App
+import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.database.Answer
 import kotlinx.android.synthetic.main.fragment_result.*
+import kotlinx.android.synthetic.main.rhyme_return.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -43,6 +47,10 @@ class ResultFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        CommonTool.fadeIn(result_form,activity!!)
+
+
         val resultListViewModel: ResultListViewModel by viewModel()
         val adapter = ResultListAdapter(resultListViewModel,this)
 
@@ -63,6 +71,18 @@ class ResultFragment : androidx.fragment.app.Fragment() {
         binding?.data = resultViewModel
         resultListViewModel.draw(answerList,wordList)
         adapter.notifyDataSetChanged()
+        // 広告を設定
+        mInterstitialAd = InterstitialAd(activity).apply {
+            adUnitId = "ca-app-pub-3940256099942544/1033173712"
+            adListener = (object : AdListener() {
+                override fun onAdLoaded() { }
+                override fun onAdFailedToLoad(errorCode: Int) {}
+                override fun onAdClosed() {
+                    startActivity(recomIntent)
+                }
+            })
+        }
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
 
 
         ResultRecyclerView.adapter = adapter
@@ -97,7 +117,11 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                             dao.insert(it)
                         }
                     }
-                    startActivity(recomIntent)
+                    if(mInterstitialAd.isLoaded){
+                        mInterstitialAd.show()
+                    }else{
+                        startActivity(recomIntent)
+                    }
                 }
                 setNegativeButton("NO",null)
             }
@@ -123,7 +147,11 @@ class ResultFragment : androidx.fragment.app.Fragment() {
                 setTitle("ゲーム設定画面へ戻る")
                 setMessage("(保存は一切行われません)")
                 setPositiveButton("OK",{_, _ ->
-                    startActivity(recomIntent)
+                    if(mInterstitialAd.isLoaded){
+                        mInterstitialAd.show()
+                    }else{
+                        startActivity(recomIntent)
+                    }
                 })
                 setNegativeButton("NO",null)
             }
