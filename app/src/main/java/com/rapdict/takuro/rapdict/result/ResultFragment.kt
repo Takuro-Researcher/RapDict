@@ -1,12 +1,12 @@
 package com.rapdict.takuro.rapdict.result
 
+import android.R
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -17,16 +17,17 @@ import com.google.gson.reflect.TypeToken
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Word
-import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
-import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.database.Answer
+import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
+import com.rapdict.takuro.rapdict.game.GameActivity
+import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_result.*
-import kotlinx.android.synthetic.main.rhyme_return.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ResultFragment : androidx.fragment.app.Fragment() {
+
+class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyPressedListener {
     // TODO: Rename and change types of parameters
 
     private var binding:FragmentResultBinding? =null
@@ -48,13 +49,13 @@ class ResultFragment : androidx.fragment.app.Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val recomIntent  = Intent(activity!!, MainActivity::class.java)
         CommonTool.fadeIn(result_form,activity!!)
-
 
         val resultListViewModel: ResultListViewModel by viewModel()
         val adapter = ResultListAdapter(resultListViewModel,this)
 
-        val recomIntent  = Intent(activity!!, MainActivity::class.java)
+
 
         val wordList:Array<Word> = arguments?.getString("WORD_LIST").let {
             val wordtypeToken = object : TypeToken<Array<Word>>() {}
@@ -65,7 +66,6 @@ class ResultFragment : androidx.fragment.app.Fragment() {
             val indexAnswer = Gson().fromJson<Array<Map<Int,String>>>(it, maptypeToken.type)
             convert(wordList,indexAnswer)
         }
-
 
         val resultViewModel: ResultViewModel by viewModel()
         binding?.data = resultViewModel
@@ -173,4 +173,22 @@ class ResultFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
+    override fun onBackPressed() {
+        val recomIntent  = Intent(activity!!, MainActivity::class.java)
+        val dialog = AlertDialog.Builder(activity!!).apply{
+            setCancelable(false)
+            setTitle("ゲーム設定画面へ戻る")
+            setMessage("(保存は一切行われません)")
+            setPositiveButton("OK",{_, _ ->
+                if(mInterstitialAd.isLoaded){
+                    mInterstitialAd.show()
+                }else{
+                    startActivity(recomIntent)
+                }
+            })
+            setNegativeButton("NO",null)
+        }
+        dialog.show()
+    }
+
 }

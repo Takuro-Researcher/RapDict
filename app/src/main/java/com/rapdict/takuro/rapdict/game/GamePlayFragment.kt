@@ -74,6 +74,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         onCompletion(mediaPlayer!!)
         onStart()
 
+
         // 音楽終了時の設定
         mediaPlayer?.setOnCompletionListener {
             if (finish_q >= questionNum-1){
@@ -118,17 +119,15 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
             }
         }
-
-        // 戻るボタン
-        game_back_button.setOnClickListener {
-            activity!!.finish()
-        }
     }
 
     fun onButtonEnabled(bool:Boolean){
         val viewModel:GamePlayViewModel by viewModel()
         Thread.sleep(1250)
-        viewModel.buttonEnabled.postValue(bool)
+        // 戻るボタンで戻った時にクラッシュしないように
+        if(activity!=null){
+            viewModel.buttonEnabled.postValue(bool)
+        }
     }
 
     //media playerを最初から再生させる。
@@ -171,7 +170,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         resultFragment.arguments = bundle
         //画面遷移
         val transaction2 = fragmentManager?.beginTransaction()
-        transaction2?.replace(R.id.fragmentGame, resultFragment)
+        transaction2?.replace(R.id.fragmentGame, resultFragment,"handlingBackPressed")
         transaction2?.commit()
         mediaPlayer?.pause()
     }
