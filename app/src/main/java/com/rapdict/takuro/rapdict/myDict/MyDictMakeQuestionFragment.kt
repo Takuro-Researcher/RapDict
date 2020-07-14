@@ -42,6 +42,7 @@ class MyDictMakeQuestionFragment : Fragment() {
         }
 
         register_question_button.setOnClickListener {
+            System.out.println(adapter.itemCount)
             var db_name =""
             runBlocking {
                 val dao = db.mydictDao()
