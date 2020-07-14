@@ -1,5 +1,7 @@
 package com.rapdict.takuro.rapdict.game
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -16,6 +18,8 @@ import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
+import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingBeatBinding
+import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.coroutines.GlobalScope
@@ -23,62 +27,78 @@ import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.lang.Exception
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
 import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 import kotlin.random.Random.Default.nextInt
+import kotlin.reflect.jvm.internal.impl.metadata.ProtoBuf
 
 
 class GamePlayFragment : androidx.fragment.app.Fragment() {
-    private var binding: FragmentGameBinding? =null
+    lateinit private var binding: FragmentGameBinding
+
     internal var finish_q =0
-    var mediaPlayer : MediaPlayer? =null
+    lateinit private var mediaPlayer : MediaPlayer
+    private var argument: Bundle?= null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MobileAds.initialize(activity) {}
+        argument = arguments
+        try {
+            val filepath = argument!!.getInt("BAR")
+            mediaPlayer = MediaPlayer.create(activity, filepath)
+        }catch(e:Exception) {
 
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = FragmentGameBinding.inflate(inflater,container,false)
-        binding!!.lifecycleOwner = this
-        binding!!.fragment = this
-        return binding!!.root
+        binding.lifecycleOwner = this
+        binding.fragment = this
+        return binding.root
     }
     override fun onActivityCreated(savedInstanceState:Bundle?) {
-
         super.onActivityCreated(savedInstanceState)
         val gameViewModel: GamePlayViewModel by viewModel()
-        binding?.data = gameViewModel
+        binding.data = gameViewModel
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // bundleからデータを取得する
         val viewModel:GamePlayViewModel by viewModel()
-        val questionNum = arguments!!.getInt("QUESTION")
-        val filepath = arguments!!.getInt("BAR")
-        val words:ArrayList<Word> = arguments!!.getSerializable("WORDS") as ArrayList<Word>
+        val questionNum = argument?.getInt("QUESTION") ?: 10
+        val backIntent  = Intent(activity, MainActivity::class.java)
+        val recomdialog = AlertDialog.Builder(activity)
+        recomdialog.setCancelable(false)
+        recomdialog.setMessage("原因不明のエラーです..。再度お試しください")
+        recomdialog.setPositiveButton("戻る"){
+            _, _ -> startActivity(backIntent)
+        }
 
-        // 答えリストを作るための処理
+        val words:ArrayList<Word> = argument?.getSerializable("WORDS") as ArrayList<Word>
         val answerList = ArrayList<Map<Int,String>>()
-        game_question_num.text = questionNum.toString()
-        game_question_text.text = words[finish_q].word
-        game_furigana_text.text = words[finish_q].furigana
-
-
-        mediaPlayer = MediaPlayer.create(activity, filepath)
-        onCompletion(mediaPlayer!!)
+        // 初回だけ確認する。
+        try {
+            game_question_num.text = questionNum.toString()
+            game_question_text.text = words[finish_q].word
+            game_furigana_text.text = words[finish_q].furigana
+        }catch (e:Exception){
+            recomdialog.show()
+        }
+        // 答えリストを作るための処理
+        onCompletion(mediaPlayer)
         onStart()
 
-
         // 音楽終了時の設定
-        mediaPlayer?.setOnCompletionListener {
+        mediaPlayer.setOnCompletionListener {
             if (finish_q >= questionNum-1){
-                mediaPlayer?.pause()
+                mediaPlayer.pause()
                 jumpedResult(answerList,words)
             }else{
                 finish_q++
@@ -102,7 +122,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             finish_q++
             if (finish_q >= questionNum){
                 // Playerをすべてリセットする
-                mediaPlayer!!.pause()
+                mediaPlayer.pause()
                 jumpedResult(answerList,words)
             }else{
                 changedQuestion(finish_q,words,questionNum)
@@ -110,8 +130,8 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 game_main.setFocusable(true)
                 game_main.setFocusableInTouchMode(true)
                 game_main.requestFocus()
-                onCompletion(mediaPlayer!!)
-                // ボタン連打対策
+                onCompletion(mediaPlayer)
+                // ボタン連打対策。非同期で動かす
                 viewModel.buttonEnabled.value = false
                 GlobalScope.launch {
                     onButtonEnabled(true)
@@ -142,7 +162,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         val editTextOnFocus: View.OnFocusChangeListener = object :View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
                 if (hasFocus) {
-                    mediaPlayer?.pause()
+                    mediaPlayer.pause()
                 }
             }
         }
@@ -151,9 +171,9 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
     override fun onStop() {
         super.onStop()
-        mediaPlayer?.stop()
-        mediaPlayer?.reset()
-        mediaPlayer?.release()
+        mediaPlayer.stop()
+        mediaPlayer.reset()
+        mediaPlayer.release()
     }
     // 問題を変更する処理
     private fun changedQuestion(finish_q:Int, words:ArrayList<Word>, questionNum:Int){
@@ -172,11 +192,11 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         val transaction2 = fragmentManager?.beginTransaction()
         transaction2?.replace(R.id.fragmentGame, resultFragment,"handlingBackPressed")
         transaction2?.commit()
-        mediaPlayer?.pause()
+        mediaPlayer.pause()
     }
     // answerList をアクティビティ内に保存する
     private fun saveAnswer(word_id:Int):ArrayList<Map<Int,String>>{
-        val answerNum = arguments!!.getInt("RETURN")
+        val answerNum = argument?.getInt("RETURN")?: 1
         val answerTexts = mutableListOf<String>()
         if (answerNum >= 1){ answerTexts.add(rhyme_edit_one.text.toString()) }
         if (answerNum >= 2){ answerTexts.add(rhyme_edit_two.text.toString()) }
@@ -192,7 +212,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     }
 
     fun editTextClear(){
-        var editTextNum = arguments!!.getInt("RETURN")
+        var editTextNum = argument?.getInt("RETURN")
         rhyme_edit_one.editableText.clear()
 //        if (editTextNum >= 1){ rhyme_edit_one.editableText.clear() }
 //        if (editTextNum >= 2){ rhyme_edit_two.editableText.clear() }
