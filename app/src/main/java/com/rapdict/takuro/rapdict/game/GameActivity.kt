@@ -3,6 +3,7 @@ package com.rapdict.takuro.rapdict.game
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,42 +27,50 @@ open class GameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        intent = intent
-        val jsonData:String = intent.getStringExtra("DATA")!!
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        val backIntent  = Intent(this, MainActivity::class.java)
+        var jsonData:String? = intent.getStringExtra("DATA")
         val mapper = jacksonObjectMapper()
         val transaction = supportFragmentManager.beginTransaction()
-        val data:GameSettingData = mapper.readValue(jsonData)
-        // 音源キーを取得
-        val src:Int = CommonTool.choiceMusic(data.drumOnly,data.type,data.bar)
+        val data:GameSettingData = mapper.readValue(jsonData.toString()) ?: GameSettingData(2,"low",true,3,6,10,-1)
         val bundle =Bundle().apply {
             this.putInt("RETURN",1)
-            this.putInt("BAR",src)
+            this.putInt("BAR", CommonTool.choiceMusic(data.drumOnly,data.type,data.bar))
         }
-
-
-
         // 言葉を取得
         val req = getHttp(CommonTool.makeApiUrl(data.min,data.max,data.question))
+        val recomdialog = AlertDialog.Builder(this)
+        recomdialog.setCancelable(false)
+        recomdialog.setMessage("韻が一つも取得できませんでした\n最小文字＆最大文字を変えて試してください")
+        recomdialog.setPositiveButton("戻る"){
+            _, _ -> startActivity(backIntent)
+        }
 
         req.setOnCallBack(object : getHttp.CallBackTask(){
             override fun CallBack(result: String) {
                 super.CallBack(result)
-                val rhymes = JSONObject(result).get("rhymes") as JSONArray
                 val words = ArrayList<Word>()
-                for(i in 0 until rhymes.length()){
-                    val jsonWord = rhymes.getJSONObject(i)
-                    val questionWord = Word(
-                            jsonWord.getInt("id"),
-                            jsonWord.getString("furigana"),
-                            jsonWord.getString("word"),
-                            jsonWord.getInt("length"),
-                            -1
-                    )
-                    words.add(questionWord)
+                try {
+                    val rhymes = JSONObject(result).get("rhymes") as JSONArray
+                    for(i in 0 until rhymes.length()){
+                        val jsonWord = rhymes.getJSONObject(i)
+                        val questionWord = Word(
+                                jsonWord.getInt("id"),
+                                jsonWord.getString("furigana"),
+                                jsonWord.getString("word"),
+                                jsonWord.getInt("length"),
+                                -1
+                        )
+                        words.add(questionWord)
+                        bundle.putSerializable("WORDS",words)
+                        bundle.putInt("QUESTION",data.question)
+                        changedTexts()
+                    }
+                }catch (e:Exception){
+                    recomdialog.setMessage("データが取ってこれませんでした..。ごめんなさい")
+                    recomdialog.show()
                 }
-                bundle.putSerializable("WORDS",words)
-                bundle.putInt("QUESTION",data.question)
-                changedTexts()
             }
         })
         setContentView(R.layout.activity_game)
@@ -73,13 +82,6 @@ open class GameActivity : AppCompatActivity() {
             runBlocking {
                 val dao = db.wordDao()
                 wordData = dao.findByLenght(data.min,data.max,data.dictUid,data.question)
-            }
-            val backIntent  = Intent(this, MainActivity::class.java)
-            val recomdialog = AlertDialog.Builder(this)
-            recomdialog.setCancelable(false)
-            recomdialog.setMessage("韻が一つも取得できませんでした\n最小文字＆最大文字を変えて試してください")
-            recomdialog.setPositiveButton("戻る"){
-                _, _ -> startActivity(backIntent)
             }
             if(wordData.size ==0){
                 recomdialog.show()
@@ -114,7 +116,6 @@ open class GameActivity : AppCompatActivity() {
         }else{
             super.onBackPressed()
         }
-
     }
 
     override fun onUserLeaveHint() {
