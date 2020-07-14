@@ -14,8 +14,7 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
     var questionList = mutableListOf<MutableLiveData<String>>()
     var checkedList = mutableListOf<MutableLiveData<Boolean>>()
     var wordTextArray: MutableLiveData<ArrayList<String>> = MutableLiveData()
-    // 新規登録分かゲーム中に登録される奴か
-    var isRegister = mutableListOf<MutableLiveData<Boolean>>()
+
 
 
     fun draw(answerList:ArrayList<Answer>,wordList:Array<Word>) {
@@ -23,7 +22,6 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
             questionList.add(MutableLiveData<String>().apply { value = answer.question })
             textList.add(MutableLiveData<String>().apply { value = answer.answer })
             checkedList.add(MutableLiveData<Boolean>().apply { value = false })
-            isRegister.add(MutableLiveData<Boolean>().apply { value = false })
         }
         var arraytextList = ArrayList<String>()
         wordList.forEach {
@@ -47,7 +45,6 @@ class ResultListViewModel(application: Application) : AndroidViewModel(applicati
         questionList.add(MutableLiveData<String>().apply { value = "" })
         textList.add(MutableLiveData<String>().apply { value = "" })
         checkedList.add(MutableLiveData<Boolean>().apply { value = false })
-        isRegister.add(MutableLiveData<Boolean>().apply { value = true })
     }
 
 }
