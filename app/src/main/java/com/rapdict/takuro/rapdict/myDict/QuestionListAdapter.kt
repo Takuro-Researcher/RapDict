@@ -25,17 +25,6 @@ open class QuestionListAdapter(private val viewModel : QuestionListViewModel, pr
     override fun onBindViewHolder(holder: QuestionListViewHolder, position: Int) {
         holder.binding.data = viewModel
         holder.binding.position = position
-
-        holder.binding.furiganaListDoc.addTextChangedListener(object: CustomTextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-                viewModel.furiganaList[position].value = p0.toString()
-            }
-        })
-        holder.binding.questionListDoc.addTextChangedListener(object: CustomTextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-                viewModel.questionList[position].value = p0.toString()
-            }
-        })
         //ここでviewholderのlifecycleOwnerにセットする！
         holder.binding.lifecycleOwner = parentLifecycleOwner
     }

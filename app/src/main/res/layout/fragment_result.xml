@@ -96,6 +96,7 @@
             android:layout_height="match_parent"
             android:saveEnabled="false"
             app:layoutManager="LinearLayoutManager"
+            android:paddingBottom="100dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/list_result" />
 
@@ -104,6 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="20dp"
+            android:clickable="@{data.addAble}"
             app:srcCompat="@drawable/ic_baseline_add_24"
             app:backgroundTint="@color/colorAccent"
             android:id="@+id/add_answer_button"
