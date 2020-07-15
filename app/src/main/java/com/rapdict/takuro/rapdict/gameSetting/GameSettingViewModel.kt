@@ -61,7 +61,6 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             drumOnly.value = settingData.drumOnly
             if(settingData.dictUid != -1){
                 runBlocking {
-                    System.out.println("他の辞書使ってるってはわかってるのよ")
                     val dao = db.mydictDao()
                     val data = dao.findOneByIds(settingData.dictUid)
                     initNameArray.add(data.name!!)

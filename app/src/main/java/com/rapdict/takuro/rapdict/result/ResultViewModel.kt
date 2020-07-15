@@ -35,7 +35,6 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
     fun addAbleCheck():Boolean{
         addCardCount.value = addCardCount.value?.plus(1)
-        System.out.println(addCardCount.value)
         if(addCardCount.value!! >= 5 ){
             addAble.value = false
             return false
