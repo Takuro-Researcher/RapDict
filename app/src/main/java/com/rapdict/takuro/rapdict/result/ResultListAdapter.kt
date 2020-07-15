@@ -29,6 +29,7 @@ open class ResultListAdapter(private val viewModel : ResultListViewModel, privat
 
     override fun onBindViewHolder(holder: ResultListViewHolder, position: Int) {
         var binding:ViewDataBinding
+
         if (viewModel.isRegister[position].value == false){
             binding = holder.binding as ListResultBinding
             binding.data = this.viewModel
