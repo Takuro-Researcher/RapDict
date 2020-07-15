@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -90,6 +91,11 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
         add_answer_button.setOnClickListener {
             resultListViewModel.addCard()
             adapter.notifyItemInserted(adapter.itemCount)
+            val bool =resultViewModel.addAbleCheck()
+            if (bool==false){
+                Toast.makeText(activity, "追加は5個までです", Toast.LENGTH_LONG).show()
+            }
+
         }
 
         // 保存する
