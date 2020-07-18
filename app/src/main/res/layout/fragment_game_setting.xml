@@ -4,26 +4,11 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.rapdict.takuro.rapdict.myDict.CustomViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/game_setting_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/game_setting_tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/colorAccent"
-            app:tabTextColor="#000000"
-            app:tabSelectedTextColor="@color/colorAccent">
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.tabs.TabLayout>
-
-    </com.rapdict.takuro.rapdict.myDict.CustomViewPager>
+    </androidx.viewpager2.widget.ViewPager2>
 
 </LinearLayout>
