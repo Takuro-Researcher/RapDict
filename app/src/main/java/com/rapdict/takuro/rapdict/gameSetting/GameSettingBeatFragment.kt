@@ -48,7 +48,6 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val backIntent = Intent(activity,MainActivity::class.java)
         game_setting_music_button.setOnClickListener {
             viewModel.beatTypeArray
             src = CommonTool.choiceMusic(false,viewModel.settingData.type,2)

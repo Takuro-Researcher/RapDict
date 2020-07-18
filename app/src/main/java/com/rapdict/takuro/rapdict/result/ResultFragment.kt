@@ -74,7 +74,8 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
         adapter.notifyDataSetChanged()
         // 広告を設定
         mInterstitialAd = InterstitialAd(activity).apply {
-            adUnitId = "ca-app-pub-3940256099942544/1033173712"
+            //adUnitId = "ca-app-pub-3940256099942544/1033173712"
+            adUnitId = "ca-app-pub-9599597100424961/9164716689"
             adListener = (object : AdListener() {
                 override fun onAdLoaded() { }
                 override fun onAdFailedToLoad(errorCode: Int) {}

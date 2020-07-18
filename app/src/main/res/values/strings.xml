@@ -38,6 +38,8 @@
     <!-- TODO: Remove or change this placeholder text -->
 
     <string name="unSetting">%sが設定されていません</string>
+    <string name="game_setting_recomend_word">スワイプして単語の設定へ</string>
+    <string name="game_setting_recomend_beat">音源の設定へ戻る</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
