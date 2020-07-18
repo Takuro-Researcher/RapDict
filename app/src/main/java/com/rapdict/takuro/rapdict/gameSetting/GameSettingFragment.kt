@@ -5,14 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import com.rapdict.takuro.rapdict.Common.App
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.gameSetting.GameSettingTabAdapter
+import com.rapdict.takuro.rapdict.gameSetting.GameSettingViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_game_setting.*
-import kotlinx.android.synthetic.main.fragment_mydict1.*
-import kotlinx.android.synthetic.main.fragment_mydict_make.*
-import kotlinx.coroutines.runBlocking
 
 
 class GameSettingFragment : androidx.fragment.app.Fragment() {
@@ -33,8 +30,7 @@ class GameSettingFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        game_setting_pager.adapter = GameSettingTabAdapter(childFragmentManager)
-        game_setting_tab_layout.setupWithViewPager(game_setting_pager)
-
+        game_setting_pager.adapter = GameSettingViewPagerAdapter(this)
+        game_setting_pager.orientation = ViewPager2.ORIENTATION_VERTICAL
     }
 }

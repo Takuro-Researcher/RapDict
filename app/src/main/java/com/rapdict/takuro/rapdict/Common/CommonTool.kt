@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.gameSetting.GameSettingData
 
 class CommonTool {
     companion object{
@@ -21,7 +22,16 @@ class CommonTool {
             url += "num=$num"
             return url
         }
-        // typeごとに分ける
+        fun settingDataDisplay(gs: GameSettingData):String{
+            var string = "小節: "+gs.bar.toString()+"\n"
+            string = string+"ビートタイプ: "+gs.type+"\n"
+            string = string+"最小文字: "+gs.min.toString()+"\n"
+            string = string+"最大文字: "+gs.max.toString()+"\n"
+            string = string+"問題数: "+gs.question.toString()+"\n"
+            return string
+        }
+
+        // 音源のタイプに対して、適切なビートを渡す
         fun choiceMusic(drumonly:Boolean,type:String,bar:Int):Int{
             val drumOnlyList: MutableList<Triple<Int,Int,Int>> = mutableListOf(
                     Triple(R.raw.beat_97_dronly,R.raw.beat_97_4bardr,R.raw.beat_97_8bardr),

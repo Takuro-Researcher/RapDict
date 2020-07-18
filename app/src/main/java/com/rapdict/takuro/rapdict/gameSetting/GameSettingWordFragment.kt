@@ -11,9 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
+import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Common.SpfCommon
 import com.rapdict.takuro.rapdict.game.GameActivity
 import com.rapdict.takuro.rapdict.game.GamePlayFragment
@@ -21,6 +24,8 @@ import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_game_setting_word.*
 import kotlinx.android.synthetic.main.fragment_mydict_choice.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -58,15 +63,25 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
                 viewModel!!.settingData.max = game_setting_max_spinner.selectedItem as Int
                 viewModel!!.settingData.question = game_setting_question_spinner.selectedItem as Int
                 val data: GameSettingData = viewModel!!.makeGameSettingData()
-                spfCommon.settingSave(data)
-                try {
-                    val mapper = jacksonObjectMapper()
-                    val jsonString = mapper.writeValueAsString(data)
-                    intent.putExtra("DATA", jsonString)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+
+                val saveDialog = AlertDialog.Builder(activity!!).apply{
+                    setCancelable(false)
+                    setTitle("ゲームをはじめる？")
+                    setMessage(CommonTool.settingDataDisplay(data))
+                    setPositiveButton("OK") { _, _ ->
+                        spfCommon.settingSave(data)
+                        try {
+                            val mapper = jacksonObjectMapper()
+                            val jsonString = mapper.writeValueAsString(data)
+                            intent.putExtra("DATA", jsonString)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        startActivity(intent)
+                    }
+                    setNegativeButton("NO",null)
                 }
-                startActivity(intent)
+                saveDialog.show()
             }else{
                 Toast.makeText(activity, "最小が最大を超えないようにして下さい", Toast.LENGTH_SHORT).show()
             }
