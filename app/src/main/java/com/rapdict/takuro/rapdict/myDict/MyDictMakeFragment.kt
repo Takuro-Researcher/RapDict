@@ -6,12 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import com.google.android.material.tabs.TabLayout
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
-import com.rapdict.takuro.rapdict.databinding.FragmentMydictMakeBinding
-import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.database.Mydict
+import com.rapdict.takuro.rapdict.databinding.FragmentMydictMakeBinding
+import com.rapdict.takuro.rapdict.game.GamePlayFragment
+import com.rapdict.takuro.rapdict.main.MainActivity
+import kotlinx.android.synthetic.main.fragment_mydict1.*
 import kotlinx.android.synthetic.main.fragment_mydict_make.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -45,14 +49,18 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
                 setTitle("【"+mydict.name+"】辞書保存")
                 setMessage("※画面移動します")
                 setPositiveButton("OK",{_, _ ->
-                    runBlocking {
+                    GlobalScope.launch {
                         val dao = db.mydictDao()
                         dao.insert(mydict)
                     }
-                    startActivity(backIntent)
+                    var fragment = parentFragment as MyDictFragment
+                    fragment.mydict_tab_layout?.getTabAt(1)?.select()
+                    fragment.adapterAble(4)
+
+
+
                 })
                 setNegativeButton("NO",null)
-
             }
             alertDialog.show()
         }
