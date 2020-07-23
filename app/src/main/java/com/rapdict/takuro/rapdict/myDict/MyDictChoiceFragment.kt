@@ -77,10 +77,11 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
 
     override fun onResume() {
         super.onResume()
-
+        viewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
         // null値でonItemSelectedが起動しないように初回起動しないようにした。本来こっちのほうがいい？
         val mListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+                System.out.println(mydict_choice_spinner.selectedItemPosition)
                 viewModel!!.changed_uid(mydict_choice_spinner.selectedItemPosition)
                 viewModel!!.countChange(position)
             }
