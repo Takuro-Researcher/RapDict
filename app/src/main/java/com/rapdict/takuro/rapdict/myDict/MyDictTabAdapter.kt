@@ -19,10 +19,10 @@ class MyDictTabAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
 
     override fun getPageTitle(position: Int): CharSequence? {
         when(position){
-            0 -> { return "単語帳作成" }
-            1 -> { return "単語帳選択" }
-            2 -> { return "単語を登録" }
-            else ->  { return "単語表示" }
+            0 -> { return "作成" }
+            1 -> { return "選択" }
+            2 -> { return "登録" }
+            else ->  { return "一覧表示" }
         }
     }
     override fun getCount(): Int {

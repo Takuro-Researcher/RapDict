@@ -39,10 +39,15 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
     // 選択辞書変更時。
     fun changed_uid(position: Int){
         db_uid.value = uidList[position].value
+        uidList.forEach{
+            System.out.println(it.value)
+        }
+
     }
 
     fun loadDictName(array:List<Mydict>){
         val list = mutableListOf<String>()
+        uidList = mutableListOf()
         array.forEach {
             list.add(it.name!!)
             uidList.add(MutableLiveData<Int>().apply { value =it.uid })
@@ -53,6 +58,10 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
     }
 
     fun countChange(position: Int){
+        count_visible()
+        choiceDictNamePosition = position
+    }
+    fun count_visible(){
         var count_data =0
         runBlocking {
             val dao = db.wordDao()
@@ -64,7 +73,5 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
         }else{
             text10overVisibility.value = View.GONE
         }
-        choiceDictNamePosition = position
-
     }
 }

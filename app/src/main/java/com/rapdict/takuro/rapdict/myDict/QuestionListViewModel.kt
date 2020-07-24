@@ -21,4 +21,11 @@ class QuestionListViewModel(application: Application) : AndroidViewModel(applica
         furiganaList.add(MutableLiveData<String>().apply { value = "" })
     }
 
+    fun clear(){
+        for (i in questionList.indices) {
+            questionList[i].value = ""
+            furiganaList[i].value = ""
+        }
+    }
+
 }

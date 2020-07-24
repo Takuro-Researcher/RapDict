@@ -2,15 +2,23 @@ package com.rapdict.takuro.rapdict.myDict
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.tabs.TabLayout
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
-import com.rapdict.takuro.rapdict.databinding.FragmentMydictMakeBinding
-import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.database.Mydict
+import com.rapdict.takuro.rapdict.databinding.FragmentMydictMakeBinding
+import com.rapdict.takuro.rapdict.game.GamePlayFragment
+import com.rapdict.takuro.rapdict.game.GamePlayViewModel
+import com.rapdict.takuro.rapdict.main.MainActivity
+import kotlinx.android.synthetic.main.fragment_mydict1.*
 import kotlinx.android.synthetic.main.fragment_mydict_make.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -35,8 +43,8 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val backIntent = Intent(activity,MainActivity::class.java)
+        val dictMakeViewModel: MyDictMakeViewModel by viewModel()
+        val viewModel = ViewModelProviders.of(parentFragment!!).get(MyDictChoiceViewModel::class.java)
         mydict_register_button.setOnClickListener {
             val text:String = mydict_name_edit.text.toString()
             val mydict = Mydict(0,text)
@@ -48,11 +56,17 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
                     runBlocking {
                         val dao = db.mydictDao()
                         dao.insert(mydict)
+                        viewModel.init_load()
                     }
-                    startActivity(backIntent)
+                    val fragment = parentFragment as MyDictFragment
+                    // テキストボックスを空にする処理
+                    dictMakeViewModel.dictName.value = ""
+                    mydict_name_edit.text.clear()
+                    fragment.mydict_tab_layout?.getTabAt(1)?.select()
+                    fragment.adapterAble(4)
+
                 })
                 setNegativeButton("NO",null)
-
             }
             alertDialog.show()
         }
