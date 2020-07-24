@@ -12,6 +12,7 @@ import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.main.MainActivity
+import kotlinx.android.synthetic.main.fragment_mydict1.*
 import kotlinx.android.synthetic.main.fragment_mydict_question_make.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -75,11 +76,15 @@ class MyDictMakeQuestionFragment : Fragment() {
                 setTitle("問題保存【"+db_name+"】")
                 setMessage(word_list.size.toString()+"個、自分の問題として保存\n好きな言葉が空のものは保存されません\n"+furiganaMsg+"\n※画面移動します")
                 setPositiveButton("OK",{_, _ ->
-                    GlobalScope.launch {
+                    runBlocking {
                         val dao = db.wordDao()
                         word_list.forEach { dao.insert(it) }
+                        myDictChoiceViewModel.count_visible()
                     }
-                    startActivity(recomIntent)
+                    questionListViewModel.clear()
+                    
+                    val fragment = parentFragment as MyDictFragment
+                    fragment.mydict_tab_layout?.getTabAt(1)?.select()
                 })
                 setNegativeButton("NO",null)
             }

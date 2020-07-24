@@ -58,7 +58,7 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
                         dao.insert(mydict)
                         viewModel.init_load()
                     }
-                    var fragment = parentFragment as MyDictFragment
+                    val fragment = parentFragment as MyDictFragment
                     // テキストボックスを空にする処理
                     dictMakeViewModel.dictName.value = ""
                     mydict_name_edit.text.clear()

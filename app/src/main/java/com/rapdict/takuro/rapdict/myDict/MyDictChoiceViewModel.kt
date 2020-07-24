@@ -58,6 +58,10 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
     }
 
     fun countChange(position: Int){
+        count_visible()
+        choiceDictNamePosition = position
+    }
+    fun count_visible(){
         var count_data =0
         runBlocking {
             val dao = db.wordDao()
@@ -69,7 +73,5 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
         }else{
             text10overVisibility.value = View.GONE
         }
-        choiceDictNamePosition = position
-
     }
 }
