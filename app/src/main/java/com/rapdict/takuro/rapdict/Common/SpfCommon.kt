@@ -16,7 +16,6 @@ class SpfCommon (_spf: SharedPreferences){
         var jsonSettingData = mapper.writeValueAsString(gameSettingData)
         editor.putString("SETTING",jsonSettingData)
         editor.apply()
-
     }
 
     fun settingRead():GameSettingData?{
