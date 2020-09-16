@@ -1,7 +1,5 @@
 package com.rapdict.takuro.rapdict.gameSetting
 
-import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingWordBinding
-
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,31 +12,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.rapdict.takuro.rapdict.Common.App
-import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.CommonTool
+import com.rapdict.takuro.rapdict.Common.MoveDialog
 import com.rapdict.takuro.rapdict.Common.SpfCommon
+import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingWordBinding
 import com.rapdict.takuro.rapdict.game.GameActivity
-import com.rapdict.takuro.rapdict.game.GamePlayFragment
-import com.rapdict.takuro.rapdict.main.MainActivity
-import com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_game_setting_word.*
-import kotlinx.android.synthetic.main.fragment_mydict_choice.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class GameSettingWordFragment : androidx.fragment.app.Fragment() {
     private var binding: FragmentGameSettingWordBinding? = null
-    private var viewModel: GameSettingViewModel? =null
+    private var viewModel: GameSettingViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentGameSettingWordBinding.inflate(inflater, container,false)
+        binding = FragmentGameSettingWordBinding.inflate(inflater, container, false)
         binding!!.lifecycleOwner = this
         return binding!!.root
     }
@@ -46,43 +36,25 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val viewModel = ViewModelProviders.of(parentFragment!!).get(GameSettingViewModel::class.java)
-        binding?.data= viewModel
+        binding?.data = viewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(parentFragment!!).get(GameSettingViewModel::class.java)
-        val intent:Intent = Intent(view.context, GameActivity::class.java)
-        val spfCommon:SpfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(activity))
         //ゲーム開始時。settingDataに直しJsonで渡す
         start_game_button.setOnClickListener {
-            val min:Int = game_setting_min_spinner.selectedItem as Int
-            val max:Int = game_setting_max_spinner.selectedItem as Int
-            if(min<=max) {
+            val min: Int = game_setting_min_spinner.selectedItem as Int
+            val max: Int = game_setting_max_spinner.selectedItem as Int
+            if (min <= max) {
                 viewModel!!.settingData.min = game_setting_min_spinner.selectedItem as Int
                 viewModel!!.settingData.max = game_setting_max_spinner.selectedItem as Int
                 viewModel!!.settingData.question = game_setting_question_spinner.selectedItem as Int
                 val data: GameSettingData = viewModel!!.makeGameSettingData()
 
-                val saveDialog = AlertDialog.Builder(activity!!).apply{
-                    setCancelable(false)
-                    setTitle("ゲームをはじめる？")
-                    setMessage(CommonTool.settingDataDisplay(data))
-                    setPositiveButton("OK") { _, _ ->
-                        spfCommon.settingSave(data)
-                        try {
-                            val mapper = jacksonObjectMapper()
-                            val jsonString = mapper.writeValueAsString(data)
-                            intent.putExtra("DATA", jsonString)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                        startActivity(intent)
-                    }
-                    setNegativeButton("NO",null)
-                }
+                val saveDialog = MoveDialog(requireContext(), {startGame(data)}, {}, "ゲームを開始します", data.type+data.question).dialog
                 saveDialog.show()
-            }else{
+            } else {
                 Toast.makeText(activity, "最小が最大を超えないようにして下さい", Toast.LENGTH_SHORT).show()
             }
         }
@@ -97,9 +69,24 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
                 var uid = viewModel!!.changeUseDict(position)
                 viewModel!!.changeUseDictMinMax(uid)
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        game_setting_use_dict_spinner.setSelection(0,false)
+        game_setting_use_dict_spinner.setSelection(0, false)
         game_setting_use_dict_spinner.onItemSelectedListener = useDictListener
+    }
+
+    private fun startGame(data:GameSettingData){
+        val intent: Intent = Intent(requireContext(), GameActivity::class.java)
+        val spfCommon: SpfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(activity))
+        try {
+            spfCommon.settingSave(data)
+            val mapper = jacksonObjectMapper()
+            val jsonString = mapper.writeValueAsString(data)
+            intent.putExtra("DATA", jsonString)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        startActivity(intent)
     }
 }
