@@ -3,6 +3,7 @@ package com.rapdict.takuro.rapdict.dict
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -13,7 +14,6 @@ import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.activity_dict.*
 import kotlinx.android.synthetic.main.list_content.*
 import kotlinx.coroutines.runBlocking
-import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class DictActivity : AppCompatActivity() {
@@ -37,7 +37,7 @@ class DictActivity : AppCompatActivity() {
         range_progress_seek_bar.setRange(0F, 20F,1.0f)
 
         // Adapter作成
-        val itemListViewModel:ListViewModel by viewModel()
+        val itemListViewModel:ListViewModel by viewModels()
         val adapter = ListAdapter(itemListViewModel,this)
 
         // RecyclerViewにAdapterとLayoutManagerの設定

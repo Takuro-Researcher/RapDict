@@ -1,24 +1,13 @@
 package com.rapdict.takuro.rapdict.gameSetting
 
 import android.app.Application
-import android.content.SharedPreferences
-import android.mtp.MtpConstants
 import android.preference.PreferenceManager
-import androidx.databinding.Bindable
-
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Common.SpfCommon
-import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.database.Mydict
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.text.FieldPosition
-import kotlin.math.min
 
 class GameSettingViewModel(application: Application) : AndroidViewModel(application) {
 

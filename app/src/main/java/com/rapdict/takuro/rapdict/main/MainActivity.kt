@@ -15,7 +15,6 @@ import com.rapdict.takuro.rapdict.myDict.GameSettingFragment
 import com.rapdict.takuro.rapdict.myDict.MyDictFragment
 import com.rapdict.takuro.rapdict.tutorial.TutorialFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_tutorial.*
 
 
 open class MainActivity : AppCompatActivity() {
@@ -59,7 +58,6 @@ open class MainActivity : AppCompatActivity() {
     }
 
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_option, menu)
         return super.onCreateOptionsMenu(menu)
@@ -77,9 +75,10 @@ open class MainActivity : AppCompatActivity() {
             else -> return super.onOptionsItemSelected(item)
         }
     }
+
     override fun onBackPressed() {
         // バックキーの無効化
-        moveTaskToBack (true)
+        moveTaskToBack(true)
     }
 
 }
