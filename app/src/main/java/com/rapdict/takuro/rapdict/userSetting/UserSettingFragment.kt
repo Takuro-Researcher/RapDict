@@ -6,12 +6,12 @@ import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.rapdict.takuro.rapdict.Common.SpfCommon
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.FragmentUserSettingBinding
 import com.rapdict.takuro.rapdict.exp.UserExpFragment
 import kotlinx.android.synthetic.main.fragment_user_setting.*
-import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class UserSettingFragment : androidx.fragment.app.Fragment() {
@@ -29,7 +29,7 @@ class UserSettingFragment : androidx.fragment.app.Fragment() {
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val userSettingViewModel: UserSettingViewModel by viewModel()
+        val userSettingViewModel: UserSettingViewModel by viewModels()
         binding?.data= userSettingViewModel
     }
 

@@ -23,7 +23,7 @@ class getHttp(url:String): AsyncTask<String, String, String>(){
         val request = Request.Builder().url(url).get().build()
         try {
             val response:Response = client.newCall(request).execute()
-            data = response.body()!!.string()
+            data = response.body!!.string()
         }catch (e:IOException) {
             e.printStackTrace()
         }
