@@ -89,14 +89,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 onCompletion(it)
                 //　ボタン連打対策
                 gameViewModel.buttonEnabled.value = false
-                GlobalScope.launch {
-                    onButtonEnabled(true, gameViewModel)
-                }
             }
-        }
-        //　ボタン連打対策。1秒だけ待たせる
-        GlobalScope.launch {
-            onButtonEnabled(true, gameViewModel)
         }
 
         //問題変更ボタン処理
@@ -114,21 +107,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 game_main.setFocusableInTouchMode(true)
                 game_main.requestFocus()
                 onCompletion(mediaPlayer)
-                // ボタン連打対策。非同期で動かす
-                gameViewModel.buttonEnabled.value = false
-                GlobalScope.launch {
-                    onButtonEnabled(true, gameViewModel)
-                }
-
             }
-        }
-    }
-
-    fun onButtonEnabled(bool: Boolean, viewModel: GamePlayViewModel) {
-        Thread.sleep(1250)
-        // 戻るボタンで戻った時にクラッシュしないように
-        if (activity != null) {
-            viewModel.buttonEnabled.postValue(bool)
         }
     }
 
