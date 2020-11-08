@@ -12,14 +12,15 @@ import kotlinx.coroutines.runBlocking
 class GameSettingViewModel(application: Application) : AndroidViewModel(application) {
 
     //監視対象のLiveData
-    var barArray: MutableLiveData<List<Int>> = MutableLiveData()
+    val barArray: MutableLiveData<List<Int>> = MutableLiveData(listOf(2,4,8))
     var minArray: MutableLiveData<List<Int>> = MutableLiveData()
     var maxArray: MutableLiveData<List<Int>> = MutableLiveData()
-    var questionArray: MutableLiveData<List<Int>> = MutableLiveData()
+    var questionArray: MutableLiveData<List<Int>> = MutableLiveData(listOf(5,10,20,30))
     var dictNameArray: MutableLiveData<List<String>> = MutableLiveData()
-    var beatTypeArray:MutableLiveData<List<String>> = MutableLiveData()
+    var beatTypeArray:MutableLiveData<List<String>> = MutableLiveData(listOf("low","middle","high","tei"))
     var drumOnly:MutableLiveData<Boolean> = MutableLiveData()
     var settingData :GameSettingData = GameSettingData(2,"low",false,0,1,0,-1)
+    val num: Int = 2
 
     var dictUidArray= listOf<Int>()
     //ViewModel初期化時にロード
@@ -28,57 +29,22 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     private fun loadUserData(){
-        val spfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication()))
-        val settingData = spfCommon.settingRead()
-        val initbarArray= mutableListOf<Int>()
-        val initQuestionArray = mutableListOf<Int>()
-        val initBeatTypeArray = mutableListOf<String>()
-        val initNameArray = mutableListOf<String>()
-        val initMinArray= mutableListOf<Int>()
-        val initMaxArray= mutableListOf<Int>()
-        val initUidArray = mutableListOf<Int>()
+        val settingData = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication())).settingRead()
+
         drumOnly.value = false
 
-        // Spfで既に遊んだ記録があったら
+        // TODO DBの状態を見た上で、Spinnerに反映すべき値を辞書で作成する
+        // TODO 主に見るべきは辞書が何種類登場するか
+        // １，　辞書リスト獲得　２．SettingDataから辞書リストの該当辞書を確認　３．既にあるかを確認し、なければ終わらす
+
+
+
+        // TODO　該当インデックスを、ViewModelのパブリックメンバにインデックスを渡す処理
         if(settingData != null) {
-            // 一番最初に選ばれるようにする
-            initbarArray.add(settingData.bar)
-            initQuestionArray.add(settingData.question)
-            initBeatTypeArray.add(settingData.type)
-            initMinArray.add(settingData.min)
-            initMaxArray.add(settingData.max)
-            drumOnly.value = settingData.drumOnly
-            if(settingData.dictUid != -1){
-                runBlocking {
-                    val dao = db.mydictDao()
-                    val data = dao.findOneByIds(settingData.dictUid)
-                    initNameArray.add(data.name!!)
-                    initUidArray.add(data.uid)
-                }
-            }
-        }
-        //日本語辞書を追加
-        initNameArray.add("日本語辞書")
-        initUidArray.add(-1)
 
-        barArray.value = initbarArray.plus(listOf(2,4,8)).distinct()
-        questionArray.value = initQuestionArray.plus(CommonTool.makeNumArray(10,30,10)).distinct()
-        beatTypeArray.value = initBeatTypeArray.plus(listOf("low","middle","high","tri")).distinct()
-        minArray.value = initMinArray.plus(CommonTool.makeNumArray(3,12,1)).distinct()
-        maxArray.value = initMaxArray.plus(CommonTool.makeNumArray(3,12,1)).distinct()
 
-        runBlocking {
-            val dictDao = db.mydictDao()
-            val wordDao = db.wordDao()
-            val data =wordDao.countByDict()
-            data.forEach {
-                initUidArray.add(it.dictid)
-                initNameArray.add(dictDao.findOneByIds(it.dictid).name!!)
-            }
         }
-        dictUidArray = initUidArray.distinct()
-        dictNameArray.value = initNameArray.distinct()
-        settingDataInit()
+
     }
 
     fun makeGameSettingData():GameSettingData{
@@ -91,7 +57,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         return dictUidArray[position]
     }
 
-
+    // TODO　これもイベントのオブザーバルで変更する
     fun changeDrumOnly(){
         if (drumOnly.value ==true){
             drumOnly.value = false
@@ -101,7 +67,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             settingData.drumOnly = true
         }
     }
-    // 辞書のIDを与え、minMaxを変更する
+    // TODO　これもイベントのオブザーバルで変更する
     fun changeUseDictMinMax(uid:Int){
         var minMax = getMinMaxMyDict(uid)
         var min = minMax.first
@@ -139,8 +105,4 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         settingData.question = questionArray.value!![0]
         settingData.drumOnly = drumOnly.value!!
     }
-
-//    fun updateMaxData(min:Int){
-//        maxArray.value = commonTool.makeNumArray(min+1,10)
-//    }
 }
