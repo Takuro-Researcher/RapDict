@@ -38,10 +38,8 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         // １，　辞書リスト獲得　２．SettingDataから辞書リストの該当辞書を確認　３．既にあるかを確認し、なければ終わらす
 
 
-
         // TODO　該当インデックスを、ViewModelのパブリックメンバにインデックスを渡す処理
         if(settingData != null) {
-
 
         }
 
@@ -94,15 +92,5 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             }
         }
         return  Pair(min,max)
-    }
-
-    fun settingDataInit(){
-        settingData.bar = barArray.value!![0]
-        settingData.type = beatTypeArray.value!![0]
-        settingData.dictUid = dictUidArray[0]
-        settingData.min =minArray.value!![0]
-        settingData.max =maxArray.value!![0]
-        settingData.question = questionArray.value!![0]
-        settingData.drumOnly = drumOnly.value!!
     }
 }
