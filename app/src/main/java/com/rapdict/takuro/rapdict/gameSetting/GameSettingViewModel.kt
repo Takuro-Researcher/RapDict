@@ -47,9 +47,10 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
                 val dict_data = dictDao.findOneByIds(it.dictid).name ?: ""
                 tmp.add(dict_data)
             }
+            tmp.filter { it != "" }
             dictNameArray.value = tmp
         }
-
+        
 
 
 
