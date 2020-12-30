@@ -15,12 +15,20 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     val barArray: MutableLiveData<List<Int>> = MutableLiveData(listOf(2,4,8))
     var minArray: MutableLiveData<List<Int>> = MutableLiveData()
     var maxArray: MutableLiveData<List<Int>> = MutableLiveData()
-    var questionArray: MutableLiveData<List<Int>> = MutableLiveData(listOf(5,10,20,30))
+    val questionArray: MutableLiveData<List<Int>> = MutableLiveData(listOf(5,10,20,30))
     var dictNameArray: MutableLiveData<List<String>> = MutableLiveData()
-    var beatTypeArray:MutableLiveData<List<String>> = MutableLiveData(listOf("low","middle","high","tei"))
+    val beatTypeArray:MutableLiveData<List<String>> = MutableLiveData(listOf("low","middle","high","tei"))
     var drumOnly:MutableLiveData<Boolean> = MutableLiveData()
     var settingData :GameSettingData = GameSettingData(2,"low",false,0,1,0,-1)
     val num: Int = 2
+
+    val bar: Int = 0
+    val min: Int = 0
+    val max: Int = 0
+    val question: Int  = 0
+    val dictName: Int = 0
+    val beatType: Int = 0
+
 
     var dictUidArray= listOf<Int>()
     //ViewModel初期化時にロード
@@ -30,6 +38,20 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
 
     private fun loadUserData(){
         val settingData = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication())).settingRead()
+        runBlocking {
+            val dictDao = db.mydictDao()
+            val wordDao = db.wordDao()
+            val dicts = wordDao.countByDict()
+            val tmp = mutableListOf<String>("日本語辞書")
+            dicts.forEach {
+                val dict_data = dictDao.findOneByIds(it.dictid).name ?: ""
+                tmp.add(dict_data)
+            }
+            dictNameArray.value = tmp
+        }
+
+
+
 
         drumOnly.value = false
 
