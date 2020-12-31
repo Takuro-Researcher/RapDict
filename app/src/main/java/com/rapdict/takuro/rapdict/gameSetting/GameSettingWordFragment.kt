@@ -64,8 +64,8 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
         // 使う辞書のmin,Maxを選ぶ辞書によって変更
         val useDictListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                var uid = viewModel.changeUseDict(position)
-                viewModel.changeUseDictMinMax(uid)
+                //var uid = viewModel.changeUseDict(position)
+                // viewModel.changeUseDictMinMax(uid)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}

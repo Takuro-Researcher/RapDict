@@ -27,6 +27,7 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_min_spinner"
                 android:layout_weight="0.1"
+                android:OnItemSelected="@{data.min}"
                 android:entries="@{data.minArray}"/>
         </LinearLayout>
 
@@ -49,6 +50,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
                 android:id="@+id/game_setting_max_spinner"
+                android:OnItemSelected="@{data.max}"
                 android:entries="@{data.maxArray}"/>
         </LinearLayout>
         <LinearLayout
@@ -70,6 +72,7 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_question_spinner"
                 android:layout_weight="0.1"
+                android:OnItemSelected="@{data.question}"
                 android:entries="@{data.questionArray}" />
         </LinearLayout>
         <LinearLayout
@@ -91,6 +94,7 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_use_dict_spinner"
                 android:layout_weight="0.1"
+                android:OnItemSelected="@{data.dictName}"
                 android:entries="@{data.dictNameArray}" />
         </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton

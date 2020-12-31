@@ -28,6 +28,7 @@
                 android:id="@+id/game_setting_bar_spinner"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
+                android:OnItemSelected="@{data.bar}"
                 android:entries="@{data.barArray}"/>
         </LinearLayout>
 
@@ -50,6 +51,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
                 android:id="@+id/game_setting_beat_type_spinner"
+                android:OnItemSelected="@{data.beatType}"
                 android:entries="@{data.beatTypeArray}" />
             <ImageView
                 android:layout_width="match_parent"

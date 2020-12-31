@@ -54,7 +54,7 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
         // null値でonItemSelectedが起動しないように初回起動しないようにした。本来こっちのほうがいい？
         val beatTypeListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                viewModel.settingData.type = viewModel.beatTypeArray.value?.get(position).toString()
+                viewModel.settingData.type = viewModel.beatTypeArray.get(position).toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -63,7 +63,7 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
 
         val barListner = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                viewModel.settingData.bar = viewModel.barArray.value?.get(position) ?: 2
+                viewModel.settingData.bar = viewModel.barArray.get(position) ?: 2
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
