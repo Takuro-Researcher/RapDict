@@ -7,11 +7,8 @@ import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.rapdict.takuro.rapdict.Common.MoveDialog
 import com.rapdict.takuro.rapdict.Common.SpfCommon
@@ -21,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_game_setting_word.*
 
 
 class GameSettingWordFragment : androidx.fragment.app.Fragment() {
-    private var binding:FragmentGameSettingWordBinding ?= null
+    private var binding: FragmentGameSettingWordBinding? = null
     private val viewModel: GameSettingViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,12 +42,10 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
             val min: Int = game_setting_min_spinner.selectedItem as Int
             val max: Int = game_setting_max_spinner.selectedItem as Int
             if (min <= max) {
-                viewModel.settingData.min = game_setting_min_spinner.selectedItem as Int
-                viewModel.settingData.max = game_setting_max_spinner.selectedItem as Int
-                viewModel.settingData.question = game_setting_question_spinner.selectedItem as Int
-                val data: GameSettingData = viewModel.makeGameSettingData()
-
-                val saveDialog = MoveDialog(requireContext(), { startGame(data) }, {}, "ゲームを開始します", data.type + data.question).dialog
+                val data = viewModel.settingData
+                val saveDialog = MoveDialog(requireContext(), { startGame(data) },
+                        {}, "ゲームを開始します",
+                        data.type + "ビート" + data.question + "問").dialog
                 saveDialog.show()
             } else {
                 Toast.makeText(activity, "最小が最大を超えないようにして下さい", Toast.LENGTH_SHORT).show()
@@ -59,8 +54,8 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun startGame(data: GameSettingData) {
-        val intent: Intent = Intent(requireContext(), GameActivity::class.java)
-        val spfCommon: SpfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(activity))
+        val intent = Intent(requireContext(), GameActivity::class.java)
+        val spfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(activity))
         try {
             spfCommon.settingSave(data)
             val mapper = jacksonObjectMapper()
