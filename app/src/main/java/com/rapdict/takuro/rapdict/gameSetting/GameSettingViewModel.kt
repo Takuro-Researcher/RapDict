@@ -3,7 +3,9 @@ package com.rapdict.takuro.rapdict.gameSetting
 import android.app.Application
 import android.preference.PreferenceManager
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Common.SpfCommon
@@ -17,16 +19,17 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     var maxArray:List<Int> = List(20){it}
     val questionArray:List<Int> = listOf(5,10,15,20)
     var dictNameArray:List<String> = listOf()
-    var dictValueArray:List<Map<Int,String>> = listOf()
     val beatTypeArray:List<String> = listOf("low","middle","high","tri")
-    var drumOnly:Boolean = false
-    var settingData :GameSettingData = GameSettingData(2,"low",false,0,1,0,-1)
-    var bar: Int = 0
-    var min: Int = 0
-    var max: Int = 0
-    var question: Int  = 0
-    var dictName: Int = 0
-    var beatType: Int = 0
+    var drumOnly = MutableLiveData<Boolean>(false)
+    var bar = MutableLiveData<Int>()
+    var min = MutableLiveData<Int>()
+    var max = MutableLiveData<Int>()
+    var question = MutableLiveData<Int>()
+    var dictName = MutableLiveData<Int>()
+    var beatType = MutableLiveData<Int>()
+    private var dictValueArray:Map<Int,String> = mapOf()
+
+    val settingData :GameSettingData = GameSettingData(2,"low",false,0,1,0,-1)
 
     //ViewModel初期化時にロード
     init {
@@ -39,7 +42,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             val dictDao = db.mydictDao()
             val wordDao = db.wordDao()
             val dicts = wordDao.countByDict()
-            var tmp:MutableMap<Int, String> = mutableMapOf<Int, String>(-1 to "日本語辞書")
+            val tmp:MutableMap<Int, String> = mutableMapOf<Int, String>(-1 to "日本語辞書")
             dicts.forEach {
                 val dict_data = dictDao.findOneByIds(it.dictid)
                 val name = dict_data.name?: ""
@@ -47,22 +50,23 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
                 tmp.put(uid, name)
             }
             dictNameArray = tmp.values.toMutableList()
+            dictValueArray = tmp
         }
-
-
 
         // TODO DBの状態を見た上で、Spinnerに反映すべき値を辞書で作成する
 
 
         // TODO　該当インデックスを、ViewModelのパブリックメンバにインデックスを渡す処理
         if(settingData != null) {
-            bar = barArray.indexOf(settingData.bar)
-            min = minArray.indexOf(settingData.min)
-            max = minArray.indexOf(settingData.max)
-            question= questionArray.indexOf(settingData.question)
-            //dictName = dictNameArray.indexOf(settingData.d)
-
+            bar.value = barArray.indexOf(settingData.bar)
+            min.value = minArray.indexOf(settingData.min)
+            max.value = maxArray.indexOf(settingData.max)
+            question.value = questionArray.indexOf(settingData.question)
+            beatType.value = beatTypeArray.indexOf(settingData.type)
+            drumOnly.value = settingData.drumOnly
+            dictName.value = dictNameArray.indexOf(dictValueArray[settingData.dictUid])
         }
+
 
     }
 
@@ -74,11 +78,11 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
 
     // TODO　これもイベントのオブザーバルで変更する
     fun changeDrumOnly(){
-        if (drumOnly == true){
-            drumOnly = false
+        if (drumOnly.value == true){
+            drumOnly.value = false
             settingData.drumOnly = false
         }else{
-            drumOnly = true
+            drumOnly.value = true
             settingData.drumOnly = true
         }
     }

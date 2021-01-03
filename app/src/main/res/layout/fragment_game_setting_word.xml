@@ -27,8 +27,9 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_min_spinner"
                 android:layout_weight="0.1"
+                android:entries="@{data.minArray}"
                 android:OnItemSelected="@{data.min}"
-                android:entries="@{data.minArray}"/>
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -50,8 +51,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
                 android:id="@+id/game_setting_max_spinner"
+                android:entries="@{data.maxArray}"
                 android:OnItemSelected="@{data.max}"
-                android:entries="@{data.maxArray}"/>
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,8 +74,9 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_question_spinner"
                 android:layout_weight="0.1"
+                android:entries="@{data.questionArray}"
                 android:OnItemSelected="@{data.question}"
-                android:entries="@{data.questionArray}" />
+                 />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
