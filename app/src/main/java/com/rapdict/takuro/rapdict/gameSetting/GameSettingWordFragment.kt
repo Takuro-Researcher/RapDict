@@ -58,22 +58,6 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        // null値でonItemSelectedが起動しないように初回起動しないようにした。
-        // 使う辞書のmin,Maxを選ぶ辞書によって変更
-        val useDictListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                //var uid = viewModel.changeUseDict(position)
-                // viewModel.changeUseDictMinMax(uid)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-        game_setting_use_dict_spinner.setSelection(0, false)
-        game_setting_use_dict_spinner.onItemSelectedListener = useDictListener
-    }
-
     private fun startGame(data: GameSettingData) {
         val intent: Intent = Intent(requireContext(), GameActivity::class.java)
         val spfCommon: SpfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(activity))

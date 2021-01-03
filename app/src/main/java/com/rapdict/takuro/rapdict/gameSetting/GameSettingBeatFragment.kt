@@ -49,28 +49,6 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        // null値でonItemSelectedが起動しないように初回起動しないようにした。本来こっちのほうがいい？
-        val beatTypeListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                viewModel.settingData.type = viewModel.beatTypeArray.get(position).toString()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-        game_setting_beat_type_spinner.onItemSelectedListener = beatTypeListener
-
-        val barListner = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                viewModel.settingData.bar = viewModel.barArray.get(position) ?: 2
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-        game_setting_bar_spinner.onItemSelectedListener = barListner
-    }
-
     override fun onDetach() {
         super.onDetach()
         mediaPlayer.stop()

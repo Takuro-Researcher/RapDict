@@ -10,6 +10,7 @@ import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Common.SpfCommon
 import kotlinx.coroutines.runBlocking
+import java.text.FieldPosition
 
 class GameSettingViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -86,21 +87,33 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             settingData.drumOnly = true
         }
     }
-    // TODO　これもイベントのオブザーバルで変更する
-    // 使う辞書に応じて、最小と最大を変更する
-    fun changeUseDictMinMax(uid:Int){
-        var minMax = getMinMaxMyDict(uid)
-        var min = minMax.first
-        var max = minMax.second
-        // 今選んでいる辞書のIDを変更する
-//        if (min == max){
-//            minArray.value = listOf(min)
-//            maxArray.value = listOf(max)
-//        }else{
-//            minArray.value = CommonTool.makeNumArray(min,max)
-//            maxArray.value = CommonTool.makeNumArray(min,max)
-//        }
+    // Spinnerの変更を検知する
+    fun changeBar(position: Int){
+        settingData.bar = barArray[position]
+        System.out.println(settingData.bar)
     }
+    fun changeMax(position: Int){
+        settingData.max = maxArray[position]
+        System.out.println(settingData.max)
+    }
+    fun changeMin(position: Int){
+        settingData.min = minArray[position]
+        System.out.println(settingData.min)
+    }
+    fun changeQuestion(position: Int){
+        settingData.question = questionArray[position]
+        System.out.println(settingData.question)
+    }
+    fun changeBeatType(position: Int){
+        settingData.type = beatTypeArray[position]
+        System.out.println(settingData.type)
+
+    }
+    fun changeDict(position: Int){
+        val dictData = dictValueArray.filterValues { value -> value == dictNameArray[position] }
+        settingData.dictUid = dictData.keys.toList()[0]
+    }
+
 
     fun getMinMaxMyDict(uid:Int):Pair<Int,Int>{
         var min = 3
