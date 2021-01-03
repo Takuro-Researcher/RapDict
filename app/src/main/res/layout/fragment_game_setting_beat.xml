@@ -28,7 +28,10 @@
                 android:id="@+id/game_setting_bar_spinner"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
-                android:entries="@{data.barArray}"/>
+                android:entries="@{data.barArray}"
+                android:OnItemSelected="@{data.bar}"
+                android:onChangeSpinner="@{(i) -> data.changeBar(i)}"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -50,7 +53,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
                 android:id="@+id/game_setting_beat_type_spinner"
-                android:entries="@{data.beatTypeArray}" />
+                android:OnItemSelected="@{data.beatType}"
+                android:entries="@{data.beatTypeArray}"
+                android:onChangeSpinner="@{(in) -> data.changeBeatType(in)}"/>
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -108,7 +113,5 @@
             app:layout_constraintTop_toTopOf="@+id/game_setting_swipe_hand"
             app:layout_constraintBottom_toBottomOf="@+id/game_setting_swipe_hand"
             android:text="@string/game_setting_recomend_word"/>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

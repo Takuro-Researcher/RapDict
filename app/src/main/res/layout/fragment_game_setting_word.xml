@@ -27,7 +27,9 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_min_spinner"
                 android:layout_weight="0.1"
-                android:entries="@{data.minArray}"/>
+                android:entries="@{data.minArray}"
+                android:onChangeSpinner="@{(i) -> data.changeMin(i)}"
+                android:OnItemSelected="@{data.min}" />
         </LinearLayout>
 
         <LinearLayout
@@ -49,7 +51,10 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
                 android:id="@+id/game_setting_max_spinner"
-                android:entries="@{data.maxArray}"/>
+                android:onChangeSpinner="@{(i) -> data.changeMax(i)}"
+                android:entries="@{data.maxArray}"
+                android:OnItemSelected="@{data.max}"
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,7 +75,10 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_question_spinner"
                 android:layout_weight="0.1"
-                android:entries="@{data.questionArray}" />
+                android:onChangeSpinner="@{(i) -> data.changeQuestion(i)}"
+                android:entries="@{data.questionArray}"
+                android:OnItemSelected="@{data.question}"
+                 />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,10 +99,11 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_use_dict_spinner"
                 android:layout_weight="0.1"
+                android:onChangeSpinner="@{(i) -> data.changeDict(i)}"
+                android:OnItemSelected="@{data.dictName}"
                 android:entries="@{data.dictNameArray}" />
         </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"

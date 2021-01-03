@@ -29,7 +29,7 @@ class GamePlayViewModel(application: Application) : AndroidViewModel(application
         editThreeWeight.value = 0f
         editFourWeight.value = 0f
         editTwoVisibility.value = View.GONE
-        buttonEnabled.value = false
+        buttonEnabled.value = true
     }
 
     fun draw(answer:Int){

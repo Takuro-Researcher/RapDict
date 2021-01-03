@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.gameSetting.GameSettingViewPagerAdapter
