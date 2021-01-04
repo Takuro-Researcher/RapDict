@@ -2,14 +2,11 @@ package com.rapdict.takuro.rapdict.gameSetting
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.fragment.app.activityViewModels
 import com.rapdict.takuro.rapdict.Common.CommonTool
-import com.rapdict.takuro.rapdict.Common.SpfCommon
 import com.rapdict.takuro.rapdict.databinding.FragmentGameSettingBeatBinding
 import kotlinx.android.synthetic.main.fragment_game_setting_beat.*
 
@@ -46,7 +43,6 @@ class GameSettingBeatFragment : androidx.fragment.app.Fragment() {
             mediaPlayer = MediaPlayer.create(activity, src)
             mediaPlayer.start()
         }
-
     }
 
     override fun onDetach() {

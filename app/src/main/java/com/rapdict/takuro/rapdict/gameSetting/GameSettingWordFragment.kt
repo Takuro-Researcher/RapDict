@@ -30,6 +30,13 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
         return binding?.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(viewModel.isUpdateMyDict()){
+            viewModel.changeDictData()
+        }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding?.data = viewModel
