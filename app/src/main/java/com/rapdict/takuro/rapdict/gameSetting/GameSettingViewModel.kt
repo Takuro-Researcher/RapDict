@@ -27,7 +27,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     private var dictValueArray: Map<Int, String> = mapOf()
     private var isUpdateMyDictBoolean: Boolean = false
 
-    val settingData: GameSettingData = GameSettingData(2, "low", false, 0, 1, 0, -1)
+    var settingData: GameSettingData = GameSettingData(2, "low", false, 0, 1, 0, -1)
 
     //ViewModel初期化時にロード
     init {
@@ -35,7 +35,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     private fun loadUserData() {
-        val settingData = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication())).settingRead()
+        val settingTmp = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication())).settingRead()
         runBlocking {
             val dictDao = db.mydictDao()
             val wordDao = db.wordDao()
@@ -51,7 +51,8 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             dictNameArray = tmp.values.toMutableList()
             dictValueArray = tmp
         }
-        if (settingData != null) {
+        if (settingTmp != null) {
+            settingData = settingTmp
             bar.value = barArray.indexOf(settingData.bar)
             min.value = minArray.indexOf(settingData.min)
             max.value = maxArray.indexOf(settingData.max)
@@ -61,6 +62,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             dictName.value = dictNameArray.indexOf(dictValueArray[settingData.dictUid])
         }
     }
+
     fun isUpdateMyDict():Boolean{
         runBlocking {
             val dictDao = db.mydictDao()
@@ -87,7 +89,6 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    // TODO　これもイベントのオブザーバルで変更する
     fun changeDrumOnly() {
         if (drumOnly.value == true) {
             drumOnly.value = false
@@ -123,4 +124,5 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         val dictData = dictValueArray.filterValues { value -> value == dictNameArray[position] }
         settingData.dictUid = dictData.keys.toList()[0]
     }
+
 }
