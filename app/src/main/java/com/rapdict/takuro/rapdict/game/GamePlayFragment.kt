@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Word
@@ -22,17 +23,15 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
     internal var finish_q = 0
     lateinit private var mediaPlayer: MediaPlayer
-    private var argument: Bundle? = null
     private val gameViewModel: GamePlayViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        argument = arguments
-        try {
-            val filepath = argument!!.getInt("BAR")
+        val bundle = arguments
+        if(bundle != null){
+            val filepath = bundle.getInt("BAR")
             mediaPlayer = MediaPlayer.create(activity, filepath)
-        } catch (e: Exception) {
-
+            gameViewModel.arg_to_member(bundle.getInt("QUESTION"), bundle.getSerializable("WORDS") as List<Word>)
         }
     }
 
@@ -53,7 +52,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // bundleからデータを取得する
-        val questionNum = argument?.getInt("QUESTION") ?: 10
+
         val backIntent = Intent(activity, MainActivity::class.java)
         val recomdialog = AlertDialog.Builder(activity)
         recomdialog.setCancelable(false)
@@ -62,13 +61,20 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             startActivity(backIntent)
         }
 
-        val words: ArrayList<Word> = argument?.getSerializable("WORDS") as ArrayList<Word>
+        gameViewModel.isFinish.observe(viewLifecycleOwner, Observer<Boolean> { isFinish ->
+            if(isFinish){
+                mediaPlayer.pause()
+                jumpedTest()
+
+
+            }
+        })
+
+
         val answerList = ArrayList<Map<Int, String>>()
         // 初回だけ確認する。
         try {
-            game_question_num.text = questionNum.toString()
-            game_question_text.text = words[finish_q].word
-            game_furigana_text.text = words[finish_q].furigana
+
         } catch (e: Exception) {
             recomdialog.show()
         }
@@ -78,32 +84,20 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
         // 音楽終了時の設定
         mediaPlayer.setOnCompletionListener {
-            if (finish_q >= questionNum - 1) {
-                mediaPlayer.pause()
-                jumpedResult(answerList, words)
-            } else {
-                finish_q++
-                changedQuestion(finish_q, words, questionNum)
-                onCompletion(it)
-            }
+            gameViewModel.changeQuestion()
+            onCompletion(mediaPlayer)
         }
 
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
             answerList.addAll(saveAnswer(finish_q))
-            finish_q++
-            if (finish_q >= questionNum) {
-                // Playerをすべてリセットする
-                mediaPlayer.pause()
-                jumpedResult(answerList, words)
-            } else {
-                changedQuestion(finish_q, words, questionNum)
-                editTextClear()
-                game_main.setFocusable(true)
-                game_main.setFocusableInTouchMode(true)
-                game_main.requestFocus()
-                onCompletion(mediaPlayer)
-            }
+            gameViewModel.changeQuestion()
+            // UI 更新
+            rhyme_edit_one.editableText.clear()
+            game_main.setFocusable(true)
+            game_main.setFocusableInTouchMode(true)
+            game_main.requestFocus()
+            onCompletion(mediaPlayer)
         }
     }
 
@@ -133,11 +127,15 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         mediaPlayer.release()
     }
 
-    // 問題を変更する処理
-    private fun changedQuestion(finish_q: Int, words: ArrayList<Word>, questionNum: Int) {
-        game_question_num.text = (questionNum - finish_q).toString()
-        game_furigana_text.text = words[finish_q].furigana
-        game_question_text.text = words[finish_q].word
+    private fun jumpedTest(){
+        val resultFragment = ResultFragment()
+        val bundle = arguments
+        resultFragment.arguments = bundle
+        //画面遷移
+        val transaction2 = fragmentManager?.beginTransaction()
+        transaction2?.replace(R.id.fragmentGame, resultFragment, "handlingBackPressed")
+        transaction2?.commit()
+        mediaPlayer.pause()
     }
 
     private fun jumpedResult(answerList: ArrayList<Map<Int, String>>, wordsList: ArrayList<Word>) {
@@ -168,8 +166,4 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         return answer2word
     }
 
-    fun editTextClear() {
-        var editTextNum = argument?.getInt("RETURN")
-        rhyme_edit_one.editableText.clear()
-    }
 }
