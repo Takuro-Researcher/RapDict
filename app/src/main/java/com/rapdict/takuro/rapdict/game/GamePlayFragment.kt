@@ -15,8 +15,6 @@ import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class GamePlayFragment : androidx.fragment.app.Fragment() {
@@ -87,8 +85,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 finish_q++
                 changedQuestion(finish_q, words, questionNum)
                 onCompletion(it)
-                //　ボタン連打対策
-                gameViewModel.buttonEnabled.value = false
             }
         }
 
@@ -159,20 +155,10 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
     // answerList をアクティビティ内に保存する
     private fun saveAnswer(word_id: Int): ArrayList<Map<Int, String>> {
-        val answerNum = argument?.getInt("RETURN") ?: 1
+
+
         val answerTexts = mutableListOf<String>()
-        if (answerNum >= 1) {
-            answerTexts.add(rhyme_edit_one.text.toString())
-        }
-        if (answerNum >= 2) {
-            answerTexts.add(rhyme_edit_two.text.toString())
-        }
-        if (answerNum >= 3) {
-            answerTexts.add(rhyme_edit_three.text.toString())
-        }
-        if (answerNum >= 4) {
-            answerTexts.add(rhyme_edit_four.text.toString())
-        }
+
         val answer2word = ArrayList<Map<Int, String>>()
         answerTexts.forEach {
             if (it.isNotEmpty()) {
@@ -185,9 +171,5 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     fun editTextClear() {
         var editTextNum = argument?.getInt("RETURN")
         rhyme_edit_one.editableText.clear()
-//        if (editTextNum >= 1){ rhyme_edit_one.editableText.clear() }
-//        if (editTextNum >= 2){ rhyme_edit_two.editableText.clear() }
-//        if (editTextNum >= 3){ rhyme_edit_three.editableText.clear() }
-//        if (editTextNum >= 4){ rhyme_edit_four.editableText.clear() }
     }
 }
