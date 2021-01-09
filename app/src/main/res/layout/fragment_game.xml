@@ -33,9 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/game_question_num"
-        android:text="100"
         android:textSize="25sp"
         android:textColor="#FFFFFF"
+        android:text="@{data.question.toString()}"
         android:paddingLeft="40sp"
         android:paddingTop="20sp"
         android:paddingBottom="20sp"
@@ -49,7 +49,7 @@
         android:padding="20sp"
         android:textSize="30sp"
         android:textColor="#FFFFFF"
-        android:text="テストでいこうぜどこまで"
+        android:text="@{data.question_text}"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,47 +73,15 @@
         app:layout_constraintTop_toBottomOf="@id/game_furigana_text">
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{data.oneRowVisibility}">
-
+            android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/rhyme_edit_one"
                 android:background="@color/colorWhite"
                 android:layout_width="0dp"
+                android:text="@={data.answer}"
                 android:layout_margin="20sp"
-                android:layout_weight="@{data.editOneWeight}"
-                android:layout_height="wrap_content"
-                />
-            <EditText
-                android:id="@+id/rhyme_edit_two"
-                android:layout_width="0dp"
-                android:background="@color/colorWhite"
-                android:layout_margin="20sp"
-                android:layout_weight="@{data.editTwoWeight}"
-                android:layout_height="wrap_content"
-                android:visibility="@{data.editTwoVisibility}"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{data.twoRowVisibility}">
-            <EditText
-                android:id="@+id/rhyme_edit_three"
-                android:layout_width="0dp"
-                android:background="@color/colorWhite"
-                android:layout_margin="20sp"
-                android:layout_weight="@{data.editThreeWeight}"
-                android:layout_height="wrap_content"
-                />
-            <EditText
-                android:id="@+id/rhyme_edit_four"
-                android:background="@color/colorWhite"
-                android:layout_width="0dp"
-                android:layout_margin="20sp"
-                android:layout_weight="@{data.editFourWeight}"
-                android:layout_height="wrap_content"
-                />
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
         </TableRow>
     </TableLayout>
     <Button
@@ -123,7 +91,6 @@
         android:text="次の問題へ！！"
         app:layout_constraintTop_toBottomOf="@+id/edit_table"
         android:gravity="center"
-        android:enabled="@{data.buttonEnabled}"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />

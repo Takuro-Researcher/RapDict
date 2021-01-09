@@ -25,8 +25,9 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     var dictName = MutableLiveData<Int>()
     var beatType = MutableLiveData<Int>()
     private var dictValueArray: Map<Int, String> = mapOf()
+    private var isUpdateMyDictBoolean: Boolean = false
 
-    val settingData: GameSettingData = GameSettingData(2, "low", false, 0, 1, 0, -1)
+    var settingData: GameSettingData = GameSettingData(2, "low", false, 0, 1, 0, -1)
 
     //ViewModel初期化時にロード
     init {
@@ -34,7 +35,44 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     private fun loadUserData() {
-        val settingData = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication())).settingRead()
+        val settingTmp = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication())).settingRead()
+        runBlocking {
+            val dictDao = db.mydictDao()
+            val wordDao = db.wordDao()
+            val dicts = wordDao.countByDict()
+            val tmp: MutableMap<Int, String> = mutableMapOf<Int, String>(-1 to "日本語辞書")
+            dicts.forEach {
+                val dict_data = dictDao.findOneByIds(it.dictid)
+                val name = dict_data.name ?: ""
+                val uid = dict_data.uid
+                System.out.println(name)
+                tmp.put(uid, name)
+            }
+            dictNameArray = tmp.values.toMutableList()
+            dictValueArray = tmp
+        }
+        if (settingTmp != null) {
+            settingData = settingTmp
+            bar.value = barArray.indexOf(settingData.bar)
+            min.value = minArray.indexOf(settingData.min)
+            max.value = maxArray.indexOf(settingData.max)
+            question.value = questionArray.indexOf(settingData.question)
+            beatType.value = beatTypeArray.indexOf(settingData.type)
+            drumOnly.value = settingData.drumOnly
+            dictName.value = dictNameArray.indexOf(dictValueArray[settingData.dictUid])
+        }
+    }
+
+    fun isUpdateMyDict():Boolean{
+        runBlocking {
+            val dictDao = db.mydictDao()
+            val wordDao = db.wordDao()
+            val dicts = wordDao.countByDict()
+            isUpdateMyDictBoolean = dicts.size == dictNameArray.size
+        }
+        return isUpdateMyDictBoolean
+    }
+    fun changeDictData(){
         runBlocking {
             val dictDao = db.mydictDao()
             val wordDao = db.wordDao()
@@ -49,23 +87,8 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             dictNameArray = tmp.values.toMutableList()
             dictValueArray = tmp
         }
-
-        // TODO DBの状態を見た上で、Spinnerに反映すべき値を辞書で作成する
-
-
-        // TODO　該当インデックスを、ViewModelのパブリックメンバにインデックスを渡す処理
-        if (settingData != null) {
-            bar.value = barArray.indexOf(settingData.bar)
-            min.value = minArray.indexOf(settingData.min)
-            max.value = maxArray.indexOf(settingData.max)
-            question.value = questionArray.indexOf(settingData.question)
-            beatType.value = beatTypeArray.indexOf(settingData.type)
-            drumOnly.value = settingData.drumOnly
-            dictName.value = dictNameArray.indexOf(dictValueArray[settingData.dictUid])
-        }
     }
 
-    // TODO　これもイベントのオブザーバルで変更する
     fun changeDrumOnly() {
         if (drumOnly.value == true) {
             drumOnly.value = false
@@ -79,32 +102,27 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     // Spinnerの変更を検知する
     fun changeBar(position: Int) {
         settingData.bar = barArray[position]
-        System.out.println(settingData.bar)
     }
 
     fun changeMax(position: Int) {
         settingData.max = maxArray[position]
-        System.out.println(settingData.max)
     }
 
     fun changeMin(position: Int) {
         settingData.min = minArray[position]
-        System.out.println(settingData.min)
     }
 
     fun changeQuestion(position: Int) {
         settingData.question = questionArray[position]
-        System.out.println(settingData.question)
     }
 
     fun changeBeatType(position: Int) {
         settingData.type = beatTypeArray[position]
-        System.out.println(settingData.type)
-
     }
 
     fun changeDict(position: Int) {
         val dictData = dictValueArray.filterValues { value -> value == dictNameArray[position] }
         settingData.dictUid = dictData.keys.toList()[0]
     }
+
 }
