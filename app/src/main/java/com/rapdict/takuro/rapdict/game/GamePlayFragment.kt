@@ -69,6 +69,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
                 // 次画面に渡すために値を取り付ける
                 bundle.let {
                     it.putString("ANSWER_LIST", Gson().toJson(gameViewModel.answerList))
+                    it.putString("WORD_LIST", Gson().toJson(gameViewModel.words))
                     resultFragment.arguments = bundle
                 }
                 //画面遷移
