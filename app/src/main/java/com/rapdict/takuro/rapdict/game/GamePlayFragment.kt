@@ -64,23 +64,20 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         gameViewModel.isFinish.observe(viewLifecycleOwner, Observer<Boolean> { isFinish ->
             if(isFinish){
                 mediaPlayer.pause()
-                jumpedTest()
-
-
+                val resultFragment = ResultFragment()
+                val bundle = Bundle()
+                // 次画面に渡すために値を取り付ける
+                bundle.let {
+                    it.putString("ANSWER_LIST", Gson().toJson(gameViewModel.answerList))
+                    resultFragment.arguments = bundle
+                }
+                //画面遷移
+                fragmentManager?.beginTransaction().let {
+                    it?.replace(R.id.fragmentGame, resultFragment, "handlingBackPressed")
+                    it?.commit()
+                }
             }
         })
-
-
-        val answerList = ArrayList<Map<Int, String>>()
-        // 初回だけ確認する。
-        try {
-
-        } catch (e: Exception) {
-            recomdialog.show()
-        }
-        // 答えリストを作るための処理
-        onCompletion(mediaPlayer)
-        onStart()
 
         // 音楽終了時の設定
         mediaPlayer.setOnCompletionListener {
@@ -90,7 +87,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
-            answerList.addAll(saveAnswer(finish_q))
+            gameViewModel.saveAnswer()
             gameViewModel.changeQuestion()
             // UI 更新
             rhyme_edit_one.editableText.clear()
@@ -99,6 +96,9 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
             game_main.requestFocus()
             onCompletion(mediaPlayer)
         }
+        // 初回の問題プレイヤー再生
+        onCompletion(mediaPlayer)
+        onStart()
     }
 
     //media playerを最初から再生させる。
@@ -125,45 +125,6 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         mediaPlayer.stop()
         mediaPlayer.reset()
         mediaPlayer.release()
-    }
-
-    private fun jumpedTest(){
-        val resultFragment = ResultFragment()
-        val bundle = arguments
-        resultFragment.arguments = bundle
-        //画面遷移
-        val transaction2 = fragmentManager?.beginTransaction()
-        transaction2?.replace(R.id.fragmentGame, resultFragment, "handlingBackPressed")
-        transaction2?.commit()
-        mediaPlayer.pause()
-    }
-
-    private fun jumpedResult(answerList: ArrayList<Map<Int, String>>, wordsList: ArrayList<Word>) {
-        val bundle = Bundle()
-        bundle.putString("ANSWER_LIST", Gson().toJson(answerList))
-        bundle.putString("WORD_LIST", Gson().toJson(wordsList))
-        val resultFragment = ResultFragment()
-        resultFragment.arguments = bundle
-        //画面遷移
-        val transaction2 = fragmentManager?.beginTransaction()
-        transaction2?.replace(R.id.fragmentGame, resultFragment, "handlingBackPressed")
-        transaction2?.commit()
-        mediaPlayer.pause()
-    }
-
-    // answerList をアクティビティ内に保存する
-    private fun saveAnswer(word_id: Int): ArrayList<Map<Int, String>> {
-
-
-        val answerTexts = mutableListOf<String>()
-
-        val answer2word = ArrayList<Map<Int, String>>()
-        answerTexts.forEach {
-            if (it.isNotEmpty()) {
-                answer2word.add(mapOf(word_id to it))
-            }
-        }
-        return answer2word
     }
 
 }

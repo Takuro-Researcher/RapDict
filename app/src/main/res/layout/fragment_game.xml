@@ -78,6 +78,7 @@
                 android:id="@+id/rhyme_edit_one"
                 android:background="@color/colorWhite"
                 android:layout_width="0dp"
+                android:text="@={data.answer}"
                 android:layout_margin="20sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
