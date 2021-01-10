@@ -20,6 +20,7 @@ import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.database.Answer
 import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
 import com.rapdict.takuro.rapdict.game.GameActivity
+import com.rapdict.takuro.rapdict.game.GamePlayViewModel
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_result.*
 import kotlinx.coroutines.GlobalScope
@@ -31,11 +32,60 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
 
     private var binding: FragmentResultBinding? = null
     private lateinit var mInterstitialAd: InterstitialAd
+    private lateinit var backDialog: AlertDialog.Builder
+    private lateinit var alertDialog: AlertDialog.Builder
+    private lateinit var saveDialog: AlertDialog.Builder
+    private  val resultViewModel: ResultViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(activity) {}
+        val bundle = arguments
+        if(bundle != null){
+            val words = bundle.getSerializable("WORD_LIST") as List<Word>
+            val answer_index = bundle.getSerializable("AMSWER_LIST") as Map<Int, String>
+            resultViewModel.initializeAnswerWord(answer_index ,words)
+        }
 
+        val recomIntent = Intent(requireActivity(), MainActivity::class.java)
+        backDialog = AlertDialog.Builder(requireActivity()).apply {
+            setCancelable(false)
+            setTitle("ゲーム設定画面へ戻る")
+            setMessage("(保存は一切行われません)")
+            setPositiveButton("OK") { _, _ ->
+                if (mInterstitialAd.isLoaded) {
+                    mInterstitialAd.show()
+                } else {
+                    startActivity(recomIntent)
+                }
+            }
+            setNegativeButton("NO", null)
+        }
+        alertDialog = AlertDialog.Builder(requireActivity()).apply {
+            setCancelable(false)
+            setTitle("データ保存")
+            setMessage("韻を選択してください")
+            setPositiveButton("OK", { _, _ -> })
+        }
+        saveDialog = AlertDialog.Builder(requireActivity()).apply {
+            setCancelable(false)
+            setTitle("データ保存")
+            setMessage(register_answer.size.toString() + "個、韻を保存します")
+            setPositiveButton("OK") { _, _ ->
+                GlobalScope.launch {
+                    val dao = App.db.answerDao()
+                    register_answer.forEach {
+                        dao.insert(it)
+                    }
+                }
+                if (mInterstitialAd.isLoaded) {
+                    mInterstitialAd.show()
+                } else {
+                    startActivity(recomIntent)
+                }
+            }
+            setNegativeButton("NO", null)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -55,17 +105,8 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
         val adapter = ResultListAdapter(resultListViewModel, this)
 
 
-        val wordList: Array<Word> = arguments?.getString("WORD_LIST").let {
-            val wordtypeToken = object : TypeToken<Array<Word>>() {}
-            Gson().fromJson<Array<Word>>(it, wordtypeToken.type)
-        }
-        val answerList: ArrayList<Answer> = arguments?.getString("ANSWER_LIST").let {
-            val maptypeToken = object : TypeToken<Array<Map<Int, String>>>() {}
-            val indexAnswer = Gson().fromJson<Array<Map<Int, String>>>(it, maptypeToken.type)
-            convert(wordList, indexAnswer)
-        }
 
-        val resultViewModel: ResultViewModel by viewModels()
+
         binding?.data = resultViewModel
         resultListViewModel.draw(answerList, wordList)
         adapter.notifyDataSetChanged()
@@ -112,33 +153,8 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
                 array
             }
 
-            val saveDialog = AlertDialog.Builder(requireActivity()).apply {
-                setCancelable(false)
-                setTitle("データ保存")
-                setMessage(register_answer.size.toString() + "個、韻を保存します")
-                setPositiveButton("OK") { _, _ ->
-                    GlobalScope.launch {
-                        val dao = App.db.answerDao()
-                        register_answer.forEach {
-                            dao.insert(it)
-                        }
-                    }
-                    if (mInterstitialAd.isLoaded) {
-                        mInterstitialAd.show()
-                    } else {
-                        startActivity(recomIntent)
-                    }
-                }
-                setNegativeButton("NO", null)
-            }
-            val alertDialog = AlertDialog.Builder(requireActivity()).apply {
-                setCancelable(false)
-                setTitle("データ保存")
-                setMessage("韻を選択してください")
-                setPositiveButton("OK", { _, _ ->
 
-                })
-            }
+
             if (register_answer.size == 0) {
                 alertDialog.show()
             } else {
@@ -148,55 +164,18 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
         }
         // 保存せずメイン画面へ戻る
         back_button.setOnClickListener {
-            val dialog = AlertDialog.Builder(requireActivity()).apply {
-                setCancelable(false)
-                setTitle("ゲーム設定画面へ戻る")
-                setMessage("(保存は一切行われません)")
-                setPositiveButton("OK", { _, _ ->
-                    if (mInterstitialAd.isLoaded) {
-                        mInterstitialAd.show()
-                    } else {
-                        startActivity(recomIntent)
-                    }
-                })
-                setNegativeButton("NO", null)
-            }
-            dialog.show()
+            backDialog.show()
         }
     }
 
-    fun convert(wordlist: Array<Word>, answer2wordList: Array<Map<Int, String>>): ArrayList<Answer> {
-        val answerList = ArrayList<Answer>()
-        answer2wordList.forEachIndexed { index, item ->
-            val word_index = item.keys.toList().get(0)
-            val word_value = item.values.toList().get(0)
-            val word: Word = wordlist.get(word_index)
-            val answer = Answer(0, word_value, word.length, word.word, 0)
-            answerList.add(answer)
-        }
-        return answerList
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onBackPressed() {
-        val recomIntent = Intent(requireActivity(), MainActivity::class.java)
-        val dialog = AlertDialog.Builder(requireActivity()).apply {
-            setCancelable(false)
-            setTitle("ゲーム設定画面へ戻る")
-            setMessage("(保存は一切行われません)")
-            setPositiveButton("OK", { _, _ ->
-                if (mInterstitialAd.isLoaded) {
-                    mInterstitialAd.show()
-                } else {
-                    startActivity(recomIntent)
-                }
-            })
-            setNegativeButton("NO", null)
-        }
-        dialog.show()
+        backDialog.show()
     }
 
 }
