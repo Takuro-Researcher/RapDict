@@ -15,10 +15,10 @@ class GamePlayViewModel(application: Application) : AndroidViewModel(application
     var furigana: String = ""
     var isFinish: MutableLiveData<Boolean> = MutableLiveData()
     var answer: MutableLiveData<String> = MutableLiveData()
-    private var _answerList = mutableListOf<Map<Int, String>>()
+    private var _answerMap:MutableMap<Int, String> = mutableMapOf()
     var words: List<Word> = listOf()
-    val answerList: MutableList<Map<Int, String>>
-        get() = _answerList
+    val answerMap: MutableMap<Int, String>
+        get() = _answerMap
 
     fun arg_to_member(question_num: Int, wordList: List<Word>) {
         questionNum = question_num
@@ -31,7 +31,6 @@ class GamePlayViewModel(application: Application) : AndroidViewModel(application
 
     // 今終わった問題の保存と問題の変更
     fun changeQuestion() {
-
         if (questionNum == _question) {
             isFinish.value = true
             return
@@ -45,9 +44,9 @@ class GamePlayViewModel(application: Application) : AndroidViewModel(application
     fun saveAnswer() {
         val tmpAnswer = answer.value ?: ""
         if (tmpAnswer.isNotEmpty()) {
-            _answerList.add(mapOf(_question - 1 to tmpAnswer))
+            _answerMap[_question -1] = tmpAnswer
         }
-        System.out.println(_answerList)
+        System.out.println(_answerMap)
     }
 
 

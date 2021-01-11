@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
+import java.util.*
 
 
 class GamePlayFragment : androidx.fragment.app.Fragment() {
@@ -28,7 +30,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val bundle = arguments
-        if(bundle != null){
+        if (bundle != null) {
             val filepath = bundle.getInt("BAR")
             mediaPlayer = MediaPlayer.create(activity, filepath)
             gameViewModel.arg_to_member(bundle.getInt("QUESTION"), bundle.getSerializable("WORDS") as List<Word>)
@@ -62,14 +64,14 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         }
 
         gameViewModel.isFinish.observe(viewLifecycleOwner, Observer<Boolean> { isFinish ->
-            if(isFinish){
+            if (isFinish) {
                 mediaPlayer.pause()
                 val resultFragment = ResultFragment()
                 val bundle = Bundle()
                 // 次画面に渡すために値を取り付ける
                 bundle.let {
-                    it.putString("ANSWER_LIST", Gson().toJson(gameViewModel.answerList))
-                    it.putString("WORD_LIST", Gson().toJson(gameViewModel.words))
+                    it.putString("ANSWER_LIST", Gson().toJson(gameViewModel.answerMap))
+                    it.putParcelableArrayList("WORD_LIST", gameViewModel.words as ArrayList<Parcelable>)
                     resultFragment.arguments = bundle
                 }
                 //画面遷移
