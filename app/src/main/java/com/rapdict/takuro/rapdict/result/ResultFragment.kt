@@ -118,13 +118,9 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
             })
         }
         mInterstitialAd.loadAd(AdRequest.Builder().build())
-
-
         ResultRecyclerView.adapter = adapter
-
-
-
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+
         add_answer_button.setOnClickListener {
             resultViewModel.addAnswers()
             val bool = resultViewModel.addAbleCheck()
@@ -139,8 +135,7 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
 
         // 保存する
         save_button.setOnClickListener {
-
-            //　新規追加データがあれば保存する
+            resultViewModel.saveAnswers()
 //            answerList.addAll(resultListViewModel.returnRegisterCard(answerList.size))
 //            // 実際に登録するアンサーを検出する
 //            val register_answer = resultListViewModel.checkedList.let {

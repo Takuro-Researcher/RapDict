@@ -35,8 +35,6 @@ class ResultListAdapter(private val viewModel: ResultViewModel,
             RecyclerView.ViewHolder(v.rootView) {
         val binding:ViewDataBinding = DataBindingUtil.bind(v)!!
     }
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
         val xml: Int
         if (viewType == 1) {
