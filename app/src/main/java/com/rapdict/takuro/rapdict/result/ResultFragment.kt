@@ -22,6 +22,8 @@ import com.rapdict.takuro.rapdict.game.GameActivity
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_result.*
 import java.lang.reflect.Type
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyPressedListener {
@@ -100,7 +102,7 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
         val recomIntent = Intent(requireActivity(), MainActivity::class.java)
         CommonTool.fadeIn(result_form, requireActivity())
         val adapter = ResultListAdapter(resultViewModel, this)
-        adapter.submitList(resultViewModel.answers.value)
+
         binding?.data = resultViewModel
 
         // 広告を設定
@@ -119,16 +121,21 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
 
 
         ResultRecyclerView.adapter = adapter
+
+
+
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         add_answer_button.setOnClickListener {
             resultViewModel.addAnswers()
-            adapter.notifyItemInserted(adapter.itemCount)
             val bool = resultViewModel.addAbleCheck()
             if (bool == false) {
                 Toast.makeText(activity, "追加は5個までです", Toast.LENGTH_LONG).show()
             }
-
         }
+
+        resultViewModel.answers.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            adapter.submitList(it)
+        })
 
         // 保存する
         save_button.setOnClickListener {
@@ -162,6 +169,7 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
     }
 
     override fun onBackPressed() {
