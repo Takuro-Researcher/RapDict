@@ -1,7 +1,6 @@
 package com.rapdict.takuro.rapdict.result
 
 
-
 import android.app.Application
 
 import androidx.lifecycle.AndroidViewModel
@@ -16,7 +15,11 @@ data class AnswerData(
         val isChecked: MutableLiveData<Boolean> = MutableLiveData(false),
         val answer: MutableLiveData<String> = MutableLiveData(""),
         val isAdd: Boolean = false
-) {}
+) {
+    fun changeCheckedId(position: Int) {
+        checked_id.value = position
+    }
+}
 
 class ResultViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -25,36 +28,41 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
 
     // ゲーム画面で記録したものを参照し、RecyclerView用に再編集する。
     val answers: LiveData<MutableList<AnswerData>> = _answers
+
     // フォームへの表示用
-    var words_texts : List<String> = listOf()
+    var wordsTexts: List<String> = listOf()
+
     // 実際にデータの保存用に使う
     private var words: List<Word> = listOf()
 
     // カードの追加可能か
     var addAble: MutableLiveData<Boolean> = MutableLiveData()
-    var addCardCount:MutableLiveData<Int> = MutableLiveData()
+    var addCardCount: MutableLiveData<Int> = MutableLiveData()
+
     //ViewModel初期化時にロード
     init {
         addAble.value = true
         addCardCount.value = 0
     }
-    fun addAbleCheck():Boolean{
+
+    fun addAbleCheck(): Boolean {
         addCardCount.value = addCardCount.value?.plus(1)
-        if(addCardCount.value!! >= 5 ){
+        if (addCardCount.value!! >= 5) {
             addAble.value = false
             return false
         }
         return true
     }
+
     // 受け取った答え用に変更する。
-    fun initializeAnswerWord(ans: Map<Int, String>, words:List<Word>) {
-        ans.forEach { answersRaw.add(AnswerData(checked_id =  MutableLiveData(it.key), answer = MutableLiveData(it.value))) }
+    fun initializeAnswerWord(ans: Map<Int, String>, words: List<Word>) {
+        ans.forEach { answersRaw.add(AnswerData(id = 1, checked_id = MutableLiveData(it.key), answer = MutableLiveData(it.value))) }
         _answers.value = ArrayList(answersRaw)
-        words_texts = words.map { it.word?: "" }
+        wordsTexts = words.map { it.word ?: "" }
     }
 
     fun addAnswers() {
-        answersRaw.add(AnswerData(isAdd = true))
+        answersRaw.add(AnswerData(id = 1, isAdd = true))
         _answers.value = ArrayList(answersRaw)
     }
 }

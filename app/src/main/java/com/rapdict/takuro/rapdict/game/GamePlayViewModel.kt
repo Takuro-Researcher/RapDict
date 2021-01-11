@@ -46,7 +46,6 @@ class GamePlayViewModel(application: Application) : AndroidViewModel(application
         if (tmpAnswer.isNotEmpty()) {
             _answerMap[_question -1] = tmpAnswer
         }
-        System.out.println(_answerMap)
     }
 
 

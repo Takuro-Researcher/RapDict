@@ -2,6 +2,7 @@ package com.rapdict.takuro.rapdict.result
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.ArrayMap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +15,13 @@ import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Word
-import com.rapdict.takuro.rapdict.database.Answer
 import com.rapdict.takuro.rapdict.databinding.FragmentResultBinding
 import com.rapdict.takuro.rapdict.game.GameActivity
-import com.rapdict.takuro.rapdict.game.GamePlayViewModel
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_result.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import java.lang.reflect.Type
 
 
 class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyPressedListener {
@@ -42,9 +39,11 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
         MobileAds.initialize(activity) {}
         val bundle = arguments
         if(bundle != null){
-            val words = bundle.getSerializable("WORD_LIST") as List<Word>
-            val answer_index = bundle.getSerializable("AMSWER_LIST") as Map<Int, String>
-            resultViewModel.initializeAnswerWord(answer_index ,words)
+            val words = bundle.getSerializable("WORD_LIST") as ArrayList<Word>
+            val answerIndex = bundle.getSerializable("ANSWER_LIST") as String
+            val type: Type? = object : TypeToken<Map<Int?, String?>?>() {}.type
+            val answerMaps = Gson().fromJson<Map<Int,String>>(answerIndex,type)
+            resultViewModel.initializeAnswerWord(answerMaps ,words)
         }
 
         val recomIntent = Intent(requireActivity(), MainActivity::class.java)
@@ -67,25 +66,25 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
             setMessage("韻を選択してください")
             setPositiveButton("OK", { _, _ -> })
         }
-        saveDialog = AlertDialog.Builder(requireActivity()).apply {
-            setCancelable(false)
-            setTitle("データ保存")
-            setMessage(register_answer.size.toString() + "個、韻を保存します")
-            setPositiveButton("OK") { _, _ ->
-                GlobalScope.launch {
-                    val dao = App.db.answerDao()
-                    register_answer.forEach {
-                        dao.insert(it)
-                    }
-                }
-                if (mInterstitialAd.isLoaded) {
-                    mInterstitialAd.show()
-                } else {
-                    startActivity(recomIntent)
-                }
-            }
-            setNegativeButton("NO", null)
-        }
+//        saveDialog = AlertDialog.Builder(requireActivity()).apply {
+//            setCancelable(false)
+//            setTitle("データ保存")
+//            setMessage(register_answer.size.toString() + "個、韻を保存します")
+//            setPositiveButton("OK") { _, _ ->
+//                GlobalScope.launch {
+//                    val dao = App.db.answerDao()
+//                    register_answer.forEach {
+//                        dao.insert(it)
+//                    }
+//                }
+//                if (mInterstitialAd.isLoaded) {
+//                    mInterstitialAd.show()
+//                } else {
+//                    startActivity(recomIntent)
+//                }
+//            }
+//            setNegativeButton("NO", null)
+//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -100,16 +99,10 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
 
         val recomIntent = Intent(requireActivity(), MainActivity::class.java)
         CommonTool.fadeIn(result_form, requireActivity())
-
-        val resultListViewModel: ResultListViewModel by viewModels()
-        val adapter = ResultListAdapter(resultListViewModel, this)
-
-
-
-
+        val adapter = ResultListAdapter(resultViewModel, this)
+        adapter.submitList(resultViewModel.answers.value)
         binding?.data = resultViewModel
-        resultListViewModel.draw(answerList, wordList)
-        adapter.notifyDataSetChanged()
+
         // 広告を設定
         mInterstitialAd = InterstitialAd(activity).apply {
             //adUnitId = "ca-app-pub-3940256099942544/1033173712"
@@ -128,7 +121,7 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
         ResultRecyclerView.adapter = adapter
         ResultRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         add_answer_button.setOnClickListener {
-            resultListViewModel.addCard()
+            resultViewModel.addAnswers()
             adapter.notifyItemInserted(adapter.itemCount)
             val bool = resultViewModel.addAbleCheck()
             if (bool == false) {
@@ -141,25 +134,22 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
         save_button.setOnClickListener {
 
             //　新規追加データがあれば保存する
-            answerList.addAll(resultListViewModel.returnRegisterCard(answerList.size))
-            // 実際に登録するアンサーを検出する
-            val register_answer = resultListViewModel.checkedList.let {
-                val array: ArrayList<Answer> = ArrayList()
-                it.forEachIndexed { index, data ->
-                    if (data.value == true) {
-                        array.add(answerList.get(index))
-                    }
-                }
-                array
-            }
-
-
-
-            if (register_answer.size == 0) {
-                alertDialog.show()
-            } else {
-                saveDialog.show()
-            }
+//            answerList.addAll(resultListViewModel.returnRegisterCard(answerList.size))
+//            // 実際に登録するアンサーを検出する
+//            val register_answer = resultListViewModel.checkedList.let {
+//                val array: ArrayList<Answer> = ArrayList()
+//                it.forEachIndexed { index, data ->
+//                    if (data.value == true) {
+//                        array.add(answerList.get(index))
+//                    }
+//                }
+//                array
+//            }
+//            if (register_answer.size == 0) {
+//                alertDialog.show()
+//            } else {
+//                saveDialog.show()
+//            }
 
         }
         // 保存せずメイン画面へ戻る
