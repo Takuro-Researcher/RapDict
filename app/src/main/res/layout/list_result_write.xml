@@ -1,49 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.result.ResultListViewModel"/>
-        <variable name="position" type="Integer"/>
+
+        <variable
+            name="data"
+            type="com.rapdict.takuro.rapdict.result.ResultViewModel" />
+
+        <variable
+            name="answer"
+            type="com.rapdict.takuro.rapdict.result.AnswerData" />
+
+        <variable
+            name="position"
+            type="Integer" />
     </data>
-    <androidx.cardview.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardUseCompatPadding="true"
         android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="4dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:focusable="true">
+        card_view:cardUseCompatPadding="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:padding="10dp">
+
             <Spinner
                 android:id="@+id/question_spinner"
                 android:layout_width="match_parent"
-                android:padding="12sp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
-                android:entries="@{data.wordTextArray}"
-                android:dropDownWidth="match_parent" />
+                android:OnItemSelected="@{answer.checked_id}"
+                android:dropDownWidth="match_parent"
+                android:entries="@{data.wordsTexts}"
+                android:onChangeSpinner="@{(i) -> answer.changeCheckedId(i)}"
+                android:padding="12sp" />
+
             <EditText
                 android:id="@+id/result_list_register_answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:textColor="#000"
+                android:hint="新たな韻"
                 android:padding="6sp"
-                android:text="@{data.textList[position]}"/>
+                android:text="@={answer.answer}"
+                android:textColor="#000" />
+
             <CheckBox
                 android:id="@+id/checkbox_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:checked="@={answer.isChecked()}"
                 android:gravity="center"
                 android:padding="12sp"
-                android:layout_weight="0.6"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>
