@@ -6,9 +6,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.rapdict.takuro.rapdict.Repository.AnswerRepository
 
 import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.database.Answer
+import kotlinx.coroutines.launch
 
 data class AnswerData(
         val id: Long,
@@ -27,6 +30,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     private val answersRaw = mutableListOf<AnswerData>()
     private var _answers = MutableLiveData<MutableList<AnswerData>>()
     private var index = 0L
+    private val _answerRepository = AnswerRepository(application)
 
     // ゲーム画面で記録したものを参照し、RecyclerView用に再編集する。
     val answers: LiveData<MutableList<AnswerData>> = _answers
@@ -48,6 +52,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun addAbleCheck(): Boolean {
+
         addCardCount.value = addCardCount.value?.plus(1)
         if (addCardCount.value!! >= 5) {
             addAble.value = false
@@ -71,11 +76,11 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         index += 1
     }
 
-    //
+    // 韻を保存する
     fun saveAnswers(){
+        val answerList: ArrayList<Answer> = ArrayList()
         _answers.value?.forEach {
             val isChecked = it.isChecked.value ?: false
-            val answerList: ArrayList<Answer> = ArrayList()
             if (isChecked){
                 // 保存を行うための処理
                 val textAnswer = it.answer.value ?: ""
@@ -88,9 +93,19 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
                 answerList.add(answer)
             }
         }
-        
-
-
-
+        // DBに保存する
+        viewModelScope.launch {
+            _answerRepository.saveAnswer(answerList)
+        }
     }
+
+    fun getCheckAnswerNum():Int{
+        var counter = 0
+        _answers.value?.forEach {
+            val isChecked = it.isChecked.value ?: false
+            if (isChecked){ counter += 1 }
+        }
+        return counter
+    }
+
 }

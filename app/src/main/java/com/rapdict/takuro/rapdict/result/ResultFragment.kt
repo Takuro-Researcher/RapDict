@@ -68,25 +68,20 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
             setMessage("韻を選択してください")
             setPositiveButton("OK", { _, _ -> })
         }
-//        saveDialog = AlertDialog.Builder(requireActivity()).apply {
-//            setCancelable(false)
-//            setTitle("データ保存")
-//            setMessage(register_answer.size.toString() + "個、韻を保存します")
-//            setPositiveButton("OK") { _, _ ->
-//                GlobalScope.launch {
-//                    val dao = App.db.answerDao()
-//                    register_answer.forEach {
-//                        dao.insert(it)
-//                    }
-//                }
-//                if (mInterstitialAd.isLoaded) {
-//                    mInterstitialAd.show()
-//                } else {
-//                    startActivity(recomIntent)
-//                }
-//            }
-//            setNegativeButton("NO", null)
-//        }
+        saveDialog = AlertDialog.Builder(requireActivity()).apply {
+            setCancelable(false)
+            setTitle("データ保存")
+            setMessage("チェックされている韻を保存します")
+            setPositiveButton("OK") { _, _ ->
+                resultViewModel.saveAnswers()
+                if (mInterstitialAd.isLoaded) {
+                    mInterstitialAd.show()
+                } else {
+                    startActivity(recomIntent)
+                }
+            }
+            setNegativeButton("NO", null)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -135,32 +130,18 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
 
         // 保存する
         save_button.setOnClickListener {
-            resultViewModel.saveAnswers()
-//            answerList.addAll(resultListViewModel.returnRegisterCard(answerList.size))
-//            // 実際に登録するアンサーを検出する
-//            val register_answer = resultListViewModel.checkedList.let {
-//                val array: ArrayList<Answer> = ArrayList()
-//                it.forEachIndexed { index, data ->
-//                    if (data.value == true) {
-//                        array.add(answerList.get(index))
-//                    }
-//                }
-//                array
-//            }
-//            if (register_answer.size == 0) {
-//                alertDialog.show()
-//            } else {
-//                saveDialog.show()
-//            }
-
+            val registerSize = resultViewModel.getCheckAnswerNum()
+            if (registerSize == 0) {
+                alertDialog.show()
+            } else {
+                saveDialog.show()
+            }
         }
         // 保存せずメイン画面へ戻る
         back_button.setOnClickListener {
             backDialog.show()
         }
     }
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
