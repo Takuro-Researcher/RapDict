@@ -1,17 +1,14 @@
 package com.rapdict.takuro.rapdict.result
 
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.rapdict.takuro.rapdict.Common.CustomTextWatcher
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.ListResultBinding
 import com.rapdict.takuro.rapdict.databinding.ListResultWriteBinding
@@ -24,17 +21,17 @@ private object DiffCallback : DiffUtil.ItemCallback<AnswerData>() {
     override fun areContentsTheSame(oldItem: AnswerData, newItem: AnswerData): Boolean {
         return oldItem == newItem
     }
-
 }
 
 class ResultListAdapter(private val viewModel: ResultViewModel,
                         private val parentLifecycleOwner: LifecycleOwner
 ) : ListAdapter<AnswerData, ResultListAdapter.ResultViewHolder>(DiffCallback) {
 
-    class ResultViewHolder(private val v:View ) :
+    class ResultViewHolder(private val v: View) :
             RecyclerView.ViewHolder(v.rootView) {
-        val binding:ViewDataBinding = DataBindingUtil.bind(v)!!
+        val binding: ViewDataBinding = DataBindingUtil.bind(v)!!
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
         val xml: Int
         if (viewType == 1) {
@@ -67,12 +64,11 @@ class ResultListAdapter(private val viewModel: ResultViewModel,
     }
 
 
-
     override fun getItemCount(): Int {
         return viewModel.answers.value?.size ?: 0
     }
 
-    //
+
     override fun getItemViewType(position: Int): Int {
         val answer = viewModel.answers.value?.get(position) ?: AnswerData(1)
         if (answer.isAdd) {

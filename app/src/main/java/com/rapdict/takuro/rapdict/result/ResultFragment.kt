@@ -143,11 +143,6 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
     override fun onBackPressed() {
         backDialog.show()
     }
