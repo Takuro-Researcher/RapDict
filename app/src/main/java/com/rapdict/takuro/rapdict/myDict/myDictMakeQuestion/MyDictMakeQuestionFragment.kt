@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.myDict
+package com.rapdict.takuro.rapdict.myDict.myDictMakeQuestion
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,20 +9,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.rapdict.takuro.rapdict.Common.App.Companion.db
-import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictQuestionMakeBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
-import kotlinx.android.synthetic.main.fragment_mydict1.*
+import com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_mydict_question_make.*
-import kotlinx.coroutines.runBlocking
 
 
 class MyDictMakeQuestionFragment : Fragment() {
 
     private var binding: FragmentMydictQuestionMakeBinding? = null
-    private val myDictChoiceViewModel :MyDictChoiceViewModel by activityViewModels()
+    private val myDictChoiceViewModel : MyDictChoiceViewModel by activityViewModels()
     private val myDictMakeQuestionViewModel: MyDictMakeQuestionViewModel by viewModels()
     private lateinit var saveDialog: AlertDialog.Builder
 
