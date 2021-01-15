@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.MyDictMakeQuestionViewModel"/>
-        <variable name="question" type="com.rapdict.takuro.rapdict.myDict.MyDictMakeWordData" />
+        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.myDictMakeQuestion.MyDictMakeQuestionViewModel"/>
+        <variable name="question" type="com.rapdict.takuro.rapdict.myDict.myDictMakeQuestion.MyDictMakeWordData" />
     </data>
     <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"

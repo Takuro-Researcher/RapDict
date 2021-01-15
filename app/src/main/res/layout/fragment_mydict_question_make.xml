@@ -6,12 +6,12 @@
     <data>
         <variable
             name="data"
-            type="com.rapdict.takuro.rapdict.myDict.MyDictMakeQuestionViewModel" />
+            type="com.rapdict.takuro.rapdict.myDict.myDictMakeQuestion.MyDictMakeQuestionViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".myDict.MyDictMakeQuestionFragment">
+        tools:context=".myDict.myDictMakeQuestion.MyDictMakeQuestionFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             app:layout_constraintTop_toTopOf="parent"

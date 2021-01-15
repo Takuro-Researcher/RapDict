@@ -25,14 +25,13 @@ class MyDictMakeQuestionFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         val intent  = Intent(requireActivity(), MainActivity::class.java)
-        val uid = myDictChoiceViewModel.db_uid.value
 
         saveDialog = AlertDialog.Builder(requireActivity()).apply {
             setCancelable(false)
             setTitle("")
             setMessage("")
             setPositiveButton("OK") { _, _ ->
-                myDictMakeQuestionViewModel.registerQuestion(uid!!)
+                myDictMakeQuestionViewModel.registerQuestion(myDictChoiceViewModel.db_uid.value!!)
                 myDictMakeQuestionViewModel.clear()
                 startActivity(intent)
             }
@@ -63,8 +62,6 @@ class MyDictMakeQuestionFragment : Fragment() {
         myDictMakeQuestionViewModel.myDictMakeWords.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
         })
-
-
 
         register_question_button.setOnClickListener {
             // セーブする前に使用するDBと、ふりがなや文字の状況をまとめる
