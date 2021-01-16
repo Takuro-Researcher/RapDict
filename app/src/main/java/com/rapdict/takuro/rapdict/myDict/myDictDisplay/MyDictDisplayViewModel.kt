@@ -36,6 +36,8 @@ class MyDictDisplayViewModel(application: Application) : AndroidViewModel(applic
 
     fun bindData(uid:Int){
         var data = listOf<Word>()
+        //
+        myDictDisplayWordsRaw = mutableListOf()
         runBlocking {
             data = _wordRepository.getWords(uid)
         }

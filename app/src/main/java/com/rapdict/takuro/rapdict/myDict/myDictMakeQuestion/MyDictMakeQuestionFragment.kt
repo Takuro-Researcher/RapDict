@@ -24,17 +24,10 @@ class MyDictMakeQuestionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        val intent  = Intent(requireActivity(), MainActivity::class.java)
+
 
         saveDialog = AlertDialog.Builder(requireActivity()).apply {
             setCancelable(false)
-            setTitle("")
-            setMessage("")
-            setPositiveButton("OK") { _, _ ->
-                myDictMakeQuestionViewModel.registerQuestion(myDictChoiceViewModel.db_uid.value!!)
-                myDictMakeQuestionViewModel.clear()
-                startActivity(intent)
-            }
             setNegativeButton("NO", null)
         }
     }
@@ -49,6 +42,7 @@ class MyDictMakeQuestionFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val intent  = Intent(requireActivity(), MainActivity::class.java)
         val adapter = MyDictMakeQuestionListAdapter(myDictMakeQuestionViewModel, this)
         binding?.data = myDictMakeQuestionViewModel
 
@@ -78,6 +72,11 @@ class MyDictMakeQuestionFragment : Fragment() {
             dialogMessage += "※保存後、画面移動します"
             saveDialog.setTitle(dialogTitle)
             saveDialog.setMessage(dialogMessage)
+            saveDialog.setPositiveButton("OK") { _, _ ->
+                myDictMakeQuestionViewModel.registerQuestion(myDictChoiceViewModel.db_uid.value!!)
+                myDictMakeQuestionViewModel.clear()
+                startActivity(intent)
+            }
             saveDialog.show()
         }
     }
