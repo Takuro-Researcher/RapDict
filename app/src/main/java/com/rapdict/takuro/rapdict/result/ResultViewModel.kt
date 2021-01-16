@@ -30,7 +30,6 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     private val answersRaw = mutableListOf<AnswerData>()
     private var _answers = MutableLiveData<MutableList<AnswerData>>()
     private var index = 0L
-    private val _answerRepository = AnswerRepository(application)
 
     // ゲーム画面で記録したものを参照し、RecyclerView用に再編集する。
     val answers: LiveData<MutableList<AnswerData>> = _answers
@@ -45,6 +44,9 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     var addAble: MutableLiveData<Boolean> = MutableLiveData()
     var addCardCount: MutableLiveData<Int> = MutableLiveData()
 
+    // データ参照用のRepositoryクラス
+    private val _answerRepository = AnswerRepository(application)
+
     //ViewModel初期化時にロード
     init {
         addAble.value = true
@@ -52,7 +54,6 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun addAbleCheck(): Boolean {
-
         addCardCount.value = addCardCount.value?.plus(1)
         if (addCardCount.value!! >= 5) {
             addAble.value = false
@@ -99,6 +100,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    // チェックしてある答えの数を返す
     fun getCheckAnswerNum():Int{
         var counter = 0
         _answers.value?.forEach {

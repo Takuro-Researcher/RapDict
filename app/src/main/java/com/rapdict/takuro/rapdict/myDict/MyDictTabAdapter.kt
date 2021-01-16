@@ -1,19 +1,23 @@
 package com.rapdict.takuro.rapdict.myDict
 
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.rapdict.takuro.rapdict.myDict.myDictDisplay.MyDictDisplayFragment
+import com.rapdict.takuro.rapdict.myDict.myDictMakeQuestion.MyDictMakeQuestionFragment
 
 
 class MyDictTabAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
 
     override fun getItem(position: Int): Fragment {
         when(position){
-            0 -> { return MyDictMakeFragment() }
+            0 -> { return MyDictMakeFragment()
+            }
             1 -> { return MyDictChoiceFragment() }
-            2 -> { return MyDictMakeQuestionFragment() }
-            else -> { return MyDictDisplayFragment() }
+            2 -> { return MyDictMakeQuestionFragment()
+            }
+            else -> { return MyDictDisplayFragment()
+            }
         }
     }
 
