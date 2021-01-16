@@ -38,6 +38,7 @@ class MyDictDisplayFragment : androidx.fragment.app.Fragment() {
         DisplayRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         myDictDisplayViewModel.myDictDisplayWords.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
+            myDictChoiceViewModel.count.value = it.size.toString()
         })
         val uid: Int = myDictChoiceViewModel.db_uid.value!!
         myDictDisplayViewModel.bindData(uid)
