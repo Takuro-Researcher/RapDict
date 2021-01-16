@@ -24,12 +24,12 @@ class MyDictDisplayListAdapter(private val viewModel: MyDictDisplayViewModel,
 
     class MyDictDisplayViewHolder(private val binding: ListDisplayBinding) :
             RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: MyDictDisplayWordData, viewLifecycleOwner: LifecycleOwner, viewModel: MyDictDisplayViewModel) {
+        fun bind(item: MyDictDisplayWordData, viewLifecycleOwner: LifecycleOwner, viewModel: MyDictDisplayViewModel,position: Int) {
             binding.run {
                 lifecycleOwner = viewLifecycleOwner
                 displayWord = item
                 data = viewModel
-                position = position
+                this.position = position
                 executePendingBindings()
             }
         }
@@ -41,7 +41,7 @@ class MyDictDisplayListAdapter(private val viewModel: MyDictDisplayViewModel,
     }
 
     override fun onBindViewHolder(holder: MyDictDisplayViewHolder, position: Int) {
-        holder.bind(getItem(position), parentLifecycleOwner, viewModel)
+        holder.bind(getItem(position), parentLifecycleOwner, viewModel, position)
     }
 
     override fun getItemCount(): Int {

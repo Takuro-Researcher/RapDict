@@ -25,6 +25,7 @@ class MyDictDisplayViewModel(application: Application) : AndroidViewModel(applic
 
     private var myDictDisplayWordsRaw = mutableListOf<MyDictDisplayWordData>()
     private var _myDictDisplayWords = MutableLiveData<MutableList<MyDictDisplayWordData>>()
+    private var initWords = mutableListOf<MyDictDisplayWordData>()
     private var index = 0L
 
 
@@ -47,33 +48,16 @@ class MyDictDisplayViewModel(application: Application) : AndroidViewModel(applic
             index += 1
         }
         _myDictDisplayWords.value = ArrayList(myDictDisplayWordsRaw)
+        initWords = ArrayList(myDictDisplayWordsRaw)
     }
 
-    fun delete(position: Int){
-        System.out.println(position)
+    fun delete(position: MyDictDisplayWordData): Boolean{
+        myDictDisplayWordsRaw.remove(position)
+        val uid = position.uid
+        _myDictDisplayWords.value = ArrayList(myDictDisplayWordsRaw)
+        viewModelScope.launch {
+            _wordRepository.removeWords(uid)
+        }
+        return true
     }
-
-
-
-//    fun clear() {
-//        questionList.clear()
-//        furiganaList.clear()
-//        wordUidList.clear()
-//    }
-//
-//    fun clear_list(position: Int) {
-//        questionList.removeAt(position)
-//        furiganaList.removeAt(position)
-//        wordUidList.removeAt(position)
-//    }
-//
-//    fun mydict_bind(uid: Int) {
-//        var data = listOf<Word>()
-//        runBlocking {
-//            val dao = db.wordDao()
-//            data = dao.findByDictIds(uid)
-//        }
-//        bind_word(data)
-//    }
-
 }

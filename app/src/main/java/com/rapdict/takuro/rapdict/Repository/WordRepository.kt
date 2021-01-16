@@ -23,4 +23,10 @@ class WordRepository(val context: Context){
         }
         return data
     }
+
+    suspend fun removeWords(uid: Int){
+        withContext(Dispatchers.IO){
+            wordDao.deleteByIds(uid)
+        }
+    }
 }
