@@ -14,6 +14,7 @@
         android:clickable="true"
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="4dp"
+        android:onLongClick="@{() -> data.delete(position)}"
         android:foreground="?android:attr/selectableItemBackground"
         android:focusable="true">
         <LinearLayout
