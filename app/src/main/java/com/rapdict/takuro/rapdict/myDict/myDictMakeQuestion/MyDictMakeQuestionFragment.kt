@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictQuestionMakeBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
-import com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel
+import com.rapdict.takuro.rapdict.myDict.myDictChoice.MyDictChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_mydict_question_make.*
 
 
@@ -59,7 +59,7 @@ class MyDictMakeQuestionFragment : Fragment() {
 
         register_question_button.setOnClickListener {
             // セーブする前に使用するDBと、ふりがなや文字の状況をまとめる
-            val uid = myDictChoiceViewModel.db_uid.value
+            val uid = myDictChoiceViewModel.dbUid.value
             myDictMakeQuestionViewModel.updateStatus(uid!!)
             val dialogTitle:String = "問題保存【"+myDictMakeQuestionViewModel.dbName +"】"
             var dialogMessage:String = myDictMakeQuestionViewModel.myDictMakeWords.value?.size.toString() +"個、保存する\n"
@@ -73,7 +73,7 @@ class MyDictMakeQuestionFragment : Fragment() {
             saveDialog.setTitle(dialogTitle)
             saveDialog.setMessage(dialogMessage)
             saveDialog.setPositiveButton("OK") { _, _ ->
-                myDictMakeQuestionViewModel.registerQuestion(myDictChoiceViewModel.db_uid.value!!)
+                myDictMakeQuestionViewModel.registerQuestion(myDictChoiceViewModel.dbUid.value!!)
                 myDictMakeQuestionViewModel.clear()
                 startActivity(intent)
             }

@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.R
+import com.rapdict.takuro.rapdict.myDict.myDictChoice.MyDictChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_mydict1.*
 import kotlinx.coroutines.runBlocking
 
 
 class MyDictFragment : androidx.fragment.app.Fragment() {
-    private var viewModel:MyDictChoiceViewModel? =null
+    private var viewModel: MyDictChoiceViewModel? =null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

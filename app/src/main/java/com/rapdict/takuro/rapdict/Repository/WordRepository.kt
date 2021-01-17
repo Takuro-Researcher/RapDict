@@ -29,4 +29,12 @@ class WordRepository(val context: Context){
             wordDao.deleteByIds(uid)
         }
     }
+
+    suspend fun countWords(uid: Int):Int{
+        var count = 0
+        withContext(Dispatchers.IO){
+            count = wordDao.countByDictIds(uid)
+        }
+        return count
+    }
 }

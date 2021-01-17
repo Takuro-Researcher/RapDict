@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.myDict
+package com.rapdict.takuro.rapdict.myDict.myDictChoice
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.SpfCommon
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictChoiceBinding
@@ -18,11 +18,10 @@ import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_mydict_choice.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
     private var binding :FragmentMydictChoiceBinding ?= null
-    private val viewModel:MyDictChoiceViewModel by activityViewModels()
+    private val viewModel: MyDictChoiceViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -42,6 +41,10 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.dbUid.observe(viewLifecycleOwner, Observer<Int> { dbUid ->
+            viewModel.countChange()
+        })
+
         mydict_delete_button.setOnClickListener {
             val backIntent = Intent(activity,MainActivity::class.java)
             val mydict_name = mydict_choice_spinner.selectedItem as String
@@ -49,8 +52,8 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
                 setCancelable(false)
                 setTitle("単語帳【"+mydict_name+"】を削除する")
                 setMessage("※作った言葉はすべて消えます")
-                setPositiveButton("OK",{_, _ ->
-                    val id:Int = viewModel!!.db_uid.value!!
+                setPositiveButton("OK") { _, _ ->
+                    val id:Int = viewModel!!.dbUid.value!!
                     GlobalScope.launch {
                         val dao = db.mydictDao()
                         dao.deleteByIds(id)
@@ -64,31 +67,12 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
                             }
                         }
                     }
-
-
                     startActivity(backIntent)
-                })
+                }
                 setNegativeButton("NO",null)
             }
             dialog.show()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-
-        // null値でonItemSelectedが起動しないように初回起動しないようにした。本来こっちのほうがいい？
-        val mListener = object : OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                System.out.println(mydict_choice_spinner.selectedItemPosition)
-                viewModel!!.changed_uid(mydict_choice_spinner.selectedItemPosition)
-                viewModel!!.countChange(position)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-        mydict_choice_spinner.setSelection(viewModel!!.choiceDictNamePosition,false)
-        mydict_choice_spinner.onItemSelectedListener = mListener
-    }
-
 
 }

@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel" />
+        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.myDictChoice.MyDictChoiceViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,8 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:layout_margin="20sp"
-            android:entries="@{data.dictNameList}"
             app:layout_constraintBottom_toTopOf="@id/mydict_register_num_text"
+            android:onChangeSpinner="@{(i) -> data.changeUid(i)}"
+            android:entries="@{data.dictNameList}"
             android:dropDownWidth="match_parent" />
         <TextView
             android:padding="30dp"
@@ -36,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="@{data.count}"
+            android:text="@{Integer.toString(data.dictCount)}"
             app:layout_constraintTop_toTopOf="@id/mydict_register_num_text"
             app:layout_constraintEnd_toEndOf="parent"/>
         <TextView

@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.databinding.FragmentMydictChoiceBinding
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictDisplayBinding
-import com.rapdict.takuro.rapdict.databinding.FragmentMydictQuestionMakeBinding
-import com.rapdict.takuro.rapdict.myDict.MyDictChoiceViewModel
+import com.rapdict.takuro.rapdict.myDict.myDictChoice.MyDictChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_mydict_display.*
 
 class MyDictDisplayFragment : androidx.fragment.app.Fragment() {
@@ -38,9 +35,9 @@ class MyDictDisplayFragment : androidx.fragment.app.Fragment() {
         DisplayRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         myDictDisplayViewModel.myDictDisplayWords.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
-            myDictChoiceViewModel.count.value = it.size.toString()
+            myDictChoiceViewModel.dictCount.value = it.size
         })
-        val uid: Int = myDictChoiceViewModel.db_uid.value!!
+        val uid: Int = myDictChoiceViewModel.dbUid.value!!
         myDictDisplayViewModel.bindData(uid)
     }
 

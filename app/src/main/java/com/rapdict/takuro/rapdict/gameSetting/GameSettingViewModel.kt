@@ -45,7 +45,6 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
                 val dict_data = dictDao.findOneByIds(it.dictid)
                 val name = dict_data.name ?: ""
                 val uid = dict_data.uid
-                System.out.println(name)
                 tmp.put(uid, name)
             }
             dictNameArray = tmp.values.toMutableList()
