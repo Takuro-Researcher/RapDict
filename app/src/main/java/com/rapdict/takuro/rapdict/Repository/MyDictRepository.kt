@@ -14,4 +14,19 @@ class MyDictRepository(val context: Context){
         }
         return data
     }
+    suspend fun getDictAll(): List<Mydict> {
+        var data: List<Mydict> = listOf()
+        withContext(Dispatchers.IO){
+            data = mydictDao.findAll()
+        }
+        return data
+    }
+
+    suspend fun removeuid2MyDict(uid: Int){
+        withContext(Dispatchers.IO){
+            mydictDao.deleteByIds(uid)
+        }
+    }
+
+
 }

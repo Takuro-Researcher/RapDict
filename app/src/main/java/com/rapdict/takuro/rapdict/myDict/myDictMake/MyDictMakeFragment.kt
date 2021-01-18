@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.myDict
+package com.rapdict.takuro.rapdict.myDict.myDictMake
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.database.Mydict
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictMakeBinding
+import com.rapdict.takuro.rapdict.myDict.myDictChoice.MyDictChoiceViewModel
+import com.rapdict.takuro.rapdict.myDict.MyDictFragment
 import kotlinx.android.synthetic.main.fragment_mydict1.*
 import kotlinx.android.synthetic.main.fragment_mydict_make.*
 import kotlinx.coroutines.runBlocking
@@ -44,11 +46,11 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
                 setCancelable(false)
                 setTitle("【" + mydict.name + "】辞書保存")
                 setMessage("※画面移動します")
-                setPositiveButton("OK", { _, _ ->
+                setPositiveButton("OK") { _, _ ->
                     runBlocking {
                         val dao = db.mydictDao()
                         dao.insert(mydict)
-                        myDictChoiceViewModel.init_load()
+                        myDictChoiceViewModel.initLoad()
                     }
                     val fragment = parentFragment as MyDictFragment
                     // テキストボックスを空にする処理
@@ -57,7 +59,7 @@ class MyDictMakeFragment : androidx.fragment.app.Fragment() {
                     fragment.mydict_tab_layout?.getTabAt(1)?.select()
                     fragment.adapterAble(4)
 
-                })
+                }
                 setNegativeButton("NO", null)
             }
             alertDialog.show()

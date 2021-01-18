@@ -21,6 +21,4 @@ class MoveDialog(context: Context, positiveMethod: () -> Unit,
 
     val dialog: AlertDialog
         get() = _dialog
-
-
 }
