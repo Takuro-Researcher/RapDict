@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictQuestionMakeBinding
 import com.rapdict.takuro.rapdict.main.MainActivity
+import com.rapdict.takuro.rapdict.myDict.MyDictFragment
 import com.rapdict.takuro.rapdict.myDict.myDictChoice.MyDictChoiceViewModel
+import kotlinx.android.synthetic.main.fragment_mydict1.*
 import kotlinx.android.synthetic.main.fragment_mydict_question_make.*
 
 
@@ -39,8 +43,7 @@ class MyDictMakeQuestionFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        val intent  = Intent(requireActivity(), MainActivity::class.java)
+        val fragment = parentFragment as MyDictFragment
         val adapter = MyDictMakeQuestionListAdapter(myDictMakeQuestionViewModel, this)
         binding?.data = myDictMakeQuestionViewModel
 
@@ -53,6 +56,12 @@ class MyDictMakeQuestionFragment : Fragment() {
 
         myDictMakeQuestionViewModel.myDictMakeWords.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
+        })
+
+
+        myDictMakeQuestionViewModel.registerWordsNum.observe(viewLifecycleOwner, Observer {
+            val num  = myDictChoiceViewModel.dictCount.value?.plus(it)
+            myDictChoiceViewModel.dictCount.value = num
         })
 
         register_question_button.setOnClickListener {
@@ -73,7 +82,8 @@ class MyDictMakeQuestionFragment : Fragment() {
             saveDialog.setPositiveButton("OK") { _, _ ->
                 myDictMakeQuestionViewModel.registerQuestion(myDictChoiceViewModel.dbUid.value!!)
                 myDictMakeQuestionViewModel.clear()
-                startActivity(intent)
+                fragment.mydict_tab_layout?.getTabAt(1)?.select()
+                Toast.makeText(activity, "単語保存！！", Toast.LENGTH_SHORT).show()
             }
             saveDialog.show()
         }

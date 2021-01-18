@@ -28,8 +28,9 @@ class MyDictMakeQuestionViewModel(application: Application) : AndroidViewModel(a
 
     private var index = 0L
 
-
     val myDictMakeWords: LiveData<MutableList<MyDictMakeWordData>> = _myDictMakeWords
+
+    var registerWordsNum = MutableLiveData(0)
 
     // Dialogに見せるために使われる値
     var dbName: String = ""
@@ -70,9 +71,10 @@ class MyDictMakeQuestionViewModel(application: Application) : AndroidViewModel(a
                 words.add(word)
             }
         }
+        registerWordsNum.value = words.size
 
         // DBに保存する
-        viewModelScope.launch {
+        runBlocking {
             _wordRepository.saveWords(words)
         }
     }
@@ -93,8 +95,12 @@ class MyDictMakeQuestionViewModel(application: Application) : AndroidViewModel(a
         }
     }
 
+    // 表示する韻を全て削除し、一枚だけ足した初期状態に戻す
     fun clear() {
         myDictMakeWordsRaw.clear()
+        index = 0L
+        addCard()
+        registerWordsNum.value = 0
     }
 
 }
