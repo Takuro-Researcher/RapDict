@@ -1,5 +1,6 @@
 package com.rapdict.takuro.rapdict.myDict.myDictChoice
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -22,8 +23,19 @@ import kotlinx.coroutines.launch
 class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
     private var binding :FragmentMydictChoiceBinding ?= null
     private val viewModel: MyDictChoiceViewModel by activityViewModels()
+    private lateinit var deleteDialog :AlertDialog.Builder
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val backIntent = Intent(activity,MainActivity::class.java)
+        deleteDialog = AlertDialog.Builder(requireActivity()).apply {
+            setCancelable(false)
+            setNegativeButton("NO",null)
+            setMessage("※作った言葉はすべて消えます")
+            setPositiveButton("OK") { _, _ ->
+                viewModel.removeMyDict()
+                startActivity(backIntent)
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -40,38 +52,15 @@ class MyDictChoiceFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.dbUid.observe(viewLifecycleOwner, Observer<Int> { dbUid ->
+        viewModel.dbUid.observe(viewLifecycleOwner, Observer<Int> {
+            // 辞書の表示文字を変更するためのメソッド
             viewModel.countChange()
+            // ダイアログ内の辞書名を変更する
+            val message = "単語帳【"+viewModel.useDict+"】を削除する"
+            deleteDialog.setMessage(message)
         })
-
         mydict_delete_button.setOnClickListener {
-            val backIntent = Intent(activity,MainActivity::class.java)
-            val mydict_name = mydict_choice_spinner.selectedItem as String
-            val dialog = AlertDialog.Builder(requireActivity()).apply{
-                setCancelable(false)
-                setTitle("単語帳【"+mydict_name+"】を削除する")
-                setMessage("※作った言葉はすべて消えます")
-                setPositiveButton("OK") { _, _ ->
-                    val id:Int = viewModel!!.dbUid.value!!
-                    GlobalScope.launch {
-                        val dao = db.mydictDao()
-                        dao.deleteByIds(id)
-                        val spfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(activity))
-                        val settingData = spfCommon.settingRead()
-                        // 設定データがもし削除したDBなら参照しないようにする。
-                        if(settingData != null){
-                            if(settingData.dictUid ==id){
-                                settingData.dictUid = -1
-                                spfCommon.settingSave(settingData)
-                            }
-                        }
-                    }
-                    startActivity(backIntent)
-                }
-                setNegativeButton("NO",null)
-            }
-            dialog.show()
+            deleteDialog.show()
         }
     }
 

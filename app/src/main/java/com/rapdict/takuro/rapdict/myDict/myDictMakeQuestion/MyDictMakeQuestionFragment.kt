@@ -24,8 +24,6 @@ class MyDictMakeQuestionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-
-
         saveDialog = AlertDialog.Builder(requireActivity()).apply {
             setCancelable(false)
             setNegativeButton("NO", null)

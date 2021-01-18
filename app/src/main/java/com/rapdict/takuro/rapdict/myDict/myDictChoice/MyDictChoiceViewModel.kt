@@ -1,15 +1,18 @@
 package com.rapdict.takuro.rapdict.myDict.myDictChoice
 
 import android.app.Application
+import android.preference.PreferenceManager
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rapdict.takuro.rapdict.Common.App
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
+import com.rapdict.takuro.rapdict.Common.SpfCommon
 import com.rapdict.takuro.rapdict.Repository.MyDictRepository
 import com.rapdict.takuro.rapdict.Repository.WordRepository
 import com.rapdict.takuro.rapdict.database.Mydict
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -21,6 +24,7 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
     var dbUid = MutableLiveData<Int>()
     var dictCount: MutableLiveData<Int> = MutableLiveData()
     var text10overVisibility: MutableLiveData<Int> = MutableLiveData()
+    var useDict: String = ""
 
     // 必要なもの。辞書の名前たち。UIDの名前たち。現在選択されているUID(MutableLiveData)、表示用のカウント
     private lateinit var uidList : List<Int>
@@ -47,9 +51,26 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
         }
     }
 
+    // 辞書を一つ削除
+    fun removeMyDict(){
+        GlobalScope.launch {
+            _myDictRepository.removeuid2MyDict(dbUid.value!!)
+        }
+        val spf = PreferenceManager.getDefaultSharedPreferences(getApplication())
+        val spfCommon:SpfCommon = SpfCommon(spf)
+        val settingData = spfCommon.settingRead()
+        // 現在のゲーム設定データに、セーブデータが存在していたら削除する。
+        if(settingData != null){
+            if(settingData.dictUid == dbUid.value){
+                settingData.dictUid = -1
+                spfCommon.settingSave(settingData)
+            }
+        }
+    }
 
     // 選択辞書変更
     fun changeUid(position: Int){
+        useDict = dictNameList.value!![position]
         dbUid.value = uidList[position]
     }
 

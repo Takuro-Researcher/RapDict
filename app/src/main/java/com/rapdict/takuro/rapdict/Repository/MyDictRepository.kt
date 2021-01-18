@@ -22,5 +22,11 @@ class MyDictRepository(val context: Context){
         return data
     }
 
+    suspend fun removeuid2MyDict(uid: Int){
+        withContext(Dispatchers.IO){
+            mydictDao.deleteByIds(uid)
+        }
+    }
+
 
 }
