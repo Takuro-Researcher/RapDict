@@ -72,14 +72,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         favoriteProgressList.clear()
     }
 
-    fun getSearchFav(id:Int):Int{
-        if (id == R.id.withoutFav){
-            return 0
-        }else if(id == R.id.onlyFav){
-            return 1
-        }
-        return 2
-    }
+
     fun favo2background(favorite:Boolean):Int{
         return if (favorite){
             Color.YELLOW

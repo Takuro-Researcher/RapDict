@@ -1,133 +1,91 @@
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_light"
-        android:fitsSystemWindows="true"
-        >
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:focusableInTouchMode="true"
+        android:id="@+id/ac_dict"
+        tools:context=".game.GamePlayFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/main.appbar"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:background="@color/colorPrimaryDark"
-        android:fitsSystemWindows="true"
-        >
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/main.collapsing"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginStart="48dp"
-            app:expandedTitleMarginEnd="64dp"
-            app:title="@string/dict"
-            >
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/main.toolbar"
+            android:layout_height="wrap_content"
+            android:id="@+id/form_area"
+            android:padding="13dp"
+            android:background="@drawable/border"
+            android:layout_margin="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <com.jaygoo.widget.RangeSeekBar
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimaryDark"
-                app:layout_collapseMode="pin"
-                app:title="Test"
-                />
-            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:id="@+id/range_progress_seek_bar"
+                app:rsb_indicator_show_mode="alwaysShow"
+                app:rsb_indicator_width="20dp"
+                app:rsb_indicator_height="20dp"
+                app:rsb_indicator_text_size="20sp"
+                app:rsb_indicator_background_color="#121212"
+                app:rsb_mode="range"
+                app:rsb_gravity="center"
+                app:rsb_progress_height="4dp"
+                app:rsb_progress_color="#808080"
+                app:rsb_progress_default_color="#f1f1f1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
+                android:id="@+id/check_list"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/range_progress_seek_bar"
+                android:orientation="horizontal"
+                android:layout_below="@+id/range_progress_seek_bar">
+                <RadioGroup
                     android:layout_width="match_parent"
-                    android:id="@+id/length_button"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginTop="10dp"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:paddingTop="10dp"
-                        android:paddingStart="30dp"
-                        android:paddingEnd="0dp"
-                        android:id="@+id/length_display"
-                        android:textSize="17sp"
-                        android:text="@string/length"/>
-                    <Button
-                        android:layout_width="0dp"
-                        android:id="@+id/search_button"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:textSize="17sp"
-                        android:layout_weight="0.5"
-                        android:text="@string/search"
-                        />
-                </LinearLayout>
-
-                <com.jaygoo.widget.RangeSeekBar
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/range_progress_seek_bar"
-                    app:rsb_indicator_show_mode="alwaysShow"
-                    app:rsb_indicator_width="20dp"
-                    app:rsb_indicator_height="20dp"
-                    app:rsb_indicator_text_size="20sp"
-                    app:rsb_indicator_background_color="#121212"
-                    app:rsb_indicator_radius="3dp"
-                    app:rsb_indicator_margin="10dp"
-                    app:rsb_mode="range"
-                    app:rsb_gravity="center"
-                    app:rsb_progress_height="4dp"
-                    app:rsb_progress_color="#808080"
-                    app:rsb_progress_default_color="#f1f1f1"
-                    android:layout_below="@+id/length_button"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:id="@+id/check_list"
+                    android:id="@+id/radioGroup"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_below="@+id/range_progress_seek_bar">
-                    <RadioGroup
-                        android:layout_width="match_parent"
-                        android:id="@+id/radioGroup"
+                    tools:ignore="UselessParent">
+                    <RadioButton
+                        android:id="@+id/onlyFav"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        tools:ignore="UselessParent">
-                        <RadioButton
-                            android:id="@+id/onlyFav"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/only_favorite"
-                            android:layout_weight="1"/>
-                        <RadioButton
-                            android:id="@+id/withoutFav"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/without_favorite"
-                            android:gravity="center"
-                            android:layout_weight="1"/>
-                        <RadioButton
-                            android:id="@+id/flatFav"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:checked="true"
-                            android:text="@string/none_favorite"
-                            android:layout_weight="1"/>
-                    </RadioGroup>
-                </LinearLayout>
+                        android:gravity="center"
+                        android:text="@string/only_favorite"
+                        android:layout_weight="1"/>
+                    <RadioButton
+                        android:id="@+id/withoutFav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/without_favorite"
+                        android:gravity="center"
+                        android:layout_weight="1"/>
+                    <RadioButton
+                        android:id="@+id/flatFav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:checked="true"
+                        android:text="@string/none_favorite"
+                        android:layout_weight="1"/>
+                </RadioGroup>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/RecyclerView"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/form_area"
+            tools:listitem="@layout/list_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/list_content"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
