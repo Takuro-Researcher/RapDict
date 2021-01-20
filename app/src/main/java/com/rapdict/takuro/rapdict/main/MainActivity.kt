@@ -10,7 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.dict.DictActivity
+import com.rapdict.takuro.rapdict.dict.DictFragment
 import com.rapdict.takuro.rapdict.myDict.GameSettingFragment
 import com.rapdict.takuro.rapdict.myDict.MyDictFragment
 import com.rapdict.takuro.rapdict.tutorial.TutorialFragment
@@ -42,8 +42,9 @@ open class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.dict -> {
-                    val intent = Intent(this, DictActivity::class.java)
-                    startActivity(intent)
+                    supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentFrameLayout, DictFragment())
+                            .commit()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.mydict -> {
