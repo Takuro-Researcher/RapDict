@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict.Repository
 
 import android.content.Context
+import com.rapdict.takuro.rapdict.Word
 import com.rapdict.takuro.rapdict.database.Answer
 import com.rapdict.takuro.rapdict.database.AnswerDao
 import com.rapdict.takuro.rapdict.database.RapDataBase
@@ -16,4 +17,13 @@ class AnswerRepository(val context: Context){
             }
         }
     }
+
+    suspend fun getAnswer(min:Int, max:Int, favoFlag: List<Int>):List<Answer>{
+        var data = listOf<Answer>()
+        withContext(Dispatchers.IO){
+            data = answerDao.findByLenght(min, max, favoFlag)
+        }
+        return data
+    }
+
 }
