@@ -31,4 +31,10 @@ class AnswerRepository(val context: Context) {
         }
     }
 
+    suspend fun deleteAnswer(uid:Int){
+        withContext(Dispatchers.IO){
+            answerDao.deleteByIds(uid)
+        }
+    }
+
 }

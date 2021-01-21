@@ -16,6 +16,7 @@
         card_view:cardUseCompatPadding="true"
         android:clickable="true"
         card_view:cardCornerRadius="4dp"
+        android:onLongClick="@{() -> dict.delete()}"
         card_view:cardElevation="4dp"
         android:foreground="?android:attr/selectableItemBackground"
         android:focusable="true">
@@ -47,8 +48,7 @@
                     android:layout_weight="0.1"
                     android:textSize="15sp"
                     android:gravity="center_horizontal"
-                    android:text="⇒"
-                    />
+                    android:text="⇒" />
                 <TextView
                     android:id="@+id/rhyme_text"
                     android:layout_width="wrap_content"

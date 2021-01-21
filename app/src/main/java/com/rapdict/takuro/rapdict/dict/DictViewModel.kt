@@ -17,7 +17,8 @@ data class DictData(
         val question: String,
         val rhyme: String,
         val uid: Int,
-        val isFavorite: MutableLiveData<Boolean>) {
+        val isFavorite: MutableLiveData<Boolean>,
+        val isDelete: MutableLiveData<Boolean> = MutableLiveData(false)) {
     fun favoriteChange(view: View) {
         val current = isFavorite.value ?: false
         if (current) {
@@ -26,6 +27,10 @@ data class DictData(
             view.favorite_star.playAnimation()
         }
         isFavorite.value = !current
+    }
+    fun delete():Boolean{
+        isDelete.value = true
+        return true
     }
 }
 
@@ -36,7 +41,8 @@ class DictViewModel(application: Application) : AndroidViewModel(application) {
     private var dictDataListRaw = mutableListOf<DictData>()
     private var _dictDataList = MutableLiveData<MutableList<DictData>>()
     val dictDataList: LiveData<MutableList<DictData>> = _dictDataList
-    val minMaxAction: MutableLiveData<Unit> = MutableLiveData()
+    // 監視用のアクション
+    val dataGetAction: MutableLiveData<Unit> = MutableLiveData()
 
     // データ参照用のRepositoryクラス
     private val _answerRepository = AnswerRepository(application)
@@ -51,7 +57,16 @@ class DictViewModel(application: Application) : AndroidViewModel(application) {
         radioType.postValue(R.id.flatFav)
     }
 
-    //
+    fun deleteData(dictData: DictData){
+        val uid = dictData.uid
+        viewModelScope.launch {
+            _answerRepository.deleteAnswer(uid)
+        }
+        dictDataListRaw.remove(dictData)
+        _dictDataList.value = ArrayList(dictDataListRaw)
+    }
+
+    // データのお気に入りの変更
     fun updateFavorite(dictData: DictData) {
         val bool = dictData.isFavorite.value ?: false
         val boolInt = if (bool) 1 else 0
