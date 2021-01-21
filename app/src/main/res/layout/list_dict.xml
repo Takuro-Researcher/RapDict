@@ -61,6 +61,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
+                    android:changeFavoColor="@{dict.isFavorite()}"
+                    android:onClick="@{(view) -> dict.favoriteChange(view)}"
                     card_view:lottie_rawRes="@raw/favorite_app_icon"
                     app:lottie_loop="false" />
             </LinearLayout>

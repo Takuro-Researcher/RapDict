@@ -5,6 +5,7 @@ import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
+import com.airbnb.lottie.LottieAnimationView
 
 
 @BindingAdapter("android:layout_weight")
@@ -35,5 +36,14 @@ fun Spinner.setOnItemSelected(listener: OnItemSelectedListener) {
 
         override fun onNothingSelected(p0: AdapterView<*>?) {
         }
+    }
+}
+
+@BindingAdapter("android:changeFavoColor")
+fun changeFavoColor(view: LottieAnimationView, bool: Boolean) {
+    if (bool) {
+        view.playAnimation()
+    } else {
+        view.progress = 0F
     }
 }

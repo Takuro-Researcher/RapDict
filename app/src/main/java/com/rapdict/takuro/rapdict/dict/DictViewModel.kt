@@ -1,23 +1,33 @@
 package com.rapdict.takuro.rapdict.dict
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.Repository.AnswerRepository
-import com.rapdict.takuro.rapdict.database.Answer
-import kotlinx.android.synthetic.main.fragment_dict.view.*
-import kotlinx.coroutines.*
+import kotlinx.android.synthetic.main.list_dict.view.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 data class DictData(
         val id: Long,
-        val question:String,
-        val rhyme:String,
+        val question: String,
+        val rhyme: String,
         val uid: Int,
-        val isFavorite:MutableLiveData<Boolean>
-)
+        val isFavorite: MutableLiveData<Boolean>) {
+    fun favoriteChange(view: View) {
+        val current = isFavorite.value ?: false
+        if (current) {
+            view.favorite_star.progress = 0F
+        } else {
+            view.favorite_star.playAnimation()
+        }
+        isFavorite.value = !current
+    }
+}
 
 
 class DictViewModel(application: Application) : AndroidViewModel(application) {
@@ -34,38 +44,52 @@ class DictViewModel(application: Application) : AndroidViewModel(application) {
 
     var min: Int = 0
     var max: Int = 1
-    private var favoState:List<Int> = listOf(1)
-    var radioType:MutableLiveData<Int> = MutableLiveData<Int>()
+    private var favoState: List<Int> = listOf(1)
+    var radioType: MutableLiveData<Int> = MutableLiveData<Int>()
 
-    init{
+    init {
         radioType.postValue(R.id.flatFav)
     }
-    fun convertRidList(){
-        if(radioType.value == R.id.onlyFav){
-            favoState = listOf(1)
-        }else if(radioType.value == R.id.withoutFav){
-            favoState = listOf(0)
-        }else if(radioType.value == R.id.flatFav){
-            favoState = listOf(0,1)
+
+    //
+    fun updateFavorite(dictData: DictData) {
+        val bool = dictData.isFavorite.value ?: false
+        val boolInt = if (bool) 1 else 0
+        val uid = dictData.uid
+        viewModelScope.launch {
+            _answerRepository.updateAnswer(uid, boolInt)
         }
     }
 
-    fun loadData(){
+
+    // ridからデータベース用のリストに変更する
+    fun convertRidList() {
+        if (radioType.value == R.id.onlyFav) {
+            favoState = listOf(1)
+        } else if (radioType.value == R.id.withoutFav) {
+            favoState = listOf(0)
+        } else if (radioType.value == R.id.flatFav) {
+            favoState = listOf(0, 1)
+        }
+    }
+
+    // リストにデータを入力する。
+    fun loadData() {
         val data = runBlocking {
-            _answerRepository.getAnswer(min,max,favoState)
+            _answerRepository.getAnswer(min, max, favoState)
         }
         dictDataListRaw.clear()
         index = 0
 
         data.apply {
-            if(isNotEmpty()){
+            if (isNotEmpty()) {
                 forEach {
                     it.apply {
-                        val favorite:Boolean = favorite == 1
-                        val rhyme:String = answer ?: ""
-                        val question:String = question ?: ""
-                        val uid:Int = uid
-                        val dictData = DictData(index,question,rhyme,uid,MutableLiveData(favorite))
+                        val favorite: Boolean = favorite == 1
+                        val rhyme: String = answer ?: ""
+                        val question: String = question ?: ""
+                        val uid: Int = uid
+                        val dictData = DictData(index, question, rhyme, uid, MutableLiveData(favorite))
                         index += 1
                         dictDataListRaw.add(dictData)
                     }

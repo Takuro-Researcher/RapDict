@@ -2,7 +2,6 @@ package com.rapdict.takuro.rapdict.dict
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.health.SystemHealthManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,8 @@ import androidx.lifecycle.Observer
 import apps.test.marketableskill.biz.recyclerview.DictListAdapter
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
-import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.FragmentDictBinding
-import com.rapdict.takuro.rapdict.databinding.FragmentMydictDisplayBinding
-import com.rapdict.takuro.rapdict.myDict.myDictDisplay.MyDictDisplayListAdapter
 import kotlinx.android.synthetic.main.fragment_dict.*
-import java.util.*
 
 
 class DictFragment : androidx.fragment.app.Fragment() {
@@ -29,7 +24,6 @@ class DictFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentDictBinding.inflate(inflater, container, false)
         binding!!.lifecycleOwner = this
@@ -53,11 +47,13 @@ class DictFragment : androidx.fragment.app.Fragment() {
             dictViewModel.minMaxAction.value = Unit
         })
         dictViewModel.dictDataList.observe(viewLifecycleOwner, Observer {
-            // TODO アダプターによる差分を反映させるメソッドをここに書く。
             adapter.submitList(it)
+            for (dictData in it) {
+                dictData.isFavorite.observe(viewLifecycleOwner, Observer {
+                    dictViewModel.updateFavorite(dictData)
+                })
+            }
         })
-
-
 
 
         //range Progress bar で必要な設定
