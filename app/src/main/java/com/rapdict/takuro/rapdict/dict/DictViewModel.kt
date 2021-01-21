@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_dict.view.*
 import kotlinx.coroutines.*
 
 data class DictData(
+        val id: Long,
         val question:String,
         val rhyme:String,
         val uid: Int,
@@ -29,6 +30,7 @@ class DictViewModel(application: Application) : AndroidViewModel(application) {
 
     // データ参照用のRepositoryクラス
     private val _answerRepository = AnswerRepository(application)
+    private var index = 0L
 
     var min: Int = 0
     var max: Int = 1
@@ -53,6 +55,8 @@ class DictViewModel(application: Application) : AndroidViewModel(application) {
             _answerRepository.getAnswer(min,max,favoState)
         }
         dictDataListRaw.clear()
+        index = 0
+
         data.apply {
             if(isNotEmpty()){
                 forEach {
@@ -61,7 +65,8 @@ class DictViewModel(application: Application) : AndroidViewModel(application) {
                         val rhyme:String = answer ?: ""
                         val question:String = question ?: ""
                         val uid:Int = uid
-                        val dictData = DictData(question,rhyme,uid,MutableLiveData(favorite))
+                        val dictData = DictData(index,question,rhyme,uid,MutableLiveData(favorite))
+                        index += 1
                         dictDataListRaw.add(dictData)
                     }
                 }

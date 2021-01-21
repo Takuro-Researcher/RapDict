@@ -8,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import apps.test.marketableskill.biz.recyclerview.DictListAdapter
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.FragmentDictBinding
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictDisplayBinding
+import com.rapdict.takuro.rapdict.myDict.myDictDisplay.MyDictDisplayListAdapter
 import kotlinx.android.synthetic.main.fragment_dict.*
+import java.util.*
 
 
 class DictFragment : androidx.fragment.app.Fragment() {
@@ -37,6 +40,10 @@ class DictFragment : androidx.fragment.app.Fragment() {
         super.onActivityCreated(savedInstanceState)
         binding?.data = dictViewModel
 
+        val adapter = DictListAdapter(dictViewModel, this)
+        DictRecyclerView.adapter = adapter
+        DictRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+
         dictViewModel.minMaxAction.observe(viewLifecycleOwner, Observer {
             dictViewModel.loadData()
         })
@@ -47,6 +54,7 @@ class DictFragment : androidx.fragment.app.Fragment() {
         })
         dictViewModel.dictDataList.observe(viewLifecycleOwner, Observer {
             // TODO アダプターによる差分を反映させるメソッドをここに書く。
+            adapter.submitList(it)
         })
 
 

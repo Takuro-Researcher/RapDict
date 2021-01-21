@@ -83,13 +83,13 @@
         <androidx.recyclerview.widget.RecyclerView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/RecyclerView"
+            android:id="@+id/DictRecyclerView"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/form_area"
-            tools:listitem="@layout/list_item" />
+            tools:listitem="@layout/list_dict" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
