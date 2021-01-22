@@ -5,22 +5,27 @@ MVVMを使用
 ざっくり各々の役割を記述
 
 ## Model
-データクラスなどを主に担当。Sqliteの文や該当するクラスのデータの下処理などはここに記述。
-### 備考
-データの下処理はCompanion ObjectなどのStaticメソッドとして利用してよし。
-
+DataClassなどがある。database関連やDaoがModelになるイメージ
 
 ## View
-主にFragmentやActivity。画面遷移やボタンの動作、画面遷移後の値の受け渡しなどを担当。
-MVCのController的な立ち位置が強い
-### 備考
-ボタンのクリックイベントや、特に画面遷移は必ずここに記述すること・
+FragmentやActivity。画面遷移やボタンの動作、Dialogなど。
+
+LiveDataのObserveくらい
+
+データの整形などは極力しない
 
 ## ViewModel
 データバインディングによって、バインディングされた値の描画などを担当
 ***重要なことであるが、こいつがViewを呼び出して何か変更するなどの処理は絶対にないようにする***
 
 基本的にView要素がViewModelの描画メソッドを呼び出すなどして、変更するようにする
+
+
+
+## Repository
+APIやSqliteなど、中断関数を経由するものはすべてDataRepositoryに記述するようにする。
+
+一応今回の設計ではデータの整形はあまり行わず、そのままViewModelに渡すようにする。
 
 
 # Proxy対応
