@@ -1,6 +1,5 @@
 package com.rapdict.takuro.rapdict.dict
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -64,6 +63,7 @@ class DictFragment : androidx.fragment.app.Fragment() {
                         deleteDialog.setPositiveButton("OK") { _, _ ->
                             dictViewModel.deleteData(dictData)
                         }.show()
+                        dictData.isDelete.value = false
                     }
                 })
             }

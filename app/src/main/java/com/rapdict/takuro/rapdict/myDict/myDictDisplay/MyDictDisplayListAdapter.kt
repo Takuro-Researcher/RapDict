@@ -28,7 +28,6 @@ class MyDictDisplayListAdapter(private val viewModel: MyDictDisplayViewModel,
             binding.run {
                 lifecycleOwner = viewLifecycleOwner
                 displayWord = item
-                data = viewModel
                 this.position = position
                 executePendingBindings()
             }
