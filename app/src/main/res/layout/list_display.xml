@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.myDictDisplay.MyDictDisplayViewModel"/>
         <variable name="displayWord" type="com.rapdict.takuro.rapdict.myDict.myDictDisplay.MyDictDisplayWordData" />
         <variable name="position" type="Integer"/>
     </data>
@@ -14,7 +13,7 @@
         android:clickable="true"
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="4dp"
-        android:onLongClick="@{() -> data.delete(displayWord)}"
+        android:onLongClick="@{() -> displayWord.delete()}"
         android:foreground="?android:attr/selectableItemBackground"
         android:focusable="true">
         <LinearLayout
