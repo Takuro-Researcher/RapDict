@@ -50,10 +50,9 @@ open class GameActivity : AppCompatActivity() {
         req.setOnCallBack(object : getHttp.CallBackTask() {
             override fun CallBack(result: String) {
                 super.CallBack(result)
-                val words = ArrayList<Word>()
+                var words: MutableList<Word> = mutableListOf()
                 try {
                     val rhymes = JSONObject(result).get("words") as JSONArray
-                    System.out.println(rhymes)
                     for (i in 0 until rhymes.length()) {
                         val jsonWord = rhymes.getJSONObject(i)
                         val questionWord = Word(
@@ -64,10 +63,14 @@ open class GameActivity : AppCompatActivity() {
                                 -1
                         )
                         words.add(questionWord)
-                        bundle.putSerializable("WORDS", words)
                         bundle.putInt("QUESTION", data.question)
                         changedTexts()
                     }
+                    if (words.size < data.question) {
+                        words = CommonTool.paddList(words, data.question) as ArrayList<Word>
+                    }
+                    words = words as ArrayList<Word>
+                    bundle.putSerializable("WORDS", words)
                 } catch (e: Exception) {
                     recomdialog.setMessage("データが取ってこれませんでした..。自作の辞書で韻を踏んでみてください")
                     recomdialog.show()
@@ -86,7 +89,7 @@ open class GameActivity : AppCompatActivity() {
             }
             if (wordData.size == 0) {
                 recomdialog.show()
-            }else if (wordData.size < 10){
+            } else if (wordData.size < data.question) {
                 wordData = CommonTool.paddList(wordData, data.question) as List<Word>
             }
             bundle.putSerializable("WORDS", wordData as ArrayList<Word>)
