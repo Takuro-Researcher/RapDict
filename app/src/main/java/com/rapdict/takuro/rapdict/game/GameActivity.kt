@@ -39,7 +39,6 @@ open class GameActivity : AppCompatActivity() {
             this.putInt("BAR", CommonTool.choiceMusic(data.drumOnly, data.type, data.bar))
         }
         // 言葉を取得
-        System.out.println(jsonData)
         val req = getHttp(CommonTool.makeApiUrl(data.min, data.max, data.question))
         val recomdialog = AlertDialog.Builder(this)
         recomdialog.setCancelable(false)
@@ -53,11 +52,12 @@ open class GameActivity : AppCompatActivity() {
                 super.CallBack(result)
                 val words = ArrayList<Word>()
                 try {
-                    val rhymes = JSONObject(result).get("rhymes") as JSONArray
+                    val rhymes = JSONObject(result).get("words") as JSONArray
+                    System.out.println(rhymes)
                     for (i in 0 until rhymes.length()) {
                         val jsonWord = rhymes.getJSONObject(i)
                         val questionWord = Word(
-                                jsonWord.getInt("id"),
+                                -1,
                                 jsonWord.getString("furigana"),
                                 jsonWord.getString("word"),
                                 jsonWord.getInt("length"),

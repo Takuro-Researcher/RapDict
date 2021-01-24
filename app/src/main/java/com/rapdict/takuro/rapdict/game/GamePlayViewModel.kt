@@ -5,7 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.rapdict.takuro.rapdict.Word
 
-class GamePlayViewModel(application: Application) : AndroidViewModel(application) {
+class
+GamePlayViewModel(application: Application) : AndroidViewModel(application) {
 
     //監視対象のLiveData
     private var questionNum: Int = 0
@@ -15,7 +16,7 @@ class GamePlayViewModel(application: Application) : AndroidViewModel(application
     var furigana: String = ""
     var isFinish: MutableLiveData<Boolean> = MutableLiveData()
     var answer: MutableLiveData<String> = MutableLiveData()
-    private var _answerMap:MutableMap<Int, String> = mutableMapOf()
+    private var _answerMap: MutableMap<Int, String> = mutableMapOf()
     var words: List<Word> = listOf()
     val answerMap: MutableMap<Int, String>
         get() = _answerMap
