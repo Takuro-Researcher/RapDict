@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">https://script.google.com/macros/s/AKfycbwlFWDy9zFZK2nWMyXrHdHrlIJ2wZPx-ufvaLwukpjs0fMzqg/exec</domain>
+        <domain includeSubdomains="true">
+            https://script.google.com/macros/s/AKfycbwlFWDy9zFZK2nWMyXrHdHrlIJ2wZPx-ufvaLwukpjs0fMzqg/exec
+        </domain>
+        <domain-config cleartextTrafficPermitted="true">
+            <domain includeSubdomains="true">118.27.117.79</domain>
+        </domain-config>
     </domain-config>
 </network-security-config>
