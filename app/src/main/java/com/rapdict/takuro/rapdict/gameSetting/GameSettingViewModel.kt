@@ -12,22 +12,25 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
 
     //監視対象のLiveData
     val barArray: List<Int> = listOf(2, 4, 8)
-    var minArray: List<Int> = List(20) { it + 1 }
-    var maxArray: List<Int> = List(20) { it + 1 }
+    var minArray: List<Int> = List(20) { it + 2 }
+    var maxArray: List<Int> = List(20) { it + 2 }
     val questionArray: List<Int> = listOf(5, 10, 15, 20)
     var dictNameArray: List<String> = listOf()
     val beatTypeArray: List<String> = listOf("low", "middle", "high", "tri")
     var drumOnly = MutableLiveData<Boolean>(false)
     var bar = MutableLiveData<Int>()
+
     var min = MutableLiveData<Int>()
-    var max = MutableLiveData<Int>()
+
+    // 3文字にしないとDBで取ってこれない可能性が高い
+    var max = MutableLiveData<Int>(1)
     var question = MutableLiveData<Int>()
     var dictName = MutableLiveData<Int>()
     var beatType = MutableLiveData<Int>()
     private var dictValueArray: Map<Int, String> = mapOf()
     private var isUpdateMyDictBoolean: Boolean = false
 
-    var settingData: GameSettingData = GameSettingData(2, "low", false, 0, 1, 0, -1)
+    var settingData: GameSettingData = GameSettingData(2, "low", false, 2, 3, 5, -1)
 
     //ViewModel初期化時にロード
     init {
@@ -64,7 +67,6 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
 
     fun isUpdateMyDict():Boolean{
         runBlocking {
-            val dictDao = db.mydictDao()
             val wordDao = db.wordDao()
             val dicts = wordDao.countByDict()
             isUpdateMyDictBoolean = dicts.size == dictNameArray.size
