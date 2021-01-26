@@ -33,7 +33,6 @@ open class GameActivity : AppCompatActivity() {
         val mapper = jacksonObjectMapper()
         val transaction = supportFragmentManager.beginTransaction()
         val data: GameSettingData = mapper.readValue(jsonData.toString())
-                ?: GameSettingData(2, "low", true, 3, 6, 10, -1)
         val bundle = Bundle().apply {
             this.putInt("RETURN", 1)
             this.putInt("BAR", CommonTool.choiceMusic(data.drumOnly, data.type, data.bar))

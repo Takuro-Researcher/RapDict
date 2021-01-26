@@ -13,7 +13,6 @@ class CommonTool {
             url += "min=$min&"
             url += "max=$max&"
             url += "number=$num"
-            System.out.println(url)
             return url
         }
 

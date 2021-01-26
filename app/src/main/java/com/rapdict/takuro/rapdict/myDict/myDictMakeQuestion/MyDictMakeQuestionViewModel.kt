@@ -1,15 +1,12 @@
 package com.rapdict.takuro.rapdict.myDict.myDictMakeQuestion
 
 import android.app.Application
-
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.rapdict.takuro.rapdict.Repository.MyDictRepository
 import com.rapdict.takuro.rapdict.Repository.WordRepository
 import com.rapdict.takuro.rapdict.Word
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 data class MyDictMakeWordData(
@@ -57,7 +54,7 @@ class MyDictMakeQuestionViewModel(application: Application) : AndroidViewModel(a
         _myDictMakeWords.value?.forEach {
             var furigana = it.furigana.value ?: ""
             val question = it.question.value ?: ""
-            val length = furigana.length
+
             var word: Word? = null
             // 質問が空の場合保存をしない。
             if (question.isNotEmpty()) {
@@ -65,6 +62,7 @@ class MyDictMakeQuestionViewModel(application: Application) : AndroidViewModel(a
                 if (furigana.isEmpty()) {
                     furigana = question
                 }
+                val length = furigana.length
                 word = Word(0, furigana, question, length, dictUid)
             }
             if (word != null) {
