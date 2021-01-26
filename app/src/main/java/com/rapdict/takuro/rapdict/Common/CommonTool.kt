@@ -79,10 +79,11 @@ class CommonTool {
             view.startAnimation(animation)
         }
 
-        // Listを指定数だけ増やして返す。Wordが問題数より少ないときなどに使う。
+        // WordListを指定数だけ増やして返す。もう少し汎用的にするはAny
         fun paddList(list: List<Any>, toNum: Int):MutableList<Any> {
             val tmp_list = list.toList()
-            val resultList = tmp_list as MutableList
+            val resultList = mutableListOf<Any>()
+            resultList.addAll(tmp_list)
             for (i in list.size until toNum) {
                 val tmpIndex = ThreadLocalRandom.current().nextInt(0, list.size)
                 val data = tmp_list[tmpIndex]

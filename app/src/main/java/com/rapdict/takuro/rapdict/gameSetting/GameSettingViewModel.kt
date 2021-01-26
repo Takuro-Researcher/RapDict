@@ -41,13 +41,11 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         val settingTmp = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication())).settingRead()
         runBlocking {
             val dictDao = db.mydictDao()
-            val wordDao = db.wordDao()
-            val dicts = wordDao.countByDict()
+            val dicts = dictDao.findAll()
             val tmp: MutableMap<Int, String> = mutableMapOf<Int, String>(-1 to "日本語辞書")
             dicts.forEach {
-                val dict_data = dictDao.findOneByIds(it.dictid)
-                val name = dict_data.name ?: ""
-                val uid = dict_data.uid
+                val name = it.name ?: ""
+                val uid = it.uid
                 tmp.put(uid, name)
             }
             dictNameArray = tmp.values.toMutableList()
