@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/game_furigana_text"
-        android:text="テスト"
+        android:text="@{data.furigana_text}"
         android:layout_marginTop="10sp"
         android:textAlignment="center"
         android:padding="18sp"
