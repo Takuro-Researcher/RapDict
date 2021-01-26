@@ -62,14 +62,16 @@ open class GameActivity : AppCompatActivity() {
                                 -1
                         )
                         words.add(questionWord)
-                        bundle.putInt("QUESTION", data.question)
-                        changedTexts()
                     }
                     if (words.size < data.question) {
                         words = CommonTool.paddList(words, data.question) as ArrayList<Word>
                     }
                     words = words as ArrayList<Word>
+                    System.out.println(words)
                     bundle.putSerializable("WORDS", words)
+                    bundle.putInt("QUESTION", data.question)
+
+                    changedTexts()
                 } catch (e: Exception) {
                     recomdialog.setMessage("データが取ってこれませんでした..。自作の辞書で韻を踏んでみてください")
                     recomdialog.show()
