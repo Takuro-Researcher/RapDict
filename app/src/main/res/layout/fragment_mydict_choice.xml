@@ -8,8 +8,18 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="辞書を選択"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/mydict_choice_spinner"
+            android:layout_marginBottom="20dp" />
+
         <Spinner
             android:id="@+id/mydict_choice_spinner"
             android:layout_width="match_parent"
@@ -19,6 +29,7 @@
             android:onChangeSpinner="@{(i) -> data.changeUid(i)}"
             android:entries="@{data.dictNameList}"
             android:dropDownWidth="match_parent" />
+
         <TextView
             android:padding="30dp"
             android:layout_margin="25dp"
@@ -40,18 +51,6 @@
             android:text="@{Integer.toString(data.dictCount)}"
             app:layout_constraintTop_toTopOf="@id/mydict_register_num_text"
             app:layout_constraintEnd_toEndOf="parent"/>
-        <TextView
-            android:padding="30dp"
-            android:id="@+id/mydict_attention_10_over"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/colorAlert"
-            android:text="@string/mydict_attention_10Over"
-            app:layout_constraintTop_toBottomOf="@+id/mydict_register_num_text"
-            android:visibility="@{data.text10overVisibility}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
 
         <Button
             android:padding="15dp"
@@ -59,10 +58,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
+            android:background="#FF0000"
             android:text="単語帳を削除"
-            app:layout_constraintTop_toBottomOf="@id/mydict_attention_10_over"
+            android:textColor="@color/whiteSmoke"
+            app:layout_constraintTop_toBottomOf="@id/mydict_register_num"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

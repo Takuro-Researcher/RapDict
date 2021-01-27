@@ -2,18 +2,13 @@ package com.rapdict.takuro.rapdict.myDict.myDictChoice
 
 import android.app.Application
 import android.preference.PreferenceManager
-import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.rapdict.takuro.rapdict.Common.App
-import com.rapdict.takuro.rapdict.Common.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.SpfCommon
 import com.rapdict.takuro.rapdict.Repository.MyDictRepository
 import com.rapdict.takuro.rapdict.Repository.WordRepository
 import com.rapdict.takuro.rapdict.database.Mydict
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -23,7 +18,6 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
 
     var dbUid = MutableLiveData<Int>()
     var dictCount: MutableLiveData<Int> = MutableLiveData()
-    var text10overVisibility: MutableLiveData<Int> = MutableLiveData()
     var useDict: String = ""
 
     // 必要なもの。辞書の名前たち。UIDの名前たち。現在選択されているUID(MutableLiveData)、表示用のカウント
@@ -87,15 +81,10 @@ class MyDictChoiceViewModel (application: Application) : AndroidViewModel(applic
         changeUid(0)
     }
 
-    // 選択された辞書の単語数をカウントし、必要なメッセージを表示する
+    // 選択された辞書の単語数をカウントする
     fun countChange(){
         runBlocking {
             dictCount.value = _wordRepository.countWords(dbUid.value!!)
-        }
-        if (dictCount.value?: 0 < 10){
-            text10overVisibility.value= View.VISIBLE
-        }else{
-            text10overVisibility.value = View.GONE
         }
     }
 }
