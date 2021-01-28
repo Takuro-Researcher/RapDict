@@ -43,6 +43,7 @@ class MyDictFragment : androidx.fragment.app.Fragment() {
             mydict_pager.setPagingEnabled(false)
         }
         mydict_pager.adapter = MyDictTabAdapter(childFragmentManager)
+        mydict_pager.offscreenPageLimit = 2
         mydict_tab_layout.setupWithViewPager(mydict_pager)
     }
 

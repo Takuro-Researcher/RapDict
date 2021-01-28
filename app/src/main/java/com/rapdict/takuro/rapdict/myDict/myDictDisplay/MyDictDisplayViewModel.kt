@@ -29,8 +29,7 @@ class MyDictDisplayViewModel(application: Application) : AndroidViewModel(applic
     private var _myDictDisplayWords = MutableLiveData<MutableList<MyDictDisplayWordData>>()
     private var initWords = mutableListOf<MyDictDisplayWordData>()
     private var index = 0L
-
-
+    
     val myDictDisplayWords: LiveData<MutableList<MyDictDisplayWordData>> = _myDictDisplayWords
 
     // データ参照用のRepositoryクラス
@@ -38,7 +37,6 @@ class MyDictDisplayViewModel(application: Application) : AndroidViewModel(applic
 
     fun bindData(uid: Int) {
         var data = listOf<Word>()
-        //
         myDictDisplayWordsRaw = mutableListOf()
         runBlocking {
             data = _wordRepository.getWords(uid)

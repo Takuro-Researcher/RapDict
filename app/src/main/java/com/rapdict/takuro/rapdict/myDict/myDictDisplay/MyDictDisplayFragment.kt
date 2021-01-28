@@ -41,6 +41,11 @@ class MyDictDisplayFragment : androidx.fragment.app.Fragment() {
 
         DisplayRecyclerView.adapter = adapter
         DisplayRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+
+        myDictChoiceViewModel.dbUid.observe(viewLifecycleOwner, Observer {
+            myDictDisplayViewModel.bindData(it)
+        })
+
         myDictDisplayViewModel.myDictDisplayWords.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
             for (data in it) {
@@ -55,10 +60,6 @@ class MyDictDisplayFragment : androidx.fragment.app.Fragment() {
             }
             myDictChoiceViewModel.dictCount.value = it.size
         })
-
-
-        val uid: Int = myDictChoiceViewModel.dbUid.value!!
-        myDictDisplayViewModel.bindData(uid)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
