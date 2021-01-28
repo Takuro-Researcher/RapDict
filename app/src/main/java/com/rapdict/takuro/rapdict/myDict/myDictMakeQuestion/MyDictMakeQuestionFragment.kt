@@ -1,6 +1,5 @@
 package com.rapdict.takuro.rapdict.myDict.myDictMakeQuestion
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.rapdict.takuro.rapdict.databinding.FragmentMydictQuestionMakeBinding
-import com.rapdict.takuro.rapdict.main.MainActivity
 import com.rapdict.takuro.rapdict.myDict.MyDictFragment
 import com.rapdict.takuro.rapdict.myDict.myDictChoice.MyDictChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_mydict1.*
@@ -60,8 +58,10 @@ class MyDictMakeQuestionFragment : Fragment() {
 
 
         myDictMakeQuestionViewModel.registerWordsNum.observe(viewLifecycleOwner, Observer {
-            val num  = myDictChoiceViewModel.dictCount.value?.plus(it)
+            val num = myDictChoiceViewModel.dictCount.value?.plus(it)
             myDictChoiceViewModel.dictCount.value = num
+            val num2 = myDictChoiceViewModel.dbUid.value
+            myDictChoiceViewModel.dbUid.value = num2
         })
 
         register_question_button.setOnClickListener {
