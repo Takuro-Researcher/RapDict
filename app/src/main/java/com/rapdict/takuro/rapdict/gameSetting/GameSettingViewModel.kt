@@ -74,8 +74,6 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
         runBlocking {
             val dictDao = db.mydictDao()
             val dicts = dictDao.findAll()
-            System.out.println(dicts)
-            System.out.println(dictNameArrayRaw)
             isNotUpdateMyDictBoolean = dicts.size + 1 == dictNameArrayRaw.size
         }
         return isNotUpdateMyDictBoolean
