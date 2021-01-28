@@ -15,11 +15,14 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     var minArray: List<Int> = List(20) { it + 2 }
     var maxArray: List<Int> = List(20) { it + 2 }
     val questionArray: List<Int> = listOf(5, 10, 15, 20)
-    var dictNameArray: List<String> = listOf()
+    private var dictNameArrayRaw: List<String> = listOf()
+    private var _dictNameArray = MutableLiveData<List<String>>()
+    var dictNameArray = _dictNameArray
+
+
     val beatTypeArray: List<String> = listOf("low", "middle", "high", "tri")
     var drumOnly = MutableLiveData<Boolean>(false)
     var bar = MutableLiveData<Int>()
-
     var min = MutableLiveData<Int>()
 
     // 3文字にしないとDBで取ってこれない可能性が高い
@@ -28,7 +31,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     var dictName = MutableLiveData<Int>()
     var beatType = MutableLiveData<Int>()
     private var dictValueArray: Map<Int, String> = mapOf()
-    private var isUpdateMyDictBoolean: Boolean = false
+
 
     var settingData: GameSettingData = GameSettingData(2, "low", false, 2, 3, 5, -1)
 
@@ -48,9 +51,11 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
                 val uid = it.uid
                 tmp.put(uid, name)
             }
-            dictNameArray = tmp.values.toMutableList()
+            dictNameArrayRaw = tmp.values.toList()
             dictValueArray = tmp
         }
+        // MutableLiveData用
+        _dictNameArray.value = ArrayList(dictNameArrayRaw)
         if (settingTmp != null) {
             settingData = settingTmp
             bar.value = barArray.indexOf(settingData.bar)
@@ -59,17 +64,21 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             question.value = questionArray.indexOf(settingData.question)
             beatType.value = beatTypeArray.indexOf(settingData.type)
             drumOnly.value = settingData.drumOnly
-            dictName.value = dictNameArray.indexOf(dictValueArray[settingData.dictUid])
+            dictName.value = dictNameArrayRaw.indexOf(dictValueArray[settingData.dictUid])
         }
     }
 
-    fun isUpdateMyDict():Boolean{
+    fun isNotUpdateMyDict(): Boolean {
+        var isNotUpdateMyDictBoolean: Boolean = false
+
         runBlocking {
-            val wordDao = db.wordDao()
-            val dicts = wordDao.countByDict()
-            isUpdateMyDictBoolean = dicts.size == dictNameArray.size
+            val dictDao = db.mydictDao()
+            val dicts = dictDao.findAll()
+            System.out.println(dicts)
+            System.out.println(dictNameArrayRaw)
+            isNotUpdateMyDictBoolean = dicts.size + 1 == dictNameArrayRaw.size
         }
-        return isUpdateMyDictBoolean
+        return isNotUpdateMyDictBoolean
     }
     fun changeDictData(){
         runBlocking {
@@ -81,8 +90,9 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
                 val uid = it.uid
                 tmp.put(uid, name)
             }
-            dictNameArray = tmp.values.toMutableList()
+            dictNameArrayRaw = tmp.values.toList()
             dictValueArray = tmp
+            _dictNameArray.value = ArrayList(dictNameArrayRaw)
         }
     }
 
@@ -118,7 +128,7 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun changeDict(position: Int) {
-        val dictData = dictValueArray.filterValues { value -> value == dictNameArray[position] }
+        val dictData = dictValueArray.filterValues { value -> value == dictNameArrayRaw[position] }
         settingData.dictUid = dictData.keys.toList()[0]
     }
 
