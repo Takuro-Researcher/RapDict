@@ -85,13 +85,15 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
             if (isChecked){
                 // 保存を行うための処理
                 val textAnswer = it.answer.value ?: ""
-                val checkedId = it.checked_id.value?: 0
+                val checkedId = it.checked_id.value ?: 0
                 val answer = Answer(0,
-                                    answer = textAnswer,
-                                    answerLen = textAnswer.length,
-                                    question = wordsTexts[checkedId],
-                                    favorite = 0)
-                answerList.add(answer)
+                        answer = textAnswer,
+                        answerLen = textAnswer.length,
+                        question = wordsTexts[checkedId],
+                        favorite = 0)
+                if (textAnswer.isNotEmpty()) {
+                    answerList.add(answer)
+                }
             }
         }
         // DBに保存する
