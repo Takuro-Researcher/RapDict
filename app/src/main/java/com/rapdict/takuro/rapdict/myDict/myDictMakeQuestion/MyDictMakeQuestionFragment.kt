@@ -61,7 +61,9 @@ class MyDictMakeQuestionFragment : Fragment() {
             val num = myDictChoiceViewModel.dictCount.value?.plus(it)
             myDictChoiceViewModel.dictCount.value = num
             val num2 = myDictChoiceViewModel.dbUid.value
-            myDictChoiceViewModel.dbUid.value = num2
+            if (num2 != null) {
+                myDictChoiceViewModel.dbUid.value = num2
+            }
         })
 
         register_question_button.setOnClickListener {

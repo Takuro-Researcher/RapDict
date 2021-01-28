@@ -48,6 +48,4 @@ GamePlayViewModel(application: Application) : AndroidViewModel(application) {
             _answerMap[_question -1] = tmpAnswer
         }
     }
-
-
 }

@@ -44,10 +44,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:inputType="text"
                 android:layout_weight="0.5"
                 android:text="@={data.dictName}"
-                android:hint="例：好きな曲"
-                />
+                android:hint="例：好きな曲" />
         </LinearLayout>
         　<Button
             android:id="@+id/mydict_register_button"
