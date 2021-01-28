@@ -32,7 +32,8 @@ class GameSettingWordFragment : androidx.fragment.app.Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if(viewModel.isUpdateMyDict()){
+        //　ViewModelの初期化が入る前に、データの更新が入った場合、辞書データを変更する
+        if (!viewModel.isNotUpdateMyDict()) {
             viewModel.changeDictData()
         }
     }
