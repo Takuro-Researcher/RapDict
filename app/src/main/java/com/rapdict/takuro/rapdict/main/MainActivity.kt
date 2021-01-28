@@ -1,6 +1,5 @@
 package com.rapdict.takuro.rapdict.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -26,11 +25,21 @@ open class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
+
         // コードからフラグメントを追加
         if (savedInstanceState == null) {
+            val isMove = intent.getBooleanExtra("MOVE", false)
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.add(R.id.fragmentFrameLayout, TutorialFragment())
-            transaction.commit()
+            // ゲーム画面からの移動ならば、ゲーム画面へ直接移動する
+            if (isMove) {
+                transaction.add(R.id.fragmentFrameLayout, GameSettingFragment())
+                transaction.commit()
+            } else {
+                transaction.add(R.id.fragmentFrameLayout, TutorialFragment())
+                transaction.commit()
+            }
+
+
         }
 
         navi.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->

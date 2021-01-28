@@ -64,7 +64,9 @@ class GameSettingViewModel(application: Application) : AndroidViewModel(applicat
             question.value = questionArray.indexOf(settingData.question)
             beatType.value = beatTypeArray.indexOf(settingData.type)
             drumOnly.value = settingData.drumOnly
+            System.out.println(dictNameArrayRaw)
             dictName.value = dictNameArrayRaw.indexOf(dictValueArray[settingData.dictUid])
+            System.out.println(dictName.value!!)
         }
     }
 

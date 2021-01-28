@@ -100,8 +100,8 @@
                 android:id="@+id/game_setting_use_dict_spinner"
                 android:layout_weight="0.1"
                 android:onChangeSpinner="@{(i) -> data.changeDict(i)}"
-                android:OnItemSelected="@{data.dictName}"
-                android:entries="@{data.dictNameArray}" />
+                android:entries="@{data.dictNameArray}"
+                android:OnItemSelected="@{data.dictName}" />
         </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
