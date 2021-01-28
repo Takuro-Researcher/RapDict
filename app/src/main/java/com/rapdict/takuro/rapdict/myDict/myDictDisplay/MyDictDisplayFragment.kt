@@ -48,6 +48,12 @@ class MyDictDisplayFragment : androidx.fragment.app.Fragment() {
 
         myDictDisplayViewModel.myDictDisplayWords.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
+            //　表示する韻がない場合の表示を行う
+            if (it.size == 0) {
+                myDictDisplayViewModel.displayWordNotExists.value = View.VISIBLE
+            } else {
+                myDictDisplayViewModel.displayWordNotExists.value = View.GONE
+            }
             for (data in it) {
                 data.isDelete.observe(viewLifecycleOwner, Observer {
                     if (it) {

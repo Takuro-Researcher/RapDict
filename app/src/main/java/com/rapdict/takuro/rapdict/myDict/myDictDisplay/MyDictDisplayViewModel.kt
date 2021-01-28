@@ -1,6 +1,7 @@
 package com.rapdict.takuro.rapdict.myDict.myDictDisplay
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,12 +33,14 @@ class MyDictDisplayViewModel(application: Application) : AndroidViewModel(applic
 
 
     val myDictDisplayWords: LiveData<MutableList<MyDictDisplayWordData>> = _myDictDisplayWords
+    val displayWordNotExists: MutableLiveData<Int> = MutableLiveData(View.GONE)
 
     // データ参照用のRepositoryクラス
     private val _wordRepository = WordRepository(application)
 
     fun bindData(uid: Int) {
         var data = listOf<Word>()
+
         //
         myDictDisplayWordsRaw = mutableListOf()
         runBlocking {
