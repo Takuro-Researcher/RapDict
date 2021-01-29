@@ -43,6 +43,7 @@ open class GameActivity : AppCompatActivity() {
         recomdialog.setCancelable(false)
         recomdialog.setMessage("韻が一つも取得できませんでした\n最小文字＆最大文字を変えて試してください")
         recomdialog.setPositiveButton("戻る") { _, _ ->
+            backIntent.putExtra("MOVE", true)
             startActivity(backIntent)
         }
 

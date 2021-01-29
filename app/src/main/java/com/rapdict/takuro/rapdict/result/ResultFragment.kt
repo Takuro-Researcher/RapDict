@@ -2,7 +2,6 @@ package com.rapdict.takuro.rapdict.result
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.ArrayMap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +21,6 @@ import com.rapdict.takuro.rapdict.game.GameActivity
 import com.rapdict.takuro.rapdict.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_result.*
 import java.lang.reflect.Type
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyPressedListener {
@@ -136,10 +133,6 @@ class ResultFragment : androidx.fragment.app.Fragment(), GameActivity.OnBackKeyP
             } else {
                 saveDialog.show()
             }
-        }
-        // 保存せずメイン画面へ戻る
-        back_button.setOnClickListener {
-            backDialog.show()
         }
     }
 
