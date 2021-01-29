@@ -1,157 +1,135 @@
 package com.rapdict.takuro.rapdict.gameSetting
 
 import android.app.Application
-import android.content.SharedPreferences
-import android.mtp.MtpConstants
 import android.preference.PreferenceManager
-import androidx.databinding.Bindable
-
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.rapdict.takuro.rapdict.Common.App.Companion.db
-import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Common.SpfCommon
-import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.database.Mydict
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.text.FieldPosition
-import kotlin.math.min
 
 class GameSettingViewModel(application: Application) : AndroidViewModel(application) {
 
     //監視対象のLiveData
-    var barArray: MutableLiveData<List<Int>> = MutableLiveData()
-    var minArray: MutableLiveData<List<Int>> = MutableLiveData()
-    var maxArray: MutableLiveData<List<Int>> = MutableLiveData()
-    var questionArray: MutableLiveData<List<Int>> = MutableLiveData()
-    var dictNameArray: MutableLiveData<List<String>> = MutableLiveData()
-    var beatTypeArray:MutableLiveData<List<String>> = MutableLiveData()
-    var drumOnly:MutableLiveData<Boolean> = MutableLiveData()
-    var settingData :GameSettingData = GameSettingData(2,"low",false,0,1,0,-1)
+    val barArray: List<Int> = listOf(2, 4, 8)
+    var minArray: List<Int> = List(20) { it + 2 }
+    var maxArray: List<Int> = List(20) { it + 2 }
+    val questionArray: List<Int> = listOf(5, 10, 15, 20)
+    private var dictNameArrayRaw: List<String> = listOf()
+    private var _dictNameArray = MutableLiveData<List<String>>()
+    var dictNameArray = _dictNameArray
 
-    var dictUidArray= listOf<Int>()
+
+    val beatTypeArray: List<String> = listOf("low", "middle", "high", "tri")
+    var drumOnly = MutableLiveData<Boolean>(false)
+    var bar = MutableLiveData<Int>()
+    var min = MutableLiveData<Int>()
+
+    // 3文字にしないとDBで取ってこれない可能性が高い
+    var max = MutableLiveData<Int>(1)
+    var question = MutableLiveData<Int>()
+    var dictName = MutableLiveData<Int>()
+    var beatType = MutableLiveData<Int>()
+    private var dictValueArray: Map<Int, String> = mapOf()
+
+
+    var settingData: GameSettingData = GameSettingData(2, "low", false, 2, 3, 5, -1)
+
     //ViewModel初期化時にロード
     init {
         loadUserData()
     }
 
-    private fun loadUserData(){
-        val spfCommon = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication()))
-        val settingData = spfCommon.settingRead()
-        val initbarArray= mutableListOf<Int>()
-        val initQuestionArray = mutableListOf<Int>()
-        val initBeatTypeArray = mutableListOf<String>()
-        val initNameArray = mutableListOf<String>()
-        val initMinArray= mutableListOf<Int>()
-        val initMaxArray= mutableListOf<Int>()
-        val initUidArray = mutableListOf<Int>()
-        drumOnly.value = false
-
-        // Spfで既に遊んだ記録があったら
-        if(settingData != null) {
-            // 一番最初に選ばれるようにする
-            initbarArray.add(settingData.bar)
-            initQuestionArray.add(settingData.question)
-            initBeatTypeArray.add(settingData.type)
-            initMinArray.add(settingData.min)
-            initMaxArray.add(settingData.max)
-            drumOnly.value = settingData.drumOnly
-            if(settingData.dictUid != -1){
-                runBlocking {
-                    val dao = db.mydictDao()
-                    val data = dao.findOneByIds(settingData.dictUid)
-                    initNameArray.add(data.name!!)
-                    initUidArray.add(data.uid)
-                }
+    private fun loadUserData() {
+        val settingTmp = SpfCommon(PreferenceManager.getDefaultSharedPreferences(getApplication())).settingRead()
+        runBlocking {
+            val dictDao = db.mydictDao()
+            val dicts = dictDao.findAll()
+            val tmp: MutableMap<Int, String> = mutableMapOf<Int, String>(-1 to "日本語辞書")
+            dicts.forEach {
+                val name = it.name ?: ""
+                val uid = it.uid
+                tmp.put(uid, name)
             }
+            dictNameArrayRaw = tmp.values.toList()
+            dictValueArray = tmp
         }
-        //日本語辞書を追加
-        initNameArray.add("日本語辞書")
-        initUidArray.add(-1)
+        // MutableLiveData用
+        _dictNameArray.value = ArrayList(dictNameArrayRaw)
+        if (settingTmp != null) {
+            settingData = settingTmp
+            bar.value = barArray.indexOf(settingData.bar)
+            min.value = minArray.indexOf(settingData.min)
+            max.value = maxArray.indexOf(settingData.max)
+            question.value = questionArray.indexOf(settingData.question)
+            beatType.value = beatTypeArray.indexOf(settingData.type)
+            drumOnly.value = settingData.drumOnly
+            System.out.println(dictNameArrayRaw)
+            dictName.value = dictNameArrayRaw.indexOf(dictValueArray[settingData.dictUid])
+            System.out.println(dictName.value!!)
+        }
+    }
 
-        barArray.value = initbarArray.plus(listOf(2,4,8)).distinct()
-        questionArray.value = initQuestionArray.plus(CommonTool.makeNumArray(10,30,10)).distinct()
-        beatTypeArray.value = initBeatTypeArray.plus(listOf("low","middle","high","tri")).distinct()
-        minArray.value = initMinArray.plus(CommonTool.makeNumArray(3,12,1)).distinct()
-        maxArray.value = initMaxArray.plus(CommonTool.makeNumArray(3,12,1)).distinct()
+    fun isNotUpdateMyDict(): Boolean {
+        var isNotUpdateMyDictBoolean: Boolean = false
 
         runBlocking {
             val dictDao = db.mydictDao()
-            val wordDao = db.wordDao()
-            val data =wordDao.countByDict()
-            data.forEach {
-                initUidArray.add(it.dictid)
-                initNameArray.add(dictDao.findOneByIds(it.dictid).name!!)
-            }
+            val dicts = dictDao.findAll()
+            isNotUpdateMyDictBoolean = dicts.size + 1 == dictNameArrayRaw.size
         }
-        dictUidArray = initUidArray.distinct()
-        dictNameArray.value = initNameArray.distinct()
-        settingDataInit()
+        return isNotUpdateMyDictBoolean
+    }
+    fun changeDictData(){
+        runBlocking {
+            val dictDao = db.mydictDao()
+            val dicts = dictDao.findAll()
+            val tmp: MutableMap<Int, String> = mutableMapOf<Int, String>(-1 to "日本語辞書")
+            dicts.forEach {
+                val name = it.name ?: ""
+                val uid = it.uid
+                tmp.put(uid, name)
+            }
+            dictNameArrayRaw = tmp.values.toList()
+            dictValueArray = tmp
+            _dictNameArray.value = ArrayList(dictNameArrayRaw)
+        }
     }
 
-    fun makeGameSettingData():GameSettingData{
-        val data: GameSettingData = settingData
-        return data
-    }
-
-    fun changeUseDict(position: Int):Int{
-        settingData.dictUid =dictUidArray[position]
-        return dictUidArray[position]
-    }
-
-
-    fun changeDrumOnly(){
-        if (drumOnly.value ==true){
+    fun changeDrumOnly() {
+        if (drumOnly.value == true) {
             drumOnly.value = false
             settingData.drumOnly = false
-        }else{
+        } else {
             drumOnly.value = true
             settingData.drumOnly = true
         }
     }
-    // 辞書のIDを与え、minMaxを変更する
-    fun changeUseDictMinMax(uid:Int){
-        var minMax = getMinMaxMyDict(uid)
-        var min = minMax.first
-        var max = minMax.second
-        // 今選んでいる辞書のIDを変更する
-        if (min == max){
-            minArray.value = listOf(min)
-            maxArray.value = listOf(max)
-        }else{
-            minArray.value = CommonTool.makeNumArray(min,max)
-            maxArray.value = CommonTool.makeNumArray(min,max)
-        }
 
+    // Spinnerの変更を検知する
+    fun changeBar(position: Int) {
+        settingData.bar = barArray[position]
     }
 
-    fun getMinMaxMyDict(uid:Int):Pair<Int,Int>{
-        var min = 3
-        var max = 12
-        if (uid != -1){
-            runBlocking {
-                val dao = db.wordDao()
-                min = dao.findByDictIdsMin(uid)
-                max = dao.findByDictIdsMax(uid)
-            }
-        }
-        return  Pair(min,max)
+    fun changeMax(position: Int) {
+        settingData.max = maxArray[position]
     }
 
-    fun settingDataInit(){
-        settingData.bar = barArray.value!![0]
-        settingData.type = beatTypeArray.value!![0]
-        settingData.dictUid = dictUidArray[0]
-        settingData.min =minArray.value!![0]
-        settingData.max =maxArray.value!![0]
-        settingData.question = questionArray.value!![0]
-        settingData.drumOnly = drumOnly.value!!
+    fun changeMin(position: Int) {
+        settingData.min = minArray[position]
     }
 
-//    fun updateMaxData(min:Int){
-//        maxArray.value = commonTool.makeNumArray(min+1,10)
-//    }
+    fun changeQuestion(position: Int) {
+        settingData.question = questionArray[position]
+    }
+
+    fun changeBeatType(position: Int) {
+        settingData.type = beatTypeArray[position]
+    }
+
+    fun changeDict(position: Int) {
+        val dictData = dictValueArray.filterValues { value -> value == dictNameArrayRaw[position] }
+        settingData.dictUid = dictData.keys.toList()[0]
+    }
+
 }

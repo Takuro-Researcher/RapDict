@@ -1,57 +1,51 @@
 package com.rapdict.takuro.rapdict.game
 
 import android.app.Application
-import android.view.View
-import android.widget.LinearLayout
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.rapdict.takuro.rapdict.Word
 
-class GamePlayViewModel(application: Application) : AndroidViewModel(application) {
+class
+GamePlayViewModel(application: Application) : AndroidViewModel(application) {
 
     //監視対象のLiveData
-    var oneRowVisibility: MutableLiveData<Int> = MutableLiveData()
-    var twoRowVisibility: MutableLiveData<Int> = MutableLiveData()
-    var editOneWeight: MutableLiveData<Float> = MutableLiveData()
-    var editTwoWeight: MutableLiveData<Float> = MutableLiveData()
-    var editThreeWeight: MutableLiveData<Float> = MutableLiveData()
-    var editFourWeight: MutableLiveData<Float> = MutableLiveData()
-    var editTwoVisibility : MutableLiveData<Int>  = MutableLiveData()
-    var buttonEnabled :MutableLiveData<Boolean> = MutableLiveData()
+    private var questionNum: Int = 0
+    val question: MutableLiveData<Int> = MutableLiveData(1)
+    private var _question: Int = 0
+    var question_text: MutableLiveData<String> = MutableLiveData("")
+    var furigana_text: MutableLiveData<String> = MutableLiveData("")
+    var isFinish: MutableLiveData<Boolean> = MutableLiveData()
+    var answer: MutableLiveData<String> = MutableLiveData()
+    private var _answerMap: MutableMap<Int, String> = mutableMapOf()
+    var words: List<Word> = listOf()
+    val answerMap: MutableMap<Int, String>
+        get() = _answerMap
 
-
-    //ViewModel初期化時にロード
-    init {
-        oneRowVisibility.value = View.VISIBLE
-        twoRowVisibility.value = View.GONE
-        editOneWeight.value = 1.0f
-        editTwoWeight.value = 0f
-        editThreeWeight.value = 0f
-        editFourWeight.value = 0f
-        editTwoVisibility.value = View.GONE
-        buttonEnabled.value = false
+    fun arg_to_member(question_num: Int, wordList: List<Word>) {
+        questionNum = question_num
+        words = wordList
+        question_text.value = words[_question].word ?: ""
+        furigana_text.value = words[_question].furigana ?: ""
+        _question += 1
+        question.value = question_num - _question
     }
 
-    fun draw(answer:Int){
-        when(answer) {
-            2 -> {
-                editTwoVisibility.value = View.VISIBLE
-                editOneWeight.value = 0.5f
-                editTwoWeight.value = 0.5f
-            }
-            3 -> {
-                twoRowVisibility.value = View.VISIBLE
-                editThreeWeight.value = 0.5f
-                editFourWeight.value = 0.5f
-            }
-            4 -> {
-                twoRowVisibility.value = View.VISIBLE
-                editTwoVisibility.value = View.VISIBLE
-                editOneWeight.value = 0.5f
-                editTwoWeight.value = 0.5f
-                editThreeWeight.value = 0.5f
-                editFourWeight.value = 0.5f
-            }
+    // 今終わった問題の保存と問題の変更
+    fun changeQuestion() {
+        if (questionNum == _question) {
+            isFinish.value = true
+            return
+        }
+        question_text.value = words[_question].word ?: ""
+        furigana_text.value = words[_question].furigana ?: ""
+        _question += 1
+        question.value = questionNum - _question
+    }
+
+    fun saveAnswer() {
+        val tmpAnswer = answer.value ?: ""
+        if (tmpAnswer.isNotEmpty()) {
+            _answerMap[_question -1] = tmpAnswer
         }
     }
 }

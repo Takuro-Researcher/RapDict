@@ -27,7 +27,9 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_min_spinner"
                 android:layout_weight="0.1"
-                android:entries="@{data.minArray}"/>
+                android:entries="@{data.minArray}"
+                android:onChangeSpinner="@{(i) -> data.changeMin(i)}"
+                android:OnItemSelected="@{data.min}" />
         </LinearLayout>
 
         <LinearLayout
@@ -49,7 +51,10 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.1"
                 android:id="@+id/game_setting_max_spinner"
-                android:entries="@{data.maxArray}"/>
+                android:onChangeSpinner="@{(i) -> data.changeMax(i)}"
+                android:entries="@{data.maxArray}"
+                android:OnItemSelected="@{data.max}"
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,7 +75,10 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_question_spinner"
                 android:layout_weight="0.1"
-                android:entries="@{data.questionArray}" />
+                android:onChangeSpinner="@{(i) -> data.changeQuestion(i)}"
+                android:entries="@{data.questionArray}"
+                android:OnItemSelected="@{data.question}"
+                 />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,7 +99,9 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/game_setting_use_dict_spinner"
                 android:layout_weight="0.1"
-                android:entries="@{data.dictNameArray}" />
+                android:onChangeSpinner="@{(i) -> data.changeDict(i)}"
+                android:entries="@{data.dictNameArray}"
+                android:OnItemSelected="@{data.dictName}" />
         </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
@@ -103,5 +113,33 @@
             android:id="@+id/start_game_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+        <ImageView
+            android:id="@+id/game_setting_swipe_hand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_baseline_touch_app_24" />
+        <ImageView
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            app:layout_constraintTop_toTopOf="@id/game_setting_swipe_hand"
+            app:layout_constraintBottom_toBottomOf="@id/game_setting_swipe_hand"
+            app:layout_constraintEnd_toStartOf="@id/game_setting_swipe_hand"
+            android:src="@drawable/ic_baseline_arrow_downward_24"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/game_setting_swipe_hand"
+            app:layout_constraintTop_toTopOf="@+id/game_setting_swipe_hand"
+            app:layout_constraintBottom_toBottomOf="@+id/game_setting_swipe_hand"
+            android:text="@string/game_setting_recomend_beat"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

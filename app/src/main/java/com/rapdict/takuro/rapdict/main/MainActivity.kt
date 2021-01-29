@@ -1,6 +1,5 @@
 package com.rapdict.takuro.rapdict.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,12 +9,11 @@ import androidx.appcompat.widget.Toolbar
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rapdict.takuro.rapdict.R
-import com.rapdict.takuro.rapdict.dict.DictActivity
+import com.rapdict.takuro.rapdict.dict.DictFragment
 import com.rapdict.takuro.rapdict.myDict.GameSettingFragment
 import com.rapdict.takuro.rapdict.myDict.MyDictFragment
 import com.rapdict.takuro.rapdict.tutorial.TutorialFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_tutorial.*
 
 
 open class MainActivity : AppCompatActivity() {
@@ -27,11 +25,21 @@ open class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
+
         // コードからフラグメントを追加
         if (savedInstanceState == null) {
+            val isMove = intent.getBooleanExtra("MOVE", false)
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.add(R.id.fragmentFrameLayout, TutorialFragment())
-            transaction.commit()
+            // ゲーム画面からの移動ならば、ゲーム画面へ直接移動する
+            if (isMove) {
+                transaction.add(R.id.fragmentFrameLayout, GameSettingFragment())
+                transaction.commit()
+            } else {
+                transaction.add(R.id.fragmentFrameLayout, TutorialFragment())
+                transaction.commit()
+            }
+
+
         }
 
         navi.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -43,8 +51,9 @@ open class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.dict -> {
-                    val intent = Intent(this, DictActivity::class.java)
-                    startActivity(intent)
+                    supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentFrameLayout, DictFragment())
+                            .commit()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.mydict -> {
@@ -57,7 +66,6 @@ open class MainActivity : AppCompatActivity() {
             false
         })
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -77,9 +85,10 @@ open class MainActivity : AppCompatActivity() {
             else -> return super.onOptionsItemSelected(item)
         }
     }
+
     override fun onBackPressed() {
         // バックキーの無効化
-        moveTaskToBack (true)
+        moveTaskToBack(true)
     }
 
 }

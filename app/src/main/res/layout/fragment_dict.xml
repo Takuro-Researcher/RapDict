@@ -1,0 +1,98 @@
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="data"
+            type="com.rapdict.takuro.rapdict.dict.DictViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:focusableInTouchMode="true"
+        android:id="@+id/ac_dict"
+        tools:context=".game.GamePlayFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/form_area"
+            android:padding="13dp"
+            android:background="@drawable/border"
+            android:layout_margin="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <com.jaygoo.widget.RangeSeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/range_progress_seek_bar"
+                app:rsb_indicator_show_mode="alwaysShow"
+                app:rsb_indicator_width="20dp"
+                app:rsb_indicator_height="20dp"
+                app:rsb_indicator_text_size="20sp"
+                app:rsb_indicator_background_color="#121212"
+                app:rsb_mode="range"
+                app:rsb_gravity="center"
+                app:rsb_progress_height="4dp"
+                app:rsb_progress_color="#808080"
+                app:rsb_progress_default_color="#f1f1f1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/check_list"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/range_progress_seek_bar"
+                android:orientation="horizontal"
+                android:layout_below="@+id/range_progress_seek_bar">
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:id="@+id/radioGroup"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:checkedButton="@={data.radioType}"
+                    tools:ignore="UselessParent">
+                    <RadioButton
+                        android:id="@+id/flatFav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:checked="true"
+                        android:text="@string/none_favorite"
+                        android:layout_weight="1"/>
+                    <RadioButton
+                        android:id="@+id/onlyFav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/only_favorite"
+                        android:layout_weight="1"/>
+                    <RadioButton
+                        android:id="@+id/withoutFav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/without_favorite"
+                        android:gravity="center"
+                        android:layout_weight="1"/>
+
+                </RadioGroup>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/DictRecyclerView"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/form_area"
+            tools:listitem="@layout/list_dict" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+
+
+

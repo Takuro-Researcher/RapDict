@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.MyDictMakeViewModel" />
+        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.myDictMake.MyDictMakeViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -44,10 +44,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:inputType="text"
                 android:layout_weight="0.5"
                 android:text="@={data.dictName}"
-                android:hint="例：好きな曲"
-                />
+                android:hint="例：好きな曲" />
         </LinearLayout>
         　<Button
             android:id="@+id/mydict_register_button"
