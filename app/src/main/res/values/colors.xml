@@ -6,11 +6,11 @@
     <color name="colorAccentDark">#007b80</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGreen">#00bb00</color>
-    <color name="colorFavorite">#ef6661</color>
-    <color name="colorAlert">#ef6661</color>
+    <color name="colorFavorite">#ef7671</color>
+    <color name="colorAlert">#ef7671</color>
     <color name="colorBlack">#000000</color>
     <color name="whiteSmoke">#F5F5F5</color>
     <color name="darkGray">#A1A1A1</color>
-    <color name="colorSplash">#f83e37</color>
+    <color name="colorSplash">#ef7671</color>
 
 </resources>
