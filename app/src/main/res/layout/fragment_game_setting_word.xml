@@ -109,7 +109,7 @@
             android:layout_margin="20dp"
             android:elevation="3dp"
             app:srcCompat="@drawable/ic_baseline_send_24"
-            app:backgroundTint="#00BCD4"
+            app:backgroundTint="@color/colorWhite"
             android:id="@+id/start_game_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
