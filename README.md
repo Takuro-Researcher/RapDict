@@ -25,11 +25,10 @@ APIやSqliteなど、中断関数を経由するものはすべてDataRepository
 
 # Proxy対応
 
-大学に行って暇なときに開発したいときは、Proxyの設定が必須である。
+大学に行って暇で開発したいときは、Proxyの設定が必須である。
 
 https://qiita.com/Takuro-Researcher/items/4778d8d0e292af6a5350
 
-忘れた時はメモ代わりに残した自分の記事を見る。
-
+忘れた時は↑を確認。
 
 
