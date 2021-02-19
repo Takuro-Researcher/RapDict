@@ -1,9 +1,9 @@
-package com.rapdict.takuro.rapdict.Repository
+package com.rapdict.takuro.rapdict.model.repository
 
 import android.content.Context
-import com.rapdict.takuro.rapdict.database.Answer
-import com.rapdict.takuro.rapdict.database.AnswerDao
-import com.rapdict.takuro.rapdict.database.RapDataBase
+import com.rapdict.takuro.rapdict.model.RapDataBase
+import com.rapdict.takuro.rapdict.model.dao.AnswerDao
+import com.rapdict.takuro.rapdict.model.entity.Answer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

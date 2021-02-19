@@ -1,7 +1,6 @@
-package com.rapdict.takuro.rapdict
+package com.rapdict.takuro.rapdict.model.entity
 
 import androidx.room.*
-import com.rapdict.takuro.rapdict.database.Mydict
 
 @Entity(tableName = "word",
         indices = arrayOf(Index(value = ["dictid"]), Index(value = ["length"])),

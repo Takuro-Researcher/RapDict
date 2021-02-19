@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.rapdict.takuro.rapdict.result.ResultViewModel" />
+            type="com.rapdict.takuro.rapdict.ui.result.ResultViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

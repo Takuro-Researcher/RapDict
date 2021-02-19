@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
-
+// TODO getHTTPは廃止。netフォルダにて、APIアクセスのコードを変更すること
 class getHttp(url:String): AsyncTask<String, String, String>(){
     private var callBacktask = CallBackTask()
     val url = url

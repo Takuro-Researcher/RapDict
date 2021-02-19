@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.database
+package com.rapdict.takuro.rapdict.model.entity
 
 data class WordDictByCount(
         val dictid: Int,

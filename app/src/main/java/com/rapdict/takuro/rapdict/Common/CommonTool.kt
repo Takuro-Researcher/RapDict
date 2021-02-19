@@ -7,6 +7,7 @@ import com.rapdict.takuro.rapdict.R
 import java.util.concurrent.ThreadLocalRandom
 
 class CommonTool {
+    // TODO common_toolは廃止。各々のクラスで実装するように変更。
     companion object {
         fun makeApiUrl(min: Int, max: Int, num: Int): String {
             var url = "http://118.27.117.79:8080/word?"

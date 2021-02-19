@@ -1,4 +1,4 @@
-package com.rapdict.takuro.rapdict.database
+package com.rapdict.takuro.rapdict.model.dao
 
 
 
@@ -6,6 +6,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.rapdict.takuro.rapdict.model.entity.Mydict
 
 @Dao
 interface MydictDao {
@@ -16,7 +17,7 @@ interface MydictDao {
     suspend fun findByIds(mydictIds: List<Int>): List<Mydict>
 
     @Query("SELECT * FROM mydict WHERE uid == :mydictId")
-    suspend fun findOneByIds(mydictId :Int):Mydict
+    suspend fun findOneByIds(mydictId: Int): Mydict
 
     @Insert
     suspend fun insert(mydict: Mydict)
@@ -28,5 +29,5 @@ interface MydictDao {
     suspend fun deleteByIds(mydictIds: Int)
 
     @Delete
-    fun delete(mydict: Mydict )
+    fun delete(mydict: Mydict)
 }
