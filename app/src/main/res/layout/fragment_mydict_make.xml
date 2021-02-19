@@ -5,7 +5,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.myDict.myDictMake.MyDictMakeViewModel" />
+        <variable
+            name="data"
+            type="com.rapdict.takuro.rapdict.ui.myDict.myDictMake.MyDictMakeViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

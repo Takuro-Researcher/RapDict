@@ -4,7 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.gameSetting.GameSettingViewModel" />
+        <variable
+            name="data"
+            type="com.rapdict.takuro.rapdict.ui.gameSetting.GameSettingViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

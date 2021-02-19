@@ -2,9 +2,18 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.result.ResultViewModel"/>
-        <variable name="answer" type="com.rapdict.takuro.rapdict.result.AnswerData" />
-        <variable name="position" type="Integer"/>
+
+        <variable
+            name="data"
+            type="com.rapdict.takuro.rapdict.ui.result.ResultViewModel" />
+
+        <variable
+            name="answer"
+            type="com.rapdict.takuro.rapdict.ui.result.AnswerData" />
+
+        <variable
+            name="position"
+            type="Integer" />
 
     </data>
     <androidx.cardview.widget.CardView

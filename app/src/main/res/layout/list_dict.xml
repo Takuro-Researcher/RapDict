@@ -4,10 +4,11 @@
     <data>
         <variable
             name="data"
-            type="com.rapdict.takuro.rapdict.dict.DictViewModel" />
+            type="com.rapdict.takuro.rapdict.ui.dict.DictViewModel" />
+
         <variable
             name="dict"
-            type="com.rapdict.takuro.rapdict.dict.DictData" />
+            type="com.rapdict.takuro.rapdict.ui.dict.DictData" />
     </data>
     <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"

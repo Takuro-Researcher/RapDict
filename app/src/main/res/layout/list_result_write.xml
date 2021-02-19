@@ -6,11 +6,11 @@
 
         <variable
             name="data"
-            type="com.rapdict.takuro.rapdict.result.ResultViewModel" />
+            type="com.rapdict.takuro.rapdict.ui.result.ResultViewModel" />
 
         <variable
             name="answer"
-            type="com.rapdict.takuro.rapdict.result.AnswerData" />
+            type="com.rapdict.takuro.rapdict.ui.result.AnswerData" />
 
         <variable
             name="position"

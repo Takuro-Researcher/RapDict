@@ -2,28 +2,34 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="data" type="com.rapdict.takuro.rapdict.game.GamePlayViewModel" />
-        <variable name="fragment" type="com.rapdict.takuro.rapdict.game.GamePlayFragment" />
-    </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:focusableInTouchMode="true"
-    android:id="@+id/game_main"
-    android:background="#000000"
-    tools:context=".game.GamePlayFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/game_question"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="残り問題数  :  "
-        android:textColor="#FFFFFF"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        <variable
+            name="data"
+            type="com.rapdict.takuro.rapdict.ui.game.GamePlayViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.rapdict.takuro.rapdict.ui.game.GamePlayFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:focusableInTouchMode="true"
+        android:id="@+id/game_main"
+        android:background="#000000"
+        tools:context=".ui.game.GamePlayFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/game_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="残り問題数  :  "
+            android:textColor="#FFFFFF"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
         android:textSize="25sp"
         android:padding="20sp"
         />

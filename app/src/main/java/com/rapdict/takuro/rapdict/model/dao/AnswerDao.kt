@@ -1,9 +1,10 @@
-package com.rapdict.takuro.rapdict.database
+package com.rapdict.takuro.rapdict.model.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.rapdict.takuro.rapdict.model.entity.Answer
 
 @Dao
 interface AnswerDao {

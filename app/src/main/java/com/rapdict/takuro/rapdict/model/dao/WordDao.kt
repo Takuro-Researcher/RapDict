@@ -1,10 +1,11 @@
-package com.rapdict.takuro.rapdict.database
+package com.rapdict.takuro.rapdict.model.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.rapdict.takuro.rapdict.Word
+import com.rapdict.takuro.rapdict.model.entity.Word
+import com.rapdict.takuro.rapdict.model.entity.WordDictByCount
 
 @Dao
 interface WordDao {
