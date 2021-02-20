@@ -9,14 +9,6 @@ import java.util.concurrent.ThreadLocalRandom
 class CommonTool {
     // TODO common_toolは廃止。各々のクラスで実装するように変更。
     companion object {
-        fun makeApiUrl(min: Int, max: Int, num: Int): String {
-            var url = "http://118.27.117.79:8080/word?"
-            url += "min=$min&"
-            url += "max=$max&"
-            url += "number=$num"
-            return url
-        }
-
         // 音源のタイプに対して、適切なビートを渡す
         fun choiceMusic(drumonly: Boolean, type: String, bar: Int): Int {
             val drumOnlyList: MutableList<Triple<Int, Int, Int>> = mutableListOf(

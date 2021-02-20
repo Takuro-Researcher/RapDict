@@ -11,18 +11,13 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.rapdict.takuro.rapdict.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.CommonTool
-import com.rapdict.takuro.rapdict.Common.getHttp
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.model.entity.Word
 import com.rapdict.takuro.rapdict.model.repository.ApiRepository
 import com.rapdict.takuro.rapdict.myDict.GameSettingData
 import com.rapdict.takuro.rapdict.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_game.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.json.JSONArray
-import org.json.JSONObject
 
 
 open class GameActivity : AppCompatActivity() {
@@ -41,7 +36,6 @@ open class GameActivity : AppCompatActivity() {
             this.putInt("BAR", CommonTool.choiceMusic(data.drumOnly, data.type, data.bar))
         }
         // 言葉を取得
-        val req = getHttp(CommonTool.makeApiUrl(data.min, data.max, data.question))
         val recomdialog = AlertDialog.Builder(this)
         recomdialog.setCancelable(false)
         recomdialog.setMessage("韻が一つも取得できませんでした\n最小文字＆最大文字を変えて試してください")
@@ -50,51 +44,19 @@ open class GameActivity : AppCompatActivity() {
             startActivity(backIntent)
         }
 
-
-        GlobalScope.launch {
-            val data = ApiRepository().getApiWords(3, 4, 10)
-            System.out.println("retrofit")
-            System.out.println(data)
-        }
-
-
-        req.setOnCallBack(object : getHttp.CallBackTask() {
-            override fun CallBack(result: String) {
-                super.CallBack(result)
-                var words: MutableList<Word> = mutableListOf()
-                try {
-                    System.out.println(result)
-                    val rhymes = JSONObject(result).get("words") as JSONArray
-                    for (i in 0 until rhymes.length()) {
-                        val jsonWord = rhymes.getJSONObject(i)
-                        val questionWord = Word(
-                                -1,
-                                jsonWord.getString("furigana"),
-                                jsonWord.getString("word"),
-                                jsonWord.getInt("length"),
-                                -1
-                        )
-                        words.add(questionWord)
-                    }
-                    if (words.size < data.question) {
-                        words = CommonTool.paddList(words, data.question) as ArrayList<Word>
-                    }
-                    words = words as ArrayList<Word>
-                    System.out.println(words)
-                    bundle.putSerializable("WORDS", words)
-                    bundle.putInt("QUESTION", data.question)
-
-                    changedTexts()
-                } catch (e: Exception) {
-                    recomdialog.setMessage("データが取ってこれませんでした..。自作の辞書で韻を踏んでみてください")
-                    recomdialog.show()
-                }
-            }
-        })
         setContentView(R.layout.activity_game)
 
         if (data.dictUid == -1) {
-            req.execute()
+            runBlocking {
+                // TODO 0件の時のエラーハンドリング
+                var words = ApiRepository().getApiWords(data.min, data.max, data.question)
+                if (words.size < data.question) {
+                    words = CommonTool.paddList(words, data.question) as ArrayList<Word>
+                }
+                bundle.putSerializable("WORDS", words as ArrayList<Word>)
+                bundle.putInt("QUESTION", data.question)
+            }
+            changedTexts()
         } else {
             var wordData:List<Word> = listOf<Word>()
             runBlocking {
