@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.rapdict.takuro.rapdict.R
-import java.util.concurrent.ThreadLocalRandom
 
 class CommonTool {
     // TODO common_toolは廃止。各々のクラスで実装するように変更。
@@ -70,19 +69,6 @@ class CommonTool {
         fun fadeIn(view: View, context: Context) {
             var animation = AnimationUtils.loadAnimation(context, R.anim.alpha_fadein)
             view.startAnimation(animation)
-        }
-
-        // WordListを指定数だけ増やして返す。もう少し汎用的にするはAny
-        fun paddList(list: List<Any>, toNum: Int):MutableList<Any> {
-            val tmp_list = list.toList()
-            val resultList = mutableListOf<Any>()
-            resultList.addAll(tmp_list)
-            for (i in list.size until toNum) {
-                val tmpIndex = ThreadLocalRandom.current().nextInt(0, list.size)
-                val data = tmp_list[tmpIndex]
-                resultList.add(data)
-            }
-            return resultList
         }
     }
 }

@@ -2,6 +2,7 @@ package com.rapdict.takuro.rapdict.model.repository
 
 import com.rapdict.takuro.rapdict.model.entity.Word
 import com.rapdict.takuro.rapdict.model.net.ApiService
+import com.rapdict.takuro.rapdict.model.usecase.WordUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
@@ -14,16 +15,20 @@ class ApiRepository {
     }.build()
     private val service = retrofit.create(ApiService::class.java)
 
-    suspend fun getApiWords(min: Int, max: Int, num: Int): List<Word> {
+    suspend fun getApiWords(min: Int, max: Int, num: Int, paddFlag: Boolean = true): List<Word> {
         var words = listOf<Word>()
         val get = service.getWords(min, max, num)
         withContext(Dispatchers.IO) {
             val response = get.execute()
-            System.out.println(response)
             response.body()?.let {
                 words = it.words.map { it.run { Word(-1, furigana, word, length, -1) } }
+                if (paddFlag) {
+                    words = WordUseCase().paddingWord(words, num)
+                }
             }
         }
         return words
     }
+
+
 }

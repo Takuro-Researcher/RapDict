@@ -9,11 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.rapdict.takuro.rapdict.App.Companion.db
 import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.model.entity.Word
 import com.rapdict.takuro.rapdict.model.repository.ApiRepository
+import com.rapdict.takuro.rapdict.model.repository.WordRepository
 import com.rapdict.takuro.rapdict.myDict.GameSettingData
 import com.rapdict.takuro.rapdict.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_game.*
@@ -44,32 +44,23 @@ open class GameActivity : AppCompatActivity() {
             startActivity(backIntent)
         }
 
+
         setContentView(R.layout.activity_game)
 
         if (data.dictUid == -1) {
             runBlocking {
                 // TODO 0件の時のエラーハンドリング
-                var words = ApiRepository().getApiWords(data.min, data.max, data.question)
-                if (words.size < data.question) {
-                    words = CommonTool.paddList(words, data.question) as ArrayList<Word>
-                }
+                val words = ApiRepository().getApiWords(data.min, data.max, data.question)
                 bundle.putSerializable("WORDS", words as ArrayList<Word>)
                 bundle.putInt("QUESTION", data.question)
             }
             changedTexts()
         } else {
-            var wordData:List<Word> = listOf<Word>()
             runBlocking {
-                val dao = db.wordDao()
-                wordData = dao.findByLenght(data.min, data.max, data.dictUid, data.question)
+                val words = WordRepository(applicationContext).getMinMaxNumWords(data.min, data.max, data.dictUid, data.question)
+                bundle.putSerializable("WORDS", words as ArrayList<Word>)
+                bundle.putInt("QUESTION", words.size)
             }
-            if (wordData.size == 0) {
-                recomdialog.show()
-            } else if (wordData.size < data.question) {
-                wordData = CommonTool.paddList(wordData, data.question) as List<Word>
-            }
-            bundle.putSerializable("WORDS", wordData as ArrayList<Word>)
-            bundle.putInt("QUESTION", wordData.size)
             changedTexts()
         }
 
