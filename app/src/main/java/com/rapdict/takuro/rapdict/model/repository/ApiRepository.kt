@@ -5,10 +5,12 @@ import com.rapdict.takuro.rapdict.model.net.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiRepository {
     private val retrofit = Retrofit.Builder().apply {
         baseUrl("http://118.27.117.79:8080/")
+        addConverterFactory(GsonConverterFactory.create())
     }.build()
     private val service = retrofit.create(ApiService::class.java)
 
@@ -17,7 +19,10 @@ class ApiRepository {
         val get = service.getWords(min, max, num)
         withContext(Dispatchers.IO) {
             val response = get.execute()
-            response.body()?.let { words = it }
+            System.out.println(response)
+            response.body()?.let {
+                words = it.words.map { it.run { Word(-1, furigana, word, length, -1) } }
+            }
         }
         return words
     }

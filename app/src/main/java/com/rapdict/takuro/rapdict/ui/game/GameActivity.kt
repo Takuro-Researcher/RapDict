@@ -14,9 +14,12 @@ import com.rapdict.takuro.rapdict.Common.CommonTool
 import com.rapdict.takuro.rapdict.Common.getHttp
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.model.entity.Word
+import com.rapdict.takuro.rapdict.model.repository.ApiRepository
 import com.rapdict.takuro.rapdict.myDict.GameSettingData
 import com.rapdict.takuro.rapdict.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_game.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
@@ -47,11 +50,20 @@ open class GameActivity : AppCompatActivity() {
             startActivity(backIntent)
         }
 
+
+        GlobalScope.launch {
+            val data = ApiRepository().getApiWords(3, 4, 10)
+            System.out.println("retrofit")
+            System.out.println(data)
+        }
+
+
         req.setOnCallBack(object : getHttp.CallBackTask() {
             override fun CallBack(result: String) {
                 super.CallBack(result)
                 var words: MutableList<Word> = mutableListOf()
                 try {
+                    System.out.println(result)
                     val rhymes = JSONObject(result).get("words") as JSONArray
                     for (i in 0 until rhymes.length()) {
                         val jsonWord = rhymes.getJSONObject(i)
