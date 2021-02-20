@@ -17,51 +17,54 @@ import com.rapdict.takuro.rapdict.model.repository.WordRepository
 import com.rapdict.takuro.rapdict.myDict.GameSettingData
 import com.rapdict.takuro.rapdict.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_game.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 
 open class GameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_game)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         val backIntent = Intent(this, MainActivity::class.java)
         var jsonData: String? = intent.getStringExtra("DATA")
-        val mapper = jacksonObjectMapper()
         val transaction = supportFragmentManager.beginTransaction()
-        val data: GameSettingData = mapper.readValue(jsonData.toString())
+        val data: GameSettingData = jacksonObjectMapper().readValue(jsonData.toString())
         val bundle = Bundle().apply {
             this.putInt("RETURN", 1)
             this.putInt("BAR", CommonTool.choiceMusic(data.drumOnly, data.type, data.bar))
         }
-        // 言葉を取得
-        val recomdialog = AlertDialog.Builder(this)
-        recomdialog.setCancelable(false)
-        recomdialog.setMessage("韻が一つも取得できませんでした\n最小文字＆最大文字を変えて試してください")
-        recomdialog.setPositiveButton("戻る") { _, _ ->
-            backIntent.putExtra("MOVE", true)
-            startActivity(backIntent)
+        val recommendDialog = AlertDialog.Builder(this).apply {
+            setCancelable(false)
+            setMessage("韻が一つも取得できませんでした\n最小文字＆最大文字を変えて試してください")
+            setPositiveButton("戻る") { _, _ ->
+                backIntent.putExtra("MOVE", true)
+                startActivity(backIntent)
+            }
         }
-
-
-        setContentView(R.layout.activity_game)
-
-        if (data.dictUid == -1) {
-            runBlocking {
-                // TODO 0件の時のエラーハンドリング
-                val words = ApiRepository().getApiWords(data.min, data.max, data.question)
-                bundle.putSerializable("WORDS", words as ArrayList<Word>)
-                bundle.putInt("QUESTION", data.question)
+        var words: List<Word> = listOf()
+        fun wordGetJob(): Job = GlobalScope.launch {
+            if (data.dictUid == -1) {
+                words = ApiRepository().getApiWords(data.min, data.max, data.question)
+            } else {
+                words = WordRepository(applicationContext).getMinMaxNumWords(data.min, data.max, data.dictUid, data.question)
             }
-            changedTexts()
-        } else {
-            runBlocking {
-                val words = WordRepository(applicationContext).getMinMaxNumWords(data.min, data.max, data.dictUid, data.question)
-                bundle.putSerializable("WORDS", words as ArrayList<Word>)
-                bundle.putInt("QUESTION", words.size)
+            bundle.putSerializable("WORDS", words as ArrayList<Word>)
+            bundle.putInt("QUESTION", words.size)
+        }
+        // coroutine
+        GlobalScope.launch {
+            // API or DBアクセス
+            wordGetJob().join()
+            // UI関連
+            withContext(Dispatchers.Main) {
+                if (words.isEmpty()) {
+                    recommendDialog.show()
+                } else {
+                    changedTexts()
+                }
             }
-            changedTexts()
         }
 
         game_start_button.setOnClickListener {
