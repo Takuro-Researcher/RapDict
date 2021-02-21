@@ -1,7 +1,5 @@
 package com.rapdict.takuro.rapdict.ui.game
 
-import android.app.AlertDialog
-import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Parcelable
@@ -10,31 +8,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.rapdict.takuro.rapdict.R
 import com.rapdict.takuro.rapdict.databinding.FragmentGameBinding
 import com.rapdict.takuro.rapdict.model.entity.Word
-import com.rapdict.takuro.rapdict.ui.main.MainActivity
 import com.rapdict.takuro.rapdict.ui.result.ResultFragment
 import kotlinx.android.synthetic.main.fragment_game.*
 import java.util.*
 
 
 class GamePlayFragment : androidx.fragment.app.Fragment() {
-    lateinit private var binding: FragmentGameBinding
+    private lateinit var binding: FragmentGameBinding
 
-    internal var finish_q = 0
-    lateinit private var mediaPlayer: MediaPlayer
-    private val gameViewModel: GamePlayViewModel by viewModels()
+    private lateinit var mediaPlayer: MediaPlayer
+
+    private val gameViewModel: GamePlayViewModel by viewModels {
+        val questionNum = arguments?.getInt("QUESTION") ?: 0
+        val questionWords: List<Word> = arguments?.getSerializable("WORDS") as List<Word>
+        GamePlayViewModelFactory(questionNum = questionNum, questionWords = questionWords)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val bundle = arguments
-        if (bundle != null) {
-            val filepath = bundle.getInt("BAR")
-            mediaPlayer = MediaPlayer.create(activity, filepath)
-            gameViewModel.arg_to_member(bundle.getInt("QUESTION"), bundle.getSerializable("WORDS") as List<Word>)
-        }
+        val filepath = arguments?.getInt("BAR")
+        mediaPlayer = MediaPlayer.create(activity, filepath!!)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -53,27 +52,17 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // bundleからデータを取得する
-
-        val backIntent = Intent(activity, MainActivity::class.java)
-        val recomdialog = AlertDialog.Builder(activity)
-        recomdialog.setCancelable(false)
-        recomdialog.setMessage("原因不明のエラーです..。再度お試しください")
-        recomdialog.setPositiveButton("戻る") { _, _ ->
-            startActivity(backIntent)
-        }
 
         gameViewModel.isFinish.observe(viewLifecycleOwner, Observer<Boolean> { isFinish ->
             if (isFinish) {
                 mediaPlayer.pause()
                 val resultFragment = ResultFragment()
-                val bundle = Bundle()
-                // 次画面に渡すために値を取り付ける
-                bundle.let {
-                    it.putString("ANSWER_LIST", Gson().toJson(gameViewModel.answerMap))
-                    it.putParcelableArrayList("WORD_LIST", gameViewModel.words as ArrayList<Parcelable>)
-                    resultFragment.arguments = bundle
+                val bundle = Bundle().apply {
+                    putString("ANSWER_LIST", Gson().toJson(gameViewModel.answerMap))
+                    putParcelableArrayList("WORD_LIST", gameViewModel.questionWords as ArrayList<Parcelable>)
                 }
+                resultFragment.arguments = bundle
+
                 //画面遷移
                 fragmentManager?.beginTransaction().let {
                     it?.replace(R.id.fragmentGame, resultFragment, "handlingBackPressed")
@@ -90,9 +79,7 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
 
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
-            gameViewModel.saveAnswer()
-            gameViewModel.changeQuestion()
-            // UI 更新
+            gameViewModel.nextRhyme()
             rhyme_edit_one.editableText.clear()
             game_main.setFocusable(true)
             game_main.setFocusableInTouchMode(true)
@@ -129,5 +116,13 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         mediaPlayer.reset()
         mediaPlayer.release()
     }
+}
 
+class GamePlayViewModelFactory(private val questionWords: List<Word>?, private val questionNum: Int) :
+        ViewModelProvider.NewInstanceFactory() {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return questionWords?.let { GamePlayViewModel(it, questionNum) } as T
+    }
 }
