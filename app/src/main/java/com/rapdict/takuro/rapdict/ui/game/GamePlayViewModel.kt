@@ -36,7 +36,6 @@ class GamePlayViewModel(val questionWords: List<Word>,
 
     // インデックスを合わせて問題を変更する。
     fun setWord() {
-        System.out.println(_questionIndex)
         questionWords[_questionIndex].run {
             _word.postValue(word)
             _furigana.postValue(furigana)
@@ -60,7 +59,7 @@ class GamePlayViewModel(val questionWords: List<Word>,
     fun saveAnswer() {
         val tmpAnswer = answer.value ?: ""
         if (tmpAnswer.isNotEmpty()) {
-            _answerMap[_questionIndex] = tmpAnswer
+            _answerMap[_questionIndex - 1] = tmpAnswer
         }
     }
 
@@ -68,5 +67,6 @@ class GamePlayViewModel(val questionWords: List<Word>,
     fun nextRhyme() {
         saveAnswer()
         changeQuestion()
+        answer.postValue("")
     }
 }

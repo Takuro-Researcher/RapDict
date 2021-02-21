@@ -1,11 +1,13 @@
 package com.rapdict.takuro.rapdict.ui.game
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -80,11 +82,15 @@ class GamePlayFragment : androidx.fragment.app.Fragment() {
         //問題変更ボタン処理
         game_next_button.setOnClickListener {
             gameViewModel.nextRhyme()
-            rhyme_edit_one.editableText.clear()
-            game_main.setFocusable(true)
-            game_main.setFocusableInTouchMode(true)
-            game_main.requestFocus()
+            game_main.run {
+                isFocusable = true
+                isFocusableInTouchMode = true
+                requestFocus()
+            }
             onCompletion(mediaPlayer)
+            // テキストキーボードを閉じる
+            val inputManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         }
         // 初回の問題プレイヤー再生
         onCompletion(mediaPlayer)
