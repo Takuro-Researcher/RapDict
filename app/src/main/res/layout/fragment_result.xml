@@ -48,7 +48,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:text="@string/result_header"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/colorAccentDark"
                         android:textSize="26sp" />
 
                     <TextView
@@ -59,7 +59,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:text="@string/result_description"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/colorAccentDark"
                         android:textSize="17sp" />
 
 
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             app:srcCompat="@drawable/ic_baseline_save_alt_24"
-            app:backgroundTint="#38b48b"
+            app:backgroundTint="@color/colorAccent"
             android:layout_gravity="bottom|start" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -96,7 +96,7 @@
             android:layout_margin="20dp"
             android:clickable="@{data.addAble}"
             android:elevation="2dp"
-            app:backgroundTint="#00BCD4"
+            app:backgroundTint="@color/colorPrimary"
             app:srcCompat="@drawable/ic_baseline_add_24" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
